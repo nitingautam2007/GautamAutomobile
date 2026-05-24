@@ -3,99 +3,173 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = ({ toggleTheme, theme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobMenuOpen, setMobMenuOpen] = useState(false);
-  const [logoZoomed, setLogoZoomed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isMobileMenuOpen]);
+
+  const navLinks = [
+    { name: 'Home', href: '#' },
+    { name: 'Inventory', href: '#inventory' },
+    { name: 'Services', href: '#services' },
+    { name: 'About', href: '#about' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
   return (
-    <>
-    <nav id="navbar" className="nav-bar" style={{ background: isScrolled ? 'var(--nav-sc)' : 'var(--nav-bg)', borderBottom: isScrolled ? '1px solid var(--bdr-lt)' : 'none' }}>
-      <div className="nav-inner">
-        <div className="nav-logo" style={{ cursor: 'pointer' }} onClick={() => setLogoZoomed(true)}>
-          <motion.img 
-            layoutId="main-logo"
-            src="https://z-cdn-media.chatglm.cn/files/12075482-158d-4fb7-9660-3765e5ef4468.jpg?auth_key=1879018124-7564de2e83a44c44bb45426ea2a7dc84-0-f49092f13b96252ec677ba34dda9dda5" 
-            alt="Logo" 
-            style={{ height: '40px', width: '40px', borderRadius: '8px', objectFit: 'cover', border: '1px solid var(--bdr)' }} 
-          />
-          <div style={{ display: 'flex', flexDirection: 'column', marginTop: '2px' }}>
-            <span className="brand-name" style={{ fontSize: '14px' }}>GAUTAM</span>
-            <span className="brand-sub" style={{ fontSize: '8px' }}>Automobile</span>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled ? 'py-3 bg-bg/80 backdrop-blur-md shadow-lg border-b border-bdr-lt' : 'py-5 bg-transparent'
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-12 md:h-14">
+          
+          {/* Logo */}
+          <a href="#" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center text-white transform group-hover:scale-105 transition-transform duration-300">
+              <iconify-icon icon="ph:car-profile-fill" width="24"></iconify-icon>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold t-heading tracking-tight">GAUTAM</span>
+              <span className="text-[10px] uppercase tracking-widest text-red-500 font-semibold -mt-1">Automobile</span>
+            </div>
+          </a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-sm font-medium t2 hover:text-red-500 transition-colors relative group"
+              >
+                {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ))}
+            
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-full bg-bg-alt border border-bdr-lt flex items-center justify-center hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-300"
+              aria-label="Toggle Theme"
+            >
+              <iconify-icon 
+                icon={theme === 'light' ? 'ph:sun-fill' : 'ph:moon-fill'} 
+                width="18"
+              ></iconify-icon>
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex items-center gap-4 md:hidden">
+             {/* Theme Toggle Mobile */}
+             <button
+              onClick={toggleTheme}
+              className="w-8 h-8 rounded-full bg-bg-alt border border-bdr-lt flex items-center justify-center active:scale-95 transition-transform"
+            >
+              <iconify-icon 
+                icon={theme === 'light' ? 'ph:sun-fill' : 'ph:moon-fill'} 
+                width="16"
+              ></iconify-icon>
+            </button>
+
+            {/* Hamburger Icon - Fixed Visibility */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="menu-btn relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-bg-alt active:scale-95 transition-all z-50"
+              aria-label="Open Menu"
+            >
+              <svg 
+                className="w-6 h-6 t-text" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+                style={{ display: 'block !important', visibility: 'visible !important', opacity: '1 !important' }}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
         </div>
-        <div className="nav-links">
-          <a href="#home">Home</a>
-          <a href="#inventory">Inventory</a>
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <div className="nav-right">
-          <button onClick={toggleTheme} className="theme-btn" style={{ position: 'relative', overflow: 'hidden' }} title="Toggle Theme">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={theme}
-                initial={{ y: -30, opacity: 0, rotate: -90 }}
-                animate={{ y: 0, opacity: 1, rotate: 0 }}
-                exit={{ y: 30, opacity: 0, rotate: 90 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                {theme === 'dark' ? (
-                  <svg className="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                ) : (
-                  <svg className="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </button>
-          <a href="tel:+919354719192" className="call-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px', flexShrink: 0 }}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <span className="call-label">Call Now</span>
-          </a>
-          <button className="menu-btn lg:hidden" onClick={() => setMobMenuOpen(!mobMenuOpen)} title="Menu">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-          </button>
-        </div>
       </div>
-      {/* Mobile Menu */}
-      <div className={`mob-menu ${mobMenuOpen ? 'open' : ''}`}>
-        <a href="#home" onClick={() => setMobMenuOpen(false)}>Home</a>
-        <a href="#inventory" onClick={() => setMobMenuOpen(false)}>Inventory</a>
-        <a href="#about" onClick={() => setMobMenuOpen(false)}>About</a>
-        <a href="#services" onClick={() => setMobMenuOpen(false)}>Services</a>
-        <a href="#contact" onClick={() => setMobMenuOpen(false)}>Contact</a>
-        <a href="tel:+919354719192" className="mob-call">Call Now</a>
-      </div>
-    </nav>
 
-      {/* Logo Zoom Overlay */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
-        {logoZoomed && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center cursor-zoom-out"
-            style={{ background: 'var(--bg-overlay)', backdropFilter: 'blur(8px)' }}
-            onClick={() => setLogoZoomed(false)}
-          >
-            <motion.img 
-              layoutId="main-logo"
-              src="https://z-cdn-media.chatglm.cn/files/12075482-158d-4fb7-9660-3765e5ef4468.jpg?auth_key=1879018124-7564de2e83a44c44bb45426ea2a7dc84-0-f49092f13b96252ec677ba34dda9dda5" 
-              alt="Logo Zoomed" 
-              className="w-64 h-64 sm:w-96 sm:h-96 rounded-2xl object-cover shadow-2xl"
-              style={{ border: '1px solid var(--bdr)' }}
+        {isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
             />
-          </motion.div>
+
+            {/* Slide-in Menu */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-bg border-l border-bdr-lt z-50 md:hidden shadow-2xl overflow-y-auto"
+            >
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-8">
+                  <span className="text-lg font-bold t-heading">Menu</span>
+                  <button
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-10 h-10 rounded-full bg-bg-alt flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+                  >
+                    <iconify-icon icon="lucide:x" width="20"></iconify-icon>
+                  </button>
+                </div>
+
+                <div className="flex flex-col gap-4">
+                  {navLinks.map((link) => (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-lg font-medium t2 py-3 border-b border-bdr-lt hover:text-red-500 hover:pl-2 transition-all duration-300"
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </div>
+
+                <div className="mt-8 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+                  <p className="text-sm t2 font-light mb-3">Looking for a specific car?</p>
+                  <a 
+                    href="https://wa.me/919354719192" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="block w-full text-center bg-red-600 text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-red-700 transition-colors"
+                  >
+                    Chat on WhatsApp
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
-    </>
+    </nav>
   );
 };
 
