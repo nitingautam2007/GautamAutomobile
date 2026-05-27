@@ -18,6 +18,9 @@ type ParticlesProps = {
   particleColor?: string;
   particleDensity?: number;
 };
+let particlesInitialized = false;
+let initPromise: Promise<void> | null = null;
+
 export const SparklesCore = (props: ParticlesProps) => {
   const {
     id,
@@ -30,25 +33,27 @@ export const SparklesCore = (props: ParticlesProps) => {
     particleDensity,
   } = props;
   const [init, setInit] = useState(false);
+  
   useEffect(() => {
-    let active = true;
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    })
-      .then(() => {
-        if (active) {
-          setInit(true);
-        }
-      })
-      .catch((err) => {
+    if (particlesInitialized) {
+      setInit(true);
+      return;
+    }
+    
+    if (!initPromise) {
+      initPromise = initParticlesEngine(async (engine) => {
+        await loadSlim(engine);
+      }).then(() => {
+        particlesInitialized = true;
+      }).catch((err) => {
         console.warn("tsParticles initialization rejected or duplicate (handled safely):", err);
-        if (active) {
-          setInit(true);
-        }
+        particlesInitialized = true;
       });
-    return () => {
-      active = false;
-    };
+    }
+    
+    initPromise.then(() => {
+      setInit(true);
+    });
   }, []);
   const controls = useAnimation();
 

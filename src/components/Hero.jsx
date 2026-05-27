@@ -40,6 +40,35 @@ const Hero = ({ theme = 'dark' }) => {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-transparent" style={{ overflow: 'hidden', background: 'transparent' }}>
       
+      {/* Cinematic Showroom Background */}
+      <motion.div
+        initial={{ scale: 1.05 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+        className="hero-bg-div"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          backgroundImage: `url(${BASE}showroom-bg.png)`,
+          pointerEvents: 'none',
+        }}
+      />
+      {/* Dark overlay to ensure text readability */}
+      <div 
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.6), rgba(0,0,0,0.8))',
+          pointerEvents: 'none'
+        }}
+      />
+
       {/* Cinematic Starfield Sparkles Backdrop */}
       <div 
         style={{ 
@@ -67,9 +96,9 @@ const Hero = ({ theme = 'dark' }) => {
       <motion.div 
         className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full opacity-25 pointer-events-none" 
         style={{ y: yBg, background: 'radial-gradient(circle, rgba(220,38,38,0.2) 0%, transparent 70%)', filter: 'blur(100px)' }}
-      />      <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto pt-24 sm:pt-28 pb-10">
+      />      <div className="relative z-10 text-center px-2 sm:px-6 max-w-4xl mx-auto pt-16 sm:pt-20 pb-2 sm:pb-10 flex flex-col justify-center sm:justify-between h-full min-h-[100dvh]">
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border t-rbd t-red text-red-500 text-[10px] sm:text-[12px] uppercase tracking-widest font-medium mb-6 sm:mb-8">
+          <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border t-rbd t-red text-red-500 text-[9px] sm:text-[12px] uppercase tracking-widest font-medium mb-2 sm:mb-8 mt-2 sm:mt-0">
             <iconify-icon icon="lucide:star" width="14"></iconify-icon> Trusted Since 2025
           </span>
         </motion.div>
@@ -91,15 +120,19 @@ const Hero = ({ theme = 'dark' }) => {
           <div className="brand-sub text-sm sm:text-base md:text-lg mt-1 tracking-[0.3em]">AUTOMOBILE</div>
         </motion.div>
         
-        <motion.p initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} className="brand-tag text-xs sm:text-sm md:text-base mt-2 sm:mt-3 mb-6 sm:mb-8 tracking-[0.15em] sm:tracking-[0.2em]">
+        <motion.p initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} className="brand-tag text-white text-xs sm:text-sm md:text-base mt-2 sm:mt-3 tracking-[0.15em] sm:tracking-[0.2em]">
           ★ REAL VALUE FOR YOUR DREAM DRIVE ★
         </motion.p>
         
-        <motion.p initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="t2 text-base sm:text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto mb-8 sm:mb-10 px-2">
-          Discover premium pre-owned vehicles at unbeatable prices. Every car inspected, certified, and ready to hit the road with confidence.
-        </motion.p>
+        {/* Spacer to keep cars visible in the middle */}
+        <div className="h-[140px] sm:h-auto sm:flex-grow sm:min-h-[250px] lg:min-h-[300px]"></div>
         
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.5 }} className="grid grid-cols-3 gap-4 sm:gap-6 mt-8 pt-6 border-t tbd-lt max-w-xl sm:max-w-2xl mx-auto">
+        <div className="mt-0 sm:mt-auto mb-2 sm:mb-0">
+          <motion.p initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="t2 text-white text-xs sm:text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto mb-2 sm:mb-10 px-2">
+            Discover premium pre-owned vehicles at unbeatable prices. Every car inspected, certified, and ready to hit the road with confidence.
+          </motion.p>
+        
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.5 }} className="grid grid-cols-3 gap-2 sm:gap-6 mt-2 sm:mt-8 pt-2 sm:pt-6 border-t tbd-lt max-w-xl sm:max-w-2xl mx-auto">
           <div className="text-center">
             <div className="text-2xl sm:text-3xl md:text-4xl font-logo text-red-500 mb-1"><AnimatedCounter target={50} suffix="+" /></div>
             <div className="text-[9px] sm:text-[11px] uppercase tracking-widest t3 font-medium">Cars Sold</div>
@@ -110,7 +143,7 @@ const Hero = ({ theme = 'dark' }) => {
             <div className="mt-2"><iconify-icon icon="lucide:chevron-down" width="20" className="text-red-500 float-anim"></iconify-icon></div>
           </div>
           <div className="text-center">
-            <div className="text-2xl sm:text-3xl md:text-4xl font-logo text-red-500 mb-1"><AnimatedCounter target={2025} suffix="" /></div>
+            <div className="text-xl sm:text-3xl md:text-4xl font-logo text-red-500 mb-1"><AnimatedCounter target={2025} suffix="" /></div>
             <div className="text-[9px] sm:text-[11px] uppercase tracking-widest t3 font-medium">Established</div>
           </div>
         </motion.div>
@@ -119,21 +152,22 @@ const Hero = ({ theme = 'dark' }) => {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8, delay: 0.6 }} 
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-8 sm:mt-10"
+          className="flex flex-row items-center justify-center gap-2 sm:gap-4 mt-4 sm:mt-10"
         >
           <button 
-            className="w-full sm:w-auto bg-red-600 hover:bg-red-500 text-white text-sm font-semibold px-8 py-4 rounded-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wider shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] border border-transparent" 
+            className="flex-1 sm:flex-none sm:w-auto bg-red-600 hover:bg-red-500 text-white text-[10px] sm:text-sm font-semibold px-2 sm:px-8 py-3 sm:py-4 rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-2 uppercase tracking-wider shadow-lg hover:shadow-xl border border-transparent" 
             onClick={() => document.getElementById('inventory')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            Browse Inventory <iconify-icon icon="lucide:arrow-right" width="18"></iconify-icon>
+            Inventory <iconify-icon icon="lucide:arrow-right" width="14"></iconify-icon>
           </button>
           <button 
-            className="w-full sm:w-auto t-ghost-btn text-sm font-semibold px-8 py-4 rounded-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wider shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98]" 
+            className="flex-1 sm:flex-none sm:w-auto t-ghost-btn text-[10px] sm:text-sm font-semibold px-2 sm:px-8 py-3 sm:py-4 rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-2 uppercase tracking-wider shadow-sm hover:shadow-md border" 
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            <iconify-icon icon="lucide:phone" width="18"></iconify-icon> Schedule Visit
+            <iconify-icon icon="lucide:phone" width="14"></iconify-icon> Call Us
           </button>
         </motion.div>
+        </div>
       </div>
     </section>
   );

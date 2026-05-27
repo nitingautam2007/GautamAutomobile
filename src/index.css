@@ -226,6 +226,18 @@ html.light .hero-bg-img {
   background: var(--bg);
 }
 
+.hero-bg-div {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #09090b; /* Match dark theme */
+}
+@media (min-width: 640px) {
+  .hero-bg-div {
+    background-size: cover;
+  }
+}
+
 /* Remove text glow fog in light theme to make showroom image perfectly sharp and text crisp */
 html.light .brand-glow {
   text-shadow: none;
@@ -243,4 +255,31 @@ html.light .hero-glass-card {
   background: rgba(255, 255, 255, 0.22);
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+}
+
+/* Overrides for text over dark hero image in light mode */
+#home .brand-tag,
+#home .t2,
+#home .t3,
+#home .brand-sub {
+  color: #ffffff !important;
+}
+
+/* Force dark-themed navbar when at the top (over the hero image) */
+.nav-bar.at-top {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border-bottom: none !important;
+}
+.nav-bar.at-top .nav-links a,
+.nav-bar.at-top .brand-sub,
+.nav-bar.at-top .menu-btn,
+.nav-bar.at-top .theme-btn {
+  color: #ffffff !important;
+}
+.nav-bar.at-top .theme-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+.nav-bar.at-top .nav-links a:hover {
+  color: #dc2626 !important;
 }

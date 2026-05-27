@@ -46,15 +46,34 @@ function HomePage() {
     localStorage.setItem('gautam-theme', theme);
   }, [theme]);
 
-  // Scroll to inventory section
+  // Prevent browser from auto-scrolling on reload
   useEffect(() => {
-    if (location.hash === '#inventory') {
-      const timer = setTimeout(() => {
-        const inventorySection =
-          document.getElementById('inventory');
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    // Clear hash on reload to start at home
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+    window.scrollTo(0, 0);
+  }, []);
 
-        if (inventorySection) {
-          inventorySection.scrollIntoView({
+  const [isInitialMount, setIsInitialMount] = useState(true);
+  useEffect(() => {
+    setIsInitialMount(false);
+  }, []);
+
+  // Scroll to sections on link click
+  useEffect(() => {
+    if (isInitialMount) return; // Don't scroll on initial load (reload)
+    
+    if (location.hash) {
+      const timer = setTimeout(() => {
+        const sectionId = location.hash.replace('#', '');
+        const section = document.getElementById(sectionId);
+
+        if (section) {
+          section.scrollIntoView({
             behavior: 'smooth',
           });
         }
@@ -62,7 +81,7 @@ function HomePage() {
 
       return () => clearTimeout(timer);
     }
-  }, [location]);
+  }, [location, isInitialMount]);
 
   const { scrollYProgress } = useScroll();
 

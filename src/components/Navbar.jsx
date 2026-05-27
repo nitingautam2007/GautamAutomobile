@@ -14,7 +14,7 @@ const Navbar = ({ toggleTheme, theme }) => {
 
   return (
     <>
-    <nav id="navbar" className="nav-bar" style={{ background: isScrolled ? 'var(--nav-sc)' : 'var(--nav-bg)', borderBottom: isScrolled ? '1px solid var(--bdr-lt)' : 'none' }}>
+    <nav id="navbar" className={`nav-bar ${!isScrolled ? 'at-top' : ''}`} style={{ background: isScrolled ? 'var(--nav-sc)' : 'var(--nav-bg)', borderBottom: isScrolled ? '1px solid var(--bdr-lt)' : 'none' }}>
       <div className="nav-inner">
         <div className="nav-logo" style={{ cursor: 'pointer' }} onClick={() => setLogoZoomed(true)}>
           <motion.img 
