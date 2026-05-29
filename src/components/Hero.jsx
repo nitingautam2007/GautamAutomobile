@@ -37,13 +37,10 @@ const Hero = ({ theme = 'dark' }) => {
   const yBg = useTransform(scrollY, [0, 1000], [0, 300]);
   const brandText = "GAUTAM".split("");
   return (
-    <section id="home" className="relative h-[100dvh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-transparent" style={{ overflow: 'hidden', background: 'transparent' }}>
+    <section id="home" className="relative h-[100dvh] sm:h-auto sm:min-h-screen flex items-center justify-center overflow-hidden sm:overflow-visible bg-transparent" style={{ background: 'transparent' }}>
       
       {/* Cinematic Showroom Background */}
-      <motion.div
-        initial={{ scale: 1.05 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+      <div
         className="hero-bg-div hidden sm:block"
         style={{
           position: 'absolute',
@@ -73,7 +70,7 @@ const Hero = ({ theme = 'dark' }) => {
         className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full opacity-25 pointer-events-none" 
         style={{ y: yBg, background: 'radial-gradient(circle, rgba(220,38,38,0.2) 0%, transparent 70%)', filter: 'blur(100px)' }}
       />
-      <div className="relative z-10 text-center px-2 sm:px-6 max-w-4xl mx-auto pt-16 sm:pt-20 pb-2 sm:pb-10 flex flex-col justify-between h-full sm:h-auto w-full max-h-[100dvh] sm:max-h-none overflow-hidden sm:overflow-visible">
+      <div className="relative z-10 text-center px-2 sm:px-6 max-w-4xl mx-auto pt-20 sm:pt-28 pb-2 sm:pb-10 flex flex-col justify-between h-full sm:h-auto w-full max-h-[100dvh] sm:max-h-none overflow-hidden sm:overflow-visible">
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border t-rbd t-red text-red-500 text-[9px] sm:text-[12px] uppercase tracking-widest font-medium mb-2 sm:mb-8 mt-2 sm:mt-0">
             <iconify-icon icon="lucide:star" width="14"></iconify-icon> Trusted Since 2025
