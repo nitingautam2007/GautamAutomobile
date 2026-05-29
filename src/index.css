@@ -232,15 +232,10 @@ html.light .hero-bg-img {
 }
 
 .hero-bg-div {
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-color: #09090b; /* Match dark theme */
-}
-@media (min-width: 640px) {
-  .hero-bg-div {
-    background-size: cover;
-  }
 }
 
 /* Remove text glow fog in light theme to make showroom image perfectly sharp and text crisp */

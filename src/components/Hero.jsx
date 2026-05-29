@@ -41,7 +41,7 @@ const Hero = ({ theme = 'dark' }) => {
       
       {/* Cinematic Showroom Background */}
       <div
-        className="hero-bg-div hidden sm:block"
+        className="hero-bg-div"
         style={{
           position: 'absolute',
           inset: 0,
@@ -54,7 +54,6 @@ const Hero = ({ theme = 'dark' }) => {
       />
       {/* Dark overlay to ensure text readability */}
       <div 
-        className="hidden sm:block"
         style={{
           position: 'absolute',
           inset: 0,
@@ -98,16 +97,8 @@ const Hero = ({ theme = 'dark' }) => {
           ★ REAL VALUE FOR YOUR DREAM DRIVE ★
         </motion.p>
         
-        {/* Spacer on desktop, Inline Image on mobile to guarantee layout fits dynamically */}
-        <div className="hidden sm:block sm:flex-grow sm:min-h-[250px] lg:min-h-[300px]"></div>
-        <div className="block sm:hidden my-1 w-full flex-grow flex-shrink min-h-0 flex items-center justify-center overflow-hidden">
-          <img 
-            src={`${BASE}showroom-bg.png`} 
-            alt="Showroom Cars" 
-            className="max-w-full max-h-full object-contain opacity-90 filter brightness-95 rounded-md"
-            style={{ pointerEvents: 'none' }}
-          />
-        </div>
+        {/* Spacer to keep cars visible in the middle */}
+        <div className="flex-grow min-h-[40px] sm:min-h-[250px] lg:min-h-[300px]"></div>
         
         <div className="mt-0 sm:mt-auto mb-2 sm:mb-0">
           <motion.p initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="t2 text-white text-xs sm:text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto mb-2 sm:mb-10 px-2">
