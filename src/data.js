@@ -84,8 +84,17 @@ export const CAR_DATA = [
         img: 'cars/IMG-20260530-WA0015.jpg',
         images: [
             'cars/IMG-20260530-WA0015.jpg',
-            ''
+            'cars/IMG-20260530-WA0018.jpg',
+            'cars/IMG-20260530-WA0021.jpg',
+            'cars/IMG-20260530-WA0019.jpg', 
+            'cars/IMG-20260530-WA0023.jpg', 
+            'cars/IMG-20260530-WA0012.jpg' 
         ],
-        interiorImages: []
+        interiorImages: [
+            'cars/IMG-20260530-WA0025.jpg', 
+            'cars/IMG-20260530-WA0024.jpg', 
+            'cars/IMG-20260530-WA0013.jpg'
+            'cars/IMG-20260530-WA0015.jpg'
+        ]
     }
 ];
