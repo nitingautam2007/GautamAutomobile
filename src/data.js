@@ -4,6 +4,7 @@ export const CAR_DATA = [
         id: 1,
         slug: 'swift-vxi',
         name: 'SWIFT VXI',
+        status: 'sold',
         price: '₹4,50,000',
         originalPrice: '₹4,85,000',
         short: '₹4.5L',
