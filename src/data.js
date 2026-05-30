@@ -51,13 +51,38 @@ export const CAR_DATA = [
         makeYear: 'May 2019',
         insurance: 'Jul 2026',
         insuranceType: 'Comprehensive',
-        color: 'Grandeur Grey', // Added
+        color: 'White', // Added
         phone: '9354719192',
         img: 'cars/Baleno.jpeg',
         images: [
             'cars/Baleno.jpeg',
             'https://images.unsplash.com/photo-1542362567-b07e54358753?w=800&q=80'
         ],
+        interiorImages: []
+    },
+    {
+        id: 3,
+        slug: 'alto-vxi',
+        name: 'ALTO VXI',
+        price: '₹4,60,000',
+        originalPrice: '₹4,90,000',
+        short: '₹4.60L',
+        year: '2020',
+        km: '65,000 km',
+        fuel: 'Petrol',
+        trans: 'Manual',
+        owner: '1st',
+        engine: '1248cc',
+        spareKey: 'No',
+        regNum: 'HR31**1919',
+        regYear: 'Jul 2019',
+        makeYear: 'May 2019',
+        insurance: 'Jul 2026',
+        insuranceType: 'Comprehensive',
+        color: 'White', // Added
+        phone: '9354719192',
+        img: '',
+        images: [],
         interiorImages: []
     }
 ];
