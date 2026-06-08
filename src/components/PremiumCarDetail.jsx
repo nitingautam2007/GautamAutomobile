@@ -85,6 +85,7 @@ const PremiumCarDetail = () => {
   
   const touchStartRef = useRef(null);
   const touchEndRef = useRef(null);
+  const wasSwiped = useRef(false);
   
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState('dark');
@@ -165,9 +166,16 @@ const PremiumCarDetail = () => {
   const onTouchStart = (e) => {
     touchEndRef.current = null;
     touchStartRef.current = e.targetTouches[0].clientX;
+    wasSwiped.current = false;
   };
   const onTouchMove = (e) => {
     touchEndRef.current = e.targetTouches[0].clientX;
+    if (touchStartRef.current) {
+      const diff = Math.abs(touchStartRef.current - e.targetTouches[0].clientX);
+      if (diff > 10) {
+        wasSwiped.current = true;
+      }
+    }
   };
   const onTouchEnd = () => {
     if (!touchStartRef.current || !touchEndRef.current) return;
@@ -189,11 +197,13 @@ const PremiumCarDetail = () => {
 
   const getImgSrc = (src) => {
     if (!src) return '';
+    if (typeof src !== 'string') return '';
     if (src.startsWith('http')) return src;
     return `${import.meta.env.BASE_URL}${src}`;
   };
 
   const openLightbox = () => {
+    if (wasSwiped.current) return;
     setIsLightboxOpen(true);
     document.body.style.overflow = 'hidden';
   };
@@ -376,13 +386,20 @@ const PremiumCarDetail = () => {
             onClick={closeLightbox}
             style={{
               position: 'absolute',
-              top: '20px',
-              right: '30px',
-              background: 'transparent',
+              top: 'calc(20px + env(safe-area-inset-top, 0px))',
+              right: 'calc(20px + env(safe-area-inset-right, 0px))',
+              background: 'rgba(0, 0, 0, 0.5)',
               border: 'none',
               color: 'white',
               cursor: 'pointer',
-              zIndex: 100000
+              zIndex: 100000,
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backdropFilter: 'blur(4px)'
             }}
           >
             <Icons.Close />
@@ -400,6 +417,7 @@ const PremiumCarDetail = () => {
               animation: 'zoomIn 0.3s ease'
             }}
             onClick={(e) => e.stopPropagation()}
+            onError={(e) => { e.target.src = 'https://via.placeholder.com/800x600?text=Image+Error'; }}
           />
           
           <button 
