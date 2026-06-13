@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { LiquidGlassCard } from './ui/liquid-glass-card';
 
 const services = [
   {
@@ -61,20 +62,17 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="car-glass-card group p-6 sm:p-8 flex flex-col items-start"
             >
+              <LiquidGlassCard className="p-6 sm:p-8 flex flex-col items-start">
               {/* iOS Frosted Icon */}
-              <div className="ios-pill w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mb-5 text-red-500 group-hover:text-white group-hover:bg-red-500/80 group-hover:border-red-500/40 transition-all duration-400 !rounded-2xl">
+              <div className="ios-pill w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mb-5 text-red-500 transition-all duration-400 !rounded-2xl">
                 <iconify-icon icon={item.icon} width="26"></iconify-icon>
               </div>
               
               <h3 className="text-lg sm:text-xl font-semibold mb-2 tracking-tight">{item.title}</h3>
               <p className="t2 text-sm sm:text-base font-light leading-relaxed">{item.desc}</p>
 
-              {/* Bottom accent line */}
-              <div className="mt-auto pt-5 w-full">
-                <div className="h-[1px] w-12 group-hover:w-full transition-all duration-500 ease-out" style={{ background: 'linear-gradient(90deg, rgba(220,38,38,0.6), transparent)' }}></div>
-              </div>
+            </LiquidGlassCard>
             </motion.div>
           ))}
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { LiquidGlassCard } from './ui/liquid-glass-card';
 
 const features = [
   { icon: 'check-circle-2', title: 'No Hidden Costs', desc: 'What you see is what you pay.' },
@@ -21,7 +22,8 @@ const WhyChooseUs = () => {
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
           {features.map((f, idx) => (
-            <motion.div key={idx} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: idx * 0.08 }} className="car-glass-card text-center group p-4 sm:p-6">
+            <motion.div key={idx} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: idx * 0.08 }}>
+              <LiquidGlassCard className="text-center p-4 sm:p-6">
               {/* iOS Frosted Icon Circle */}
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-3 sm:mb-5 flex items-center justify-center text-red-500 relative"
                 style={{
@@ -36,6 +38,7 @@ const WhyChooseUs = () => {
               </div>
               <h4 className="text-xs sm:text-sm font-semibold mb-1 sm:mb-2 tracking-tight">{f.title}</h4>
               <p className="t3 text-[10px] sm:text-[12px] font-light leading-relaxed px-1">{f.desc}</p>
+            </LiquidGlassCard>
             </motion.div>
           ))}
         </div>

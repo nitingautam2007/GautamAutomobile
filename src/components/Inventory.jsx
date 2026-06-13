@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { LiquidGlassCard } from './ui/liquid-glass-card';
 
 const Inventory = ({ cars, showToast }) => {
   const navigate = useNavigate();
@@ -77,8 +78,8 @@ const Inventory = ({ cars, showToast }) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.08 }}
               >
-                <div
-                  className={`car-card car-glass-card group h-full flex flex-col justify-between ${isSold ? 'opacity-80' : 'cursor-pointer'}`}
+                <LiquidGlassCard
+                  className={`car-card h-full flex flex-col justify-between ${isSold ? 'opacity-80' : 'cursor-pointer'}`}
                   onClick={() => handleCardClick(car)}
                 >
                   {/* ── Image Section ── */}
@@ -191,7 +192,7 @@ const Inventory = ({ cars, showToast }) => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </LiquidGlassCard>
               </motion.div>
             );
           })}

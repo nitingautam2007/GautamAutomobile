@@ -58,74 +58,58 @@ html.light .t-bg-alt{background:rgba(235,234,232,0.5);backdrop-filter:blur(12px)
    iOS 18 Frosted Glass Card System — Inventory
    ══════════════════════════════════════════════════════════ */
 
-/* ── Base Card: Frosted glass with noise ── */
-.car-glass-card {
+/* ── Liquid Glass Card (iOS 26 style) ── */
+.liquid-glass-card {
+  --glass-reflex-light: 1;
+  --glass-reflex-dark: 1;
+  transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.liquid-glass-card-lens {
   background: linear-gradient(
     165deg,
-    rgba(255,255,255,0.06) 0%,
-    rgba(255,255,255,0.02) 40%,
+    rgba(255,255,255,0.10) 0%,
+    rgba(255,255,255,0.03) 50%,
     rgba(255,255,255,0.0) 100%
   );
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 0.5px solid rgba(255,255,255,0.15);
-  border-radius: 20px;
+  border: 0.5px solid rgba(255,255,255,0.12);
   box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white calc(var(--glass-reflex-light) * 8%), transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 85%), transparent),
+    inset -2px -2px 0px -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 75%), transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, white calc(var(--glass-reflex-light) * 55%), transparent),
+    inset -0.3px -1px 4px 0px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 10%), transparent),
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 18%), transparent),
+    inset 0px 3px 4px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 18%), transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 8%), transparent),
     0 2px 4px rgba(0,0,0,0.08),
     0 8px 24px rgba(0,0,0,0.20),
     0 24px 48px rgba(0,0,0,0.16);
-  position: relative;
-  overflow: hidden;
   transition:
-    transform 0.55s cubic-bezier(0.25, 1, 0.5, 1),
     box-shadow 0.55s cubic-bezier(0.25, 1, 0.5, 1),
-    border-color 0.4s ease;
+    border-color 0.4s ease,
+    background-color 0.4s ease;
 }
-
-/* Noise texture overlay — Apple's signature subtlety */
-.car-glass-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  opacity: 0.035;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 128px 128px;
-  mix-blend-mode: overlay;
-}
-
-/* Top edge highlight — mimics light refraction on glass */
-.car-glass-card::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(90deg,
-    transparent 5%,
-    rgba(255,255,255,0.3) 25%,
-    rgba(255,255,255,0.45) 50%,
-    rgba(255,255,255,0.3) 75%,
-    transparent 95%
-  );
-}
-
-/* Hover: lift + enhanced depth */
-.car-glass-card:hover {
+.liquid-glass-card:hover {
   transform: translateY(-6px) scale(1.015);
+}
+.liquid-glass-card:hover .liquid-glass-card-lens {
   border-color: rgba(255,255,255,0.25);
   box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white calc(var(--glass-reflex-light) * 12%), transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -2px -2px 0px -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 80%), transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, white calc(var(--glass-reflex-light) * 60%), transparent),
+    inset -0.3px -1px 4px 0px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 12%), transparent),
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 22%), transparent),
+    inset 0px 3px 4px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 22%), transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 10%), transparent),
     0 4px 8px rgba(0,0,0,0.10),
     0 16px 40px rgba(0,0,0,0.28),
-    0 32px 64px rgba(0,0,0,0.20),
-    0 0 0 1px rgba(255,255,255,0.08) inset;
+    0 32px 64px rgba(0,0,0,0.20);
 }
 
 /* ── Light theme ── */
-html.light .car-glass-card {
+html.light .liquid-glass-card-lens {
   background: linear-gradient(
     165deg,
     rgba(255,255,255,0.75) 0%,
@@ -134,26 +118,29 @@ html.light .car-glass-card {
   );
   border: 0.5px solid rgba(255,255,255,0.9);
   box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white calc(var(--glass-reflex-light) * 60%), transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 95%), transparent),
+    inset -2px -2px 0px -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, white calc(var(--glass-reflex-light) * 70%), transparent),
+    inset -0.3px -1px 4px 0px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 4%), transparent),
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 6%), transparent),
+    inset 0px 3px 4px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 6%), transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 2%), transparent),
     0 1px 3px rgba(0,0,0,0.04),
     0 8px 24px rgba(0,0,0,0.08),
     0 20px 40px rgba(0,0,0,0.06);
 }
-html.light .car-glass-card::before {
-  opacity: 0.025;
-}
-html.light .car-glass-card::after {
-  background: linear-gradient(90deg,
-    transparent 5%,
-    rgba(255,255,255,0.7) 25%,
-    rgba(255,255,255,0.95) 50%,
-    rgba(255,255,255,0.7) 75%,
-    transparent 95%
-  );
-}
-html.light .car-glass-card:hover {
+html.light .liquid-glass-card:hover .liquid-glass-card-lens {
   border-color: rgba(0,0,0,0.08);
-  transform: translateY(-6px) scale(1.015);
   box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, white calc(var(--glass-reflex-light) * 65%), transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 98%), transparent),
+    inset -2px -2px 0px -2px color-mix(in srgb, white calc(var(--glass-reflex-light) * 93%), transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, white calc(var(--glass-reflex-light) * 75%), transparent),
+    inset -0.3px -1px 4px 0px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 6%), transparent),
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 8%), transparent),
+    inset 0px 3px 4px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 8%), transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 4%), transparent),
     0 2px 6px rgba(0,0,0,0.06),
     0 16px 40px rgba(0,0,0,0.12),
     0 32px 64px rgba(0,0,0,0.08);
