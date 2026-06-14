@@ -1105,7 +1105,10 @@ html.light .nav-bottom-inner {
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text-3);
-  padding: 10px 20px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 100px;
   transition: color var(--dur-fast) var(--ease-smooth), transform var(--dur-fast) var(--ease-spring);
   white-space: nowrap;
@@ -1216,14 +1219,9 @@ html.light .hero-bg-img {
   filter: brightness(75%) contrast(115%);
 }
 
-/* Force solid background on Hero to hide global canvas dots in the Hero area */
+/* Hero background handled by img element in Hero.jsx */
 #home {
-  background: var(--bg);
-}
-@media (max-width: 639px) {
-  #home {
-    background: #1c1c1e !important;
-  }
+  background: transparent;
 }
 
 .hero-bg-div {

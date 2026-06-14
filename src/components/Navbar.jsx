@@ -196,6 +196,11 @@ const Navbar = ({ toggleTheme, theme }) => {
         <div className="nav-bottom-inner">
           {bottomNavLinks.map((link) => {
             const sectionId = link === 'Home' ? 'home' : link.toLowerCase();
+            const iconMap = {
+              Home: 'lucide:home',
+              Inventory: 'lucide:car-front',
+              Contact: 'lucide:phone',
+            };
             return (
               <a
                 key={link}
@@ -209,7 +214,7 @@ const Navbar = ({ toggleTheme, theme }) => {
                   setMobMenuOpen(false);
                 }}
               >
-                {link}
+                <iconify-icon icon={iconMap[link]} width="20" height="20" />
               </a>
             );
           })}

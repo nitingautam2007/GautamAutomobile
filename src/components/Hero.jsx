@@ -39,21 +39,17 @@ const Hero = ({ theme = 'light' }) => {
   return (
     <section id="home" className="relative min-h-[100dvh] flex items-center justify-center overflow-visible bg-transparent" style={{ background: 'transparent' }}>
       
-      {/* Cinematic Showroom Background Video */}
+      {/* Background Image */}
       <div style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, background: 'var(--bg)' }}>
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
+        <img
+          src={`${BASE}showroom-bg.png`}
+          alt="Gautam Automobile Background"
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
           }}
-        >
-          <source src={`${BASE}Car_sketches_transforming_on_paper_202606141552.mp4`} type="video/mp4" />
-        </video>
+        />
       </div>
       {/* Dark overlay to ensure text readability */}
       <div 
@@ -63,7 +59,7 @@ const Hero = ({ theme = 'light' }) => {
           width: '100%',
           height: '100%',
           zIndex: 1,
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.3), rgba(0,0,0,0.5))',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.1), rgba(0,0,0,0.25))',
           pointerEvents: 'none'
         }}
       />
