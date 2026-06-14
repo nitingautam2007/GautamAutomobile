@@ -48,7 +48,8 @@ const Navbar = ({ toggleTheme, theme }) => {
     return () => clearTimeout(t);
   }, [activeSection]);
 
-  const navLinks = ['Home', 'Inventory', 'Contact'];
+  const desktopNavLinks = ['Home', 'Inventory', 'About', 'Services', 'Contact'];
+  const bottomNavLinks = ['Home', 'Inventory', 'Contact'];
 
   const updatePill = useCallback(() => {
     const el = linkRefs.current[activeSection];
@@ -102,7 +103,7 @@ const Navbar = ({ toggleTheme, theme }) => {
           </a>
         </div>
         <div className="nav-links liquid-glass-nav-links">
-          {navLinks.map((link) => {
+          {desktopNavLinks.map((link) => {
             const href = `#${link.toLowerCase()}`;
             const isHome = link === 'Home';
             const sectionId = isHome ? 'home' : link.toLowerCase();
@@ -174,7 +175,7 @@ const Navbar = ({ toggleTheme, theme }) => {
       {/* Mobile Bottom Nav */}
       <div className="nav-bottom">
         <div className="nav-bottom-inner">
-          {navLinks.map((link) => {
+          {bottomNavLinks.map((link) => {
             const sectionId = link === 'Home' ? 'home' : link.toLowerCase();
             return (
               <a
@@ -194,7 +195,7 @@ const Navbar = ({ toggleTheme, theme }) => {
             );
           })}
           {/* WhatsApp inside bottom nav when at top */}
-          {!isScrolled && (
+          {false && (
             <a
               href="https://wa.me/919354719192?text=Hi%20Gautam%20Automobile!%20I'm%20interested%20in%20buying%20a%20car."
               target="_blank"
@@ -230,19 +231,17 @@ const Navbar = ({ toggleTheme, theme }) => {
         <FaWhatsapp size={28} />
       </a>
 
-      {/* WhatsApp Float (separates when scrolled on mobile) */}
-      {isScrolled && (
-        <a
-          href="https://wa.me/919354719192?text=Hi%20Gautam%20Automobile!%20I'm%20interested%20in%20buying%20a%20car."
-          target="_blank"
-          rel="noreferrer"
-          className="wa-float wa-float-scrolled"
-          title="Chat on WhatsApp"
-          aria-label="Chat on WhatsApp"
-        >
-          <FaWhatsapp size={28} />
-        </a>
-      )}
+      {/* WhatsApp Float (mobile, always visible) */}
+      <a
+        href="https://wa.me/919354719192?text=Hi%20Gautam%20Automobile!%20I'm%20interested%20in%20buying%20a%20car."
+        target="_blank"
+        rel="noreferrer"
+        className="wa-float wa-float-scrolled"
+        title="Chat on WhatsApp"
+        aria-label="Chat on WhatsApp"
+      >
+        <FaWhatsapp size={28} />
+      </a>
 
       <AnimatePresence>
         {mobMenuOpen && (
@@ -254,7 +253,7 @@ const Navbar = ({ toggleTheme, theme }) => {
             className="mob-menu-liquid glass-mob-panel"
           >
             <div className="mob-menu-inner">
-              {navLinks.map((link) => {
+          {desktopNavLinks.map((link) => {
                 const sectionId = link === 'Home' ? 'home' : link.toLowerCase();
                 return (
                   <a
