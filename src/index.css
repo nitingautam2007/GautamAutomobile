@@ -537,6 +537,8 @@ html.light .liquid-glass-nav.scrolled {
 
 /* ── Logo ── */
 .nav-logo {
+  --gbl: 1;
+  --gbd: 1;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -544,16 +546,64 @@ html.light .liquid-glass-nav.scrolled {
   text-decoration: none;
   overflow: hidden;
   min-width: 0;
+  padding: 4px 10px 4px 4px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 0.5px solid rgba(255,255,255,0.06);
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, white calc(var(--gbl) * 6%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 50%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 40%), transparent),
+    0 1px 2px rgba(0,0,0,0.06);
+  transition: background var(--dur-normal) var(--ease-smooth), border-color var(--dur-normal) var(--ease-smooth), box-shadow var(--dur-normal) var(--ease-smooth);
+}
+
+.nav-logo:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, white calc(var(--gbl) * 12%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 65%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 50%), transparent),
+    inset 0px -4px 1px -3px color-mix(in srgb, white calc(var(--gbl) * 35%), transparent),
+    inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 8%), transparent),
+    inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 6%), transparent),
+    0 1px 3px rgba(0,0,0,0.10),
+    0 4px 12px rgba(0,0,0,0.08);
+}
+
+html.light .nav-logo {
+  background: rgba(0,0,0,0.03);
+  border: 0.5px solid rgba(0,0,0,0.04);
+}
+
+html.light .nav-logo:hover {
+  background: rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.08);
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, white calc(var(--gbl) * 50%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 85%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 70%), transparent),
+    inset 0px -4px 1px -3px color-mix(in srgb, white calc(var(--gbl) * 55%), transparent),
+    inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 4%), transparent),
+    inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 5%), transparent),
+    inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 5%), transparent),
+    inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 2%), transparent),
+    0 1px 2px rgba(0,0,0,0.04);
 }
 
 @media (min-width: 640px) {
-  .nav-logo { gap: 12px; }
+  .nav-logo { gap: 12px; padding: 5px 14px 5px 5px; }
 }
 
 .nav-logo-img {
   height: 36px;
   width: 36px;
-  border-radius: 10px;
+  border-radius: 50%;
   object-fit: cover;
   border: 0.5px solid rgba(255,255,255,0.14);
   cursor: zoom-in;
