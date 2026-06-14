@@ -156,7 +156,7 @@ function HomePage() {
                 style={{
                   background:
                     themeWipe === 'dark'
-                      ? '#0a0e1a'
+                      ? '#1a1a1a'
                       : '#f5f4f2',
 
                   clipPath:
@@ -180,7 +180,7 @@ function HomePage() {
                   style={{
                     color:
                       themeWipe === 'dark'
-                        ? '#0a0e1a'
+                        ? '#1a1a1a'
                         : '#f5f4f2',
 
                     transform:

@@ -65,17 +65,17 @@ html {
 
 
 :root {
-  --bg: #0a0e1a; --bg-alt: #111827; --bg-card: rgba(15,20,35,0.5); --bg-card2: rgba(10,14,26,0.5);
-  --bg-input: rgba(255,255,255,0.05); --bg-subtle: rgba(255,255,255,0.05); --bg-overlay: rgba(5,7,15,0.85);
-  --text-1: #f1f5f9; --text-2: #94a3b8; --text-3: #64748b; --text-4: #475569;
+  --bg: #1a1a1a; --bg-alt: #242424; --bg-card: rgba(30,30,30,0.5); --bg-card2: rgba(20,20,20,0.5);
+  --bg-input: rgba(255,255,255,0.05); --bg-subtle: rgba(255,255,255,0.05); --bg-overlay: rgba(10,10,10,0.85);
+  --text-1: #f0f0f0; --text-2: #a0a0a0; --text-3: #707070; --text-4: #505050;
   --bdr: rgba(255,255,255,0.08); --bdr-lt: rgba(255,255,255,0.04);
-  --nav-bg: rgba(10,14,26,0.4); --nav-sc: rgba(10,14,26,0.7); --brand-sub: #cbd5e1;
+  --nav-bg: rgba(26,26,26,0.4); --nav-sc: rgba(26,26,26,0.7); --brand-sub: #c0c0c0;
   --red-bg: rgba(220,38,38,0.1); --red-bdr: rgba(220,38,38,0.3); --red-glow: rgba(220,38,38,0.15);
   --shadow: none; --hero-mix: overlay; --sel-bg: rgba(220,38,38,0.3); --sel-fg: #fecaca;
-  --scr-track: #111827; --scr-thumb: #334155;
-  --btn-ghost: rgba(255, 255, 255, 0.85); --btn-ghost-txt: #0f172a;
+  --scr-track: #242424; --scr-thumb: #404040;
+  --btn-ghost: rgba(255, 255, 255, 0.85); --btn-ghost-txt: #1a1a1a;
   --btn-ghost-hover: #dc2626; --btn-ghost-hover-txt: #ffffff;
-  --year-bg: rgba(0,0,0,0.6); --select-bg: #1e293b; --select-text: #f1f5f9;
+  --year-bg: rgba(0,0,0,0.6); --select-bg: #2a2a2a; --select-text: #f0f0f0;
 }
 html.light {
   --bg: #f5f4f2; --bg-alt: #ebeae8; --bg-card: rgba(250,249,247,0.8); --bg-card2: rgba(240,239,237,0.8);
@@ -1185,7 +1185,7 @@ html.light .hero-bg-img {
 }
 @media (max-width: 639px) {
   #home {
-    background: #0a0e1a !important;
+    background: #1a1a1a !important;
   }
 }
 
@@ -1193,7 +1193,7 @@ html.light .hero-bg-img {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #0a0e1a; /* Match dark theme */
+  background-color: #1a1a1a; /* Match dark theme */
 }
 
 /* Remove text glow fog in light theme to make showroom image perfectly sharp and text crisp */

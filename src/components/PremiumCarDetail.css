@@ -11,12 +11,12 @@
 }
 
 :root {
-  --bg-dark: #0a0e1a;
-  --bg-gradient: linear-gradient(135deg, #0a0e1a 0%, #111827 100%);
+  --bg-dark: #1a1a1a;
+  --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
   --primary-red: #dc2626;
   --primary-red-glow: rgba(220, 38, 38, 0.4);
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
+  --text-main: #f0f0f0;
+  --text-muted: #a0a0a0;
   --glass-bg: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.08);
   --card-radius: 24px;
