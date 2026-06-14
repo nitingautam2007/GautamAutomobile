@@ -11,13 +11,13 @@
 }
 
 :root {
-  --bg-dark: #1a1a1a;
-  --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
+  --bg-dark: #1c1c1e;
+  --bg-gradient: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
   --primary-red: #dc2626;
   --primary-red-glow: rgba(220, 38, 38, 0.4);
-  --text-main: #f0f0f0;
-  --text-muted: #a0a0a0;
-  --glass-bg: rgba(255, 255, 255, 0.03);
+  --text-main: #f2f2f7;
+  --text-muted: #aeaeb2;
+  --glass-bg: rgba(28,28,30,0.6);
   --glass-border: rgba(255, 255, 255, 0.08);
   --card-radius: 24px;
   
@@ -302,7 +302,7 @@
 }
 
 .glass-card {
-  background: rgba(28,28,28,0.6);
+  background: rgba(28,28,30,0.6);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius: var(--card-radius);

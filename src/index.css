@@ -65,17 +65,17 @@ html {
 
 
 :root {
-  --bg: #1a1a1a; --bg-alt: #222222; --bg-card: rgba(35,35,35,0.6); --bg-card2: rgba(28,28,28,0.6);
-  --bg-input: rgba(255,255,255,0.06); --bg-subtle: rgba(255,255,255,0.04); --bg-overlay: rgba(10,10,10,0.85);
-  --text-1: #f0f0f0; --text-2: #a0a0a0; --text-3: #707070; --text-4: #505050;
+  --bg: #1c1c1e; --bg-alt: #2c2c2e; --bg-card: rgba(28,28,30,0.75); --bg-card2: rgba(44,44,46,0.75);
+  --bg-input: rgba(255,255,255,0.06); --bg-subtle: rgba(255,255,255,0.04); --bg-overlay: rgba(0,0,0,0.8);
+  --text-1: #f2f2f7; --text-2: #aeaeb2; --text-3: #636366; --text-4: #48484a;
   --bdr: rgba(255,255,255,0.08); --bdr-lt: rgba(255,255,255,0.04);
-  --nav-bg: rgba(26,26,26,0.4); --nav-sc: rgba(26,26,26,0.7); --brand-sub: #c0c0c0;
+  --nav-bg: rgba(28,28,30,0.4); --nav-sc: rgba(28,28,30,0.7); --brand-sub: #d1d1d6;
   --red-bg: rgba(220,38,38,0.1); --red-bdr: rgba(220,38,38,0.3); --red-glow: rgba(220,38,38,0.15);
   --shadow: 0 4px 20px rgba(0,0,0,0.3); --hero-mix: overlay; --sel-bg: rgba(220,38,38,0.3); --sel-fg: #fecaca;
-  --scr-track: #222222; --scr-thumb: #3a3a3a;
-  --btn-ghost: rgba(255, 255, 255, 0.85); --btn-ghost-txt: #1a1a1a;
+  --scr-track: #2c2c2e; --scr-thumb: #636366;
+  --btn-ghost: rgba(255, 255, 255, 0.85); --btn-ghost-txt: #1c1c1e;
   --btn-ghost-hover: #dc2626; --btn-ghost-hover-txt: #ffffff;
-  --year-bg: rgba(0,0,0,0.6); --select-bg: #2a2a2a; --select-text: #f0f0f0;
+  --year-bg: rgba(0,0,0,0.6); --select-bg: #3a3a3c; --select-text: #f2f2f7;
 }
 html.light {
   --bg: #f5f4f2; --bg-alt: #ebeae8; --bg-card: rgba(250,249,247,0.8); --bg-card2: rgba(240,239,237,0.8);
@@ -127,7 +127,7 @@ html.light .t-bg-alt{background:rgba(235,234,232,0.5);backdrop-filter:blur(12px)
   backface-visibility: hidden;
 }
 .liquid-glass-card-lens {
-  background: rgba(30,30,30,0.6);
+  background: rgba(28,28,30,0.7);
   border: 0.5px solid rgba(255,255,255,0.12);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, white calc(var(--glass-reflex-light) * 8%), transparent),
@@ -891,7 +891,7 @@ html.light .liquid-glass-nav-btn:hover {
   top: calc(100% - 4px);
   left: 8px;
   right: 8px;
-  background: rgba(28,28,28,0.88);
+  background: rgba(28,28,30,0.88);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 0.5px solid rgba(255,255,255,0.10);
@@ -1045,7 +1045,7 @@ html.light .nav-bottom {
   gap: 4px;
   padding: 5px;
   border-radius: 100px;
-  background: rgba(28,28,28,0.80);
+  background: rgba(28,28,30,0.80);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 0.5px solid rgba(255,255,255,0.10);
@@ -1185,7 +1185,7 @@ html.light .hero-bg-img {
 }
 @media (max-width: 639px) {
   #home {
-    background: #1a1a1a !important;
+    background: #1c1c1e !important;
   }
 }
 
@@ -1193,7 +1193,7 @@ html.light .hero-bg-img {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #1a1a1a; /* Match dark theme */
+  background-color: #1c1c1e; /* Match dark theme */
 }
 
 /* Remove text glow fog in light theme to make showroom image perfectly sharp and text crisp */
