@@ -65,14 +65,14 @@ html {
 
 
 :root {
-  --bg: #1a1a1a; --bg-alt: #242424; --bg-card: rgba(30,30,30,0.5); --bg-card2: rgba(20,20,20,0.5);
-  --bg-input: rgba(255,255,255,0.05); --bg-subtle: rgba(255,255,255,0.05); --bg-overlay: rgba(10,10,10,0.85);
+  --bg: #1a1a1a; --bg-alt: #222222; --bg-card: rgba(35,35,35,0.6); --bg-card2: rgba(28,28,28,0.6);
+  --bg-input: rgba(255,255,255,0.06); --bg-subtle: rgba(255,255,255,0.04); --bg-overlay: rgba(10,10,10,0.85);
   --text-1: #f0f0f0; --text-2: #a0a0a0; --text-3: #707070; --text-4: #505050;
   --bdr: rgba(255,255,255,0.08); --bdr-lt: rgba(255,255,255,0.04);
   --nav-bg: rgba(26,26,26,0.4); --nav-sc: rgba(26,26,26,0.7); --brand-sub: #c0c0c0;
   --red-bg: rgba(220,38,38,0.1); --red-bdr: rgba(220,38,38,0.3); --red-glow: rgba(220,38,38,0.15);
-  --shadow: none; --hero-mix: overlay; --sel-bg: rgba(220,38,38,0.3); --sel-fg: #fecaca;
-  --scr-track: #242424; --scr-thumb: #404040;
+  --shadow: 0 4px 20px rgba(0,0,0,0.3); --hero-mix: overlay; --sel-bg: rgba(220,38,38,0.3); --sel-fg: #fecaca;
+  --scr-track: #222222; --scr-thumb: #3a3a3a;
   --btn-ghost: rgba(255, 255, 255, 0.85); --btn-ghost-txt: #1a1a1a;
   --btn-ghost-hover: #dc2626; --btn-ghost-hover-txt: #ffffff;
   --year-bg: rgba(0,0,0,0.6); --select-bg: #2a2a2a; --select-text: #f0f0f0;
@@ -127,7 +127,7 @@ html.light .t-bg-alt{background:rgba(235,234,232,0.5);backdrop-filter:blur(12px)
   backface-visibility: hidden;
 }
 .liquid-glass-card-lens {
-  background: rgba(18,18,22,0.55);
+  background: rgba(30,30,30,0.6);
   border: 0.5px solid rgba(255,255,255,0.12);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, white calc(var(--glass-reflex-light) * 8%), transparent),
@@ -138,9 +138,9 @@ html.light .t-bg-alt{background:rgba(235,234,232,0.5);backdrop-filter:blur(12px)
     inset -1.5px 2.5px 0px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 18%), transparent),
     inset 0px 3px 4px -2px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 18%), transparent),
     inset 2px -6.5px 1px -4px color-mix(in srgb, black calc(var(--glass-reflex-dark) * 8%), transparent),
-    0 2px 4px rgba(0,0,0,0.08),
-    0 8px 24px rgba(0,0,0,0.20),
-    0 24px 48px rgba(0,0,0,0.16);
+    0 2px 4px rgba(0,0,0,0.15),
+    0 8px 24px rgba(0,0,0,0.25),
+    0 24px 48px rgba(0,0,0,0.20);
   transition:
     box-shadow var(--dur-slow) var(--ease-out-expo),
     border-color var(--dur-normal) var(--ease-smooth),
@@ -891,7 +891,7 @@ html.light .liquid-glass-nav-btn:hover {
   top: calc(100% - 4px);
   left: 8px;
   right: 8px;
-  background: rgba(13,13,17,0.82);
+  background: rgba(28,28,28,0.88);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 0.5px solid rgba(255,255,255,0.10);
@@ -900,8 +900,8 @@ html.light .liquid-glass-nav-btn:hover {
     inset 0 0 0 1px rgba(255,255,255,0.04),
     inset 1px 2px 0px -1px rgba(255,255,255,0.15),
     inset -1px -1px 0px -1px rgba(255,255,255,0.10),
-    0 16px 48px rgba(0,0,0,0.4),
-    0 4px 12px rgba(0,0,0,0.2);
+    0 16px 48px rgba(0,0,0,0.5),
+    0 4px 12px rgba(0,0,0,0.3);
   overflow: hidden;
   transform-origin: top center;
 }
@@ -1045,14 +1045,14 @@ html.light .nav-bottom {
   gap: 4px;
   padding: 5px;
   border-radius: 100px;
-  background: rgba(14,14,18,0.75);
+  background: rgba(28,28,28,0.80);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 0.5px solid rgba(255,255,255,0.10);
   box-shadow:
     inset 0 0 0 0.5px rgba(255,255,255,0.04),
-    0 8px 32px rgba(0,0,0,0.25),
-    0 2px 8px rgba(0,0,0,0.12);
+    0 8px 32px rgba(0,0,0,0.35),
+    0 2px 8px rgba(0,0,0,0.2);
   width: 100%;
   max-width: 420px;
   pointer-events: auto;

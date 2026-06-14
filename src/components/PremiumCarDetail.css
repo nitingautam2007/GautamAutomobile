@@ -302,14 +302,14 @@
 }
 
 .glass-card {
-  background: var(--glass-bg);
+  background: rgba(28,28,28,0.6);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius: var(--card-radius);
   padding: 2.5rem;
   position: sticky;
   top: 2rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   will-change: transform;
   transform: translateZ(0);
 }
