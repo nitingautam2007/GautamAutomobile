@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const Navbar = ({ toggleTheme, theme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -192,6 +193,19 @@ const Navbar = ({ toggleTheme, theme }) => {
               </a>
             );
           })}
+          {/* WhatsApp inside bottom nav when at top */}
+          {!isScrolled && (
+            <a
+              href="https://wa.me/919354719192?text=Hi%20Gautam%20Automobile!%20I'm%20interested%20in%20buying%20a%20car."
+              target="_blank"
+              rel="noreferrer"
+              className="nav-bottom-link wa-nav-link"
+              title="Chat on WhatsApp"
+              aria-label="Chat on WhatsApp"
+            >
+              <FaWhatsapp size={14} color="#25D366" />
+            </a>
+          )}
           <motion.div
             className="nav-bottom-pill"
             animate={{ x: bottomPillPos.x, width: bottomPillPos.w, scale: bottomPillScale }}
@@ -203,6 +217,32 @@ const Navbar = ({ toggleTheme, theme }) => {
           />
         </div>
       </div>
+
+      {/* WhatsApp Float (always visible on desktop) */}
+      <a
+        href="https://wa.me/919354719192?text=Hi%20Gautam%20Automobile!%20I'm%20interested%20in%20buying%20a%20car."
+        target="_blank"
+        rel="noreferrer"
+        className="wa-float wa-float-desktop"
+        title="Chat on WhatsApp"
+        aria-label="Chat on WhatsApp"
+      >
+        <FaWhatsapp size={28} />
+      </a>
+
+      {/* WhatsApp Float (separates when scrolled on mobile) */}
+      {isScrolled && (
+        <a
+          href="https://wa.me/919354719192?text=Hi%20Gautam%20Automobile!%20I'm%20interested%20in%20buying%20a%20car."
+          target="_blank"
+          rel="noreferrer"
+          className="wa-float wa-float-scrolled"
+          title="Chat on WhatsApp"
+          aria-label="Chat on WhatsApp"
+        >
+          <FaWhatsapp size={28} />
+        </a>
+      )}
 
       <AnimatePresence>
         {mobMenuOpen && (

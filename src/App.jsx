@@ -2,7 +2,6 @@ import { Agentation } from "agentation";
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
-import { FaWhatsapp } from 'react-icons/fa';
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -238,18 +237,6 @@ function HomePage() {
       <WhyChooseUs />
 
       <Contact showToast={showToast} />
-
-      {/* WhatsApp Float */}
-      <a
-        href="https://wa.me/919354719192?text=Hi%20Gautam%20Automobile!%20I'm%20interested%20in%20buying%20a%20car."
-        target="_blank"
-        rel="noreferrer"
-        className="wa-float"
-        title="Chat on WhatsApp"
-        aria-label="Chat on WhatsApp"
-      >
-        <FaWhatsapp size={32} />
-      </a>
 
       <Footer />
     </>

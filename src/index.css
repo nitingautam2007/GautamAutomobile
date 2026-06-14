@@ -240,11 +240,10 @@ html.light #inventory {
 .t-year-badge{background:var(--year-bg);color:#ffffff;backdrop-filter:blur(4px)}
 
 /* WhatsApp Float - Mobile Safe */
+/* WhatsApp Float - Base */
 .wa-float{
   position:fixed;
   z-index:9999;
-  bottom:20px;
-  right:20px;
   width:56px;
   height:56px;
   background-color:#25D366;
@@ -253,8 +252,6 @@ html.light #inventory {
   align-items:center;
   justify-content:center;
   box-shadow:0 4px 12px rgba(0,0,0,0.3),0 2px 4px rgba(0,0,0,0.2);
-  bottom:calc(20px + env(safe-area-inset-bottom, 0px));
-  right:calc(20px + env(safe-area-inset-right, 0px));
   transition:background-color 0.2s ease,box-shadow 0.2s ease;
   -webkit-tap-highlight-color:transparent;
   will-change:auto;
@@ -265,20 +262,61 @@ html.light #inventory {
   box-shadow:0 6px 20px rgba(37,211,102,0.4),0 2px 6px rgba(0,0,0,0.2);
 }
 .wa-float svg{width:28px;height:28px;fill:#ffffff;flex-shrink:0}
-@media(min-width:640px){
-  .wa-float{width:60px;height:60px;bottom:calc(24px + env(safe-area-inset-bottom, 0px));right:calc(24px + env(safe-area-inset-right, 0px))}
-  .wa-float svg{width:32px;height:32px}
+
+/* Desktop: always visible */
+.wa-float-desktop {
+  display:flex;
+  bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+  right:calc(20px + env(safe-area-inset-right, 0px));
+  animation:waPulse 2.5s ease-in-out infinite;
 }
 @media(min-width:640px){
-  .wa-float{width:60px;height:60px;bottom:calc(24px + env(safe-area-inset-bottom, 0px));right:calc(24px + env(safe-area-inset-right, 0px))}
-  .wa-float svg{width:32px;height:32px}
+  .wa-float-desktop{width:60px;height:60px;bottom:calc(24px + env(safe-area-inset-bottom, 0px));right:calc(24px + env(safe-area-inset-right, 0px))}
+  .wa-float-desktop svg{width:32px;height:32px}
 }
+@media(min-width:1024px){
+  .wa-float-desktop{display:flex}
+}
+
+/* Mobile: hidden on desktop, shown when scrolled */
+.wa-float-scrolled {
+  display:flex;
+  bottom:calc(76px + env(safe-area-inset-bottom, 0px));
+  right:calc(16px + env(safe-area-inset-right, 0px));
+  animation:waPulse 2.5s ease-in-out infinite;
+}
+@media(min-width:640px){
+  .wa-float-scrolled{width:56px;height:56px;bottom:calc(84px + env(safe-area-inset-bottom, 0px))}
+  .wa-float-scrolled svg{width:28px;height:28px}
+}
+@media(min-width:1024px){
+  .wa-float-scrolled{display:none}
+}
+
 @keyframes waPulse{
   0%{box-shadow:0 4px 12px rgba(0,0,0,0.3),0 0 0 0 rgba(37,211,102,0.5)}
   70%{box-shadow:0 4px 12px rgba(0,0,0,0.3),0 0 0 14px rgba(37,211,102,0)}
   100%{box-shadow:0 4px 12px rgba(0,0,0,0.3),0 0 0 0 rgba(37,211,102,0)}
 }
-.wa-float{animation:waPulse 2.5s ease-in-out infinite}
+
+/* WhatsApp link inside bottom nav (visible at top on mobile) */
+.wa-nav-link {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px !important;
+  flex: 0 0 auto !important;
+  min-width: 36px !important;
+  color: #25D366 !important;
+}
+.wa-nav-link:hover {
+  color: #25D366 !important;
+  background: rgba(37,211,102,0.08) !important;
+}
+.wa-nav-link.active {
+  color: #25D366 !important;
+}
+
 
 .t-hero-grad{background:transparent}
 .t-hero-side{background:transparent}
@@ -652,17 +690,18 @@ html.light .liquid-glass-nav-btn:hover {
   background: #ef4444 !important;
 }
 
+.call-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 @media (min-width: 640px) {
   .call-btn {
     width: auto;
     height: 34px;
     padding: 0 14px;
     gap: 6px;
-  }
-  .call-btn svg {
-    width: 14px;
-    height: 14px;
-    flex-shrink: 0;
   }
   .call-label { display: inline; font-size: 12px; font-weight: 600; letter-spacing: 0.01em; }
 }
@@ -785,25 +824,22 @@ html.light .mob-link:hover {
   left: 0;
   right: 0;
   z-index: 50;
-  height: 64px;
-  background: rgba(13,13,17,0.82);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border-top: 0.5px solid rgba(255,255,255,0.08);
-  box-shadow:
-    inset 0 0 0 0.5px rgba(255,255,255,0.03),
-    0 -4px 24px rgba(0,0,0,0.20);
+  padding: 8px;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   align-items: center;
   justify-content: center;
-  padding: 0 8px;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  pointer-events: none;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 html.light .nav-bottom {
-  background: rgba(245,244,242,0.88);
-  border-top: 0.5px solid rgba(0,0,0,0.06);
-  box-shadow:
-    0 -4px 24px rgba(0,0,0,0.05);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 @media (min-width: 1024px) {
@@ -814,8 +850,8 @@ html.light .nav-bottom {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2px;
-  flex-shrink: 0;
   padding: 3px;
   border-radius: 100px;
   background: rgba(255,255,255,0.04);
@@ -824,10 +860,10 @@ html.light .nav-bottom {
   border: 0.5px solid rgba(255,255,255,0.06);
   box-shadow:
     inset 0 0 0 0.5px rgba(255,255,255,0.04);
-  max-width: calc(100vw - 24px);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  width: 100%;
+  max-width: 500px;
+  pointer-events: auto;
+  overflow: hidden;
 }
 
 .nav-bottom-inner::-webkit-scrollbar { display: none; }
@@ -839,18 +875,22 @@ html.light .nav-bottom-inner {
 
 .nav-bottom-link {
   text-decoration: none;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--text-3);
-  padding: 6px 14px;
+  padding: 6px 8px;
   border-radius: 100px;
   transition: color 0.25s ease, transform 0.25s ease;
   white-space: nowrap;
   position: relative;
   z-index: 2;
   text-shadow: 0 1px 4px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.2);
-  flex-shrink: 0;
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 html.light .nav-bottom-link {
