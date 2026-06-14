@@ -8,7 +8,10 @@ const Navbar = ({ toggleTheme, theme }) => {
   const [activeSection, setActiveSection] = useState('home');
   const [pillPos, setPillPos] = useState({ x: 0, w: 0 });
   const [pillScale, setPillScale] = useState(1);
+  const [bottomPillPos, setBottomPillPos] = useState({ x: 0, w: 0 });
+  const [bottomPillScale, setBottomPillScale] = useState(1);
   const linkRefs = useRef({});
+  const bottomLinkRefs = useRef({});
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -36,7 +39,11 @@ const Navbar = ({ toggleTheme, theme }) => {
 
   useEffect(() => {
     setPillScale(1.08);
-    const t = setTimeout(() => setPillScale(1), 120);
+    setBottomPillScale(1.08);
+    const t = setTimeout(() => {
+      setPillScale(1);
+      setBottomPillScale(1);
+    }, 120);
     return () => clearTimeout(t);
   }, [activeSection]);
 
@@ -54,6 +61,19 @@ const Navbar = ({ toggleTheme, theme }) => {
 
   useEffect(() => { updatePill(); }, [updatePill]);
   useEffect(() => { window.addEventListener('resize', updatePill); return () => window.removeEventListener('resize', updatePill); }, [updatePill]);
+
+  const updateBottomPill = useCallback(() => {
+    const el = bottomLinkRefs.current[activeSection];
+    if (el) {
+      setBottomPillPos({
+        x: el.offsetLeft,
+        w: el.offsetWidth,
+      });
+    }
+  }, [activeSection]);
+
+  useEffect(() => { updateBottomPill(); }, [updateBottomPill]);
+  useEffect(() => { window.addEventListener('resize', updateBottomPill); return () => window.removeEventListener('resize', updateBottomPill); }, [updateBottomPill]);
 
   return (
     <>
@@ -149,6 +169,41 @@ const Navbar = ({ toggleTheme, theme }) => {
           </motion.button>
         </div>
       </div>
+
+      {/* Mobile Bottom Nav */}
+      <div className="nav-bottom">
+        <div className="nav-bottom-inner">
+          {navLinks.map((link) => {
+            const sectionId = link === 'Home' ? 'home' : link.toLowerCase();
+            return (
+              <a
+                key={link}
+                ref={(el) => { bottomLinkRefs.current[sectionId] = el; }}
+                href={`#${link.toLowerCase()}`}
+                className={`nav-bottom-link ${activeSection === sectionId ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+                  window.history.pushState(null, '', `#${link.toLowerCase()}`);
+                  setMobMenuOpen(false);
+                }}
+              >
+                {link}
+              </a>
+            );
+          })}
+          <motion.div
+            className="nav-bottom-pill"
+            animate={{ x: bottomPillPos.x, width: bottomPillPos.w, scale: bottomPillScale }}
+            transition={{
+              x: { type: "spring", stiffness: 280, damping: 24, mass: 0.6 },
+              width: { type: "spring", stiffness: 280, damping: 24, mass: 0.6 },
+              scale: { type: "spring", stiffness: 400, damping: 10 },
+            }}
+          />
+        </div>
+      </div>
+
       <AnimatePresence>
         {mobMenuOpen && (
           <motion.div
