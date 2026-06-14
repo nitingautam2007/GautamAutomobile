@@ -640,17 +640,16 @@ html.light .nav-logo:hover {
   flex-shrink: 0;
   padding: 3px;
   border-radius: 100px;
-  background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 0.5px solid rgba(255,255,255,0.06);
-  box-shadow:
-    inset 0 0 0 0.5px rgba(255,255,255,0.04);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
 }
 
 html.light .liquid-glass-nav-links {
-  background: rgba(0,0,0,0.03);
-  border: 0.5px solid rgba(0,0,0,0.04);
+  background: transparent;
+  border: none;
 }
 
 .nav-link {
