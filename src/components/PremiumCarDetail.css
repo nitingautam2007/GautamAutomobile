@@ -1,4 +1,15 @@
 /* PremiumCarDetail.css */
+
+/* ── Animation Timing (synced with index.css) ── */
+:root {
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.2s;
+  --dur-normal: 0.3s;
+  --dur-slow: 0.5s;
+}
+
 :root {
   --bg-dark: #050507;
   --bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #1a1a20 100%);
@@ -61,7 +72,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.3s ease;
+  transition: all var(--dur-normal) var(--ease-smooth);
   font-size: 0.85rem;
   white-space: nowrap;
   max-width: 180px;
@@ -116,27 +127,66 @@
   gap: 1rem;
 }
 
+/* --- UPDATED TAB BUTTONS (LIQUID GLASS PILL) --- */
 .tab-btn {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  --gbl: 1;
+  --gbd: 1;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 0.5px solid rgba(255,255,255,0.06);
   color: var(--text-muted);
   padding: 0.8rem 2rem;
-  border-radius: 12px;
+  border-radius: 100px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all var(--dur-normal) var(--ease-smooth);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 0.85rem;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, white calc(var(--gbl) * 6%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 50%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 40%), transparent),
+    0 1px 2px rgba(0,0,0,0.06);
+}
+
+.tab-btn:hover {
+  background: rgba(255,255,255,0.08);
+  color: var(--text-main);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, white calc(var(--gbl) * 12%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 65%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 50%), transparent),
+    inset 0px -4px 1px -3px color-mix(in srgb, white calc(var(--gbl) * 35%), transparent),
+    inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 8%), transparent),
+    inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 6%), transparent),
+    0 1px 3px rgba(0,0,0,0.10),
+    0 4px 12px rgba(0,0,0,0.08);
 }
 
 .tab-btn.active {
-  background: rgba(220, 38, 38, 0.15);
-  border-color: var(--primary-red);
+  --gbl: 1;
+  --gbd: 1;
+  background: rgba(220, 38, 38, 0.12);
+  border: 0.5px solid rgba(220, 38, 38, 0.5);
   color: var(--text-main);
-  box-shadow: 0 0 15px var(--primary-red-glow);
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, rgba(220,38,38,0.8) calc(var(--gbl) * 12%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, rgba(220,38,38,0.9) calc(var(--gbl) * 65%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, rgba(220,38,38,0.7) calc(var(--gbl) * 50%), transparent),
+    inset 0px -4px 1px -3px color-mix(in srgb, rgba(220,38,38,0.5) calc(var(--gbl) * 35%), transparent),
+    inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 8%), transparent),
+    inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 6%), transparent),
+    0 1px 3px rgba(0,0,0,0.10),
+    0 4px 12px rgba(220,38,38,0.15);
 }
 
 .main-image-wrapper {
@@ -160,7 +210,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform var(--dur-slow) var(--ease-out-expo);
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .main-image-wrapper:hover .main-car-img {
@@ -181,9 +233,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
+  transition: all var(--dur-normal) var(--ease-smooth);
   z-index: 2;
   backdrop-filter: blur(4px);
+  will-change: transform, background;
 }
 
 .nav-arrow:hover {
@@ -223,7 +276,8 @@
   cursor: pointer;
   border: 2px solid transparent;
   opacity: 0.6;
-  transition: all 0.3s;
+  transition: all var(--dur-normal) var(--ease-smooth);
+  will-change: transform, opacity;
 }
 
 .thumb img {
@@ -256,6 +310,8 @@
   position: sticky;
   top: 2rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .car-header {
@@ -314,16 +370,47 @@
   letter-spacing: 0.5px;
 }
 
-/* --- UPDATED PRICE SECTION (GREEN) --- */
+/* --- UPDATED PRICE SECTION (GREEN LIQUID GLASS) --- */
 .price-section {
+  --gbl: 1;
+  --gbd: 1;
   text-align: center;
-  /* Green gradient background */
-  background: linear-gradient(180deg, var(--price-green-bg) 0%, transparent 100%);
+  background: rgba(34, 197, 94, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   padding: 2rem;
   border-radius: 16px;
-  /* Green border */
-  border: 1px solid var(--price-green-border);
+  border: 0.5px solid rgba(34, 197, 94, 0.3);
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, rgba(34,197,94,0.6) calc(var(--gbl) * 12%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, rgba(34,197,94,0.7) calc(var(--gbl) * 65%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, rgba(34,197,94,0.5) calc(var(--gbl) * 50%), transparent),
+    inset 0px -4px 1px -3px color-mix(in srgb, rgba(34,197,94,0.4) calc(var(--gbl) * 35%), transparent),
+    inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 8%), transparent),
+    inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 6%), transparent),
+    0 1px 3px rgba(0,0,0,0.10),
+    0 4px 12px rgba(0,0,0,0.08),
+    0 8px 24px rgba(34,197,94,0.10);
   margin-bottom: 2rem;
+  transition: box-shadow var(--dur-normal) var(--ease-smooth), border-color var(--dur-normal) var(--ease-smooth);
+}
+
+.price-section:hover {
+  border-color: rgba(34, 197, 94, 0.5);
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, rgba(34,197,94,0.6) calc(var(--gbl) * 18%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, rgba(34,197,94,0.7) calc(var(--gbl) * 80%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, rgba(34,197,94,0.5) calc(var(--gbl) * 65%), transparent),
+    inset 0px -4px 1px -3px color-mix(in srgb, rgba(34,197,94,0.4) calc(var(--gbl) * 45%), transparent),
+    inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 10%), transparent),
+    inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 15%), transparent),
+    inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 15%), transparent),
+    inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 8%), transparent),
+    0 2px 6px rgba(0,0,0,0.12),
+    0 8px 20px rgba(0,0,0,0.12),
+    0 16px 40px rgba(34,197,94,0.15);
 }
 
 .price-label {
@@ -366,10 +453,11 @@
   font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all var(--dur-normal) var(--ease-smooth);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 15px var(--primary-red-glow);
+  will-change: transform, box-shadow;
 }
 
 .btn-primary:hover {
@@ -393,8 +481,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all var(--dur-normal) var(--ease-smooth);
   color: white;
+  will-change: transform;
 }
 
 .btn-whatsapp {
@@ -421,13 +510,13 @@
 
 /* Animations */
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-30px); }
-  to { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; transform: translateX(-30px) translateZ(0); }
+  to { opacity: 1; transform: translateX(0) translateZ(0); }
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(30px); }
-  to { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; transform: translateX(30px) translateZ(0); }
+  to { opacity: 1; transform: translateX(0) translateZ(0); }
 }
 
 .loading-screen {
@@ -745,6 +834,6 @@
 }
 
 @keyframes zoomIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: scale(0.95) translateZ(0); }
+  to { opacity: 1; transform: scale(1) translateZ(0); }
 }

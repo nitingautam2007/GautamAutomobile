@@ -13,6 +13,22 @@ const Navbar = ({ toggleTheme, theme }) => {
   const [bottomPillScale, setBottomPillScale] = useState(1);
   const linkRefs = useRef({});
   const bottomLinkRefs = useRef({});
+  const menuBtnRef = useRef(null);
+  const mobMenuRef = useRef(null);
+
+  useEffect(() => {
+    if (!mobMenuOpen) return;
+    const handleClickOutside = (e) => {
+      if (
+        mobMenuRef.current && !mobMenuRef.current.contains(e.target) &&
+        menuBtnRef.current && !menuBtnRef.current.contains(e.target)
+      ) {
+        setMobMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [mobMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -164,6 +180,7 @@ const Navbar = ({ toggleTheme, theme }) => {
             <span className="call-label">Call</span>
           </a>
           <motion.button
+            ref={menuBtnRef}
             className="liquid-glass-nav-btn menu-btn"
             onClick={() => setMobMenuOpen(!mobMenuOpen)}
             title="Menu"
@@ -248,6 +265,7 @@ const Navbar = ({ toggleTheme, theme }) => {
       <AnimatePresence>
         {mobMenuOpen && (
           <motion.div
+            ref={mobMenuRef}
             initial={{ opacity: 0, y: -12, scaleY: 0.96 }}
             animate={{ opacity: 1, y: 0, scaleY: 1 }}
             exit={{ opacity: 0, y: -12, scaleY: 0.96 }}

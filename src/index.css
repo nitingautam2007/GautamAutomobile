@@ -4,6 +4,65 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════════════════════════════
+   Global Animation Utilities — Buttery Smooth for PC & Mobile
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Animation Timing Hierarchy ── */
+:root {
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 0.15s;
+  --dur-fast: 0.2s;
+  --dur-normal: 0.3s;
+  --dur-slow: 0.5s;
+}
+
+/* ── GPU Acceleration Hints ── */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* ── Smooth scroll for the whole page ── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Mobile-safe blur reduction ── */
+@media (max-width: 768px) {
+  .glass-mob-panel,
+  .mob-menu-liquid {
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+  }
+  
+  .nav-bottom-inner {
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+  }
+  
+  .liquid-glass-nav-links {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+}
+
+/* ── Reduced Motion Support ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 
 :root {
   --bg: #09090b; --bg-alt: #18181b; --bg-card: rgba(39,39,42,0.5); --bg-card2: rgba(24,24,27,0.5);
@@ -62,7 +121,10 @@ html.light .t-bg-alt{background:rgba(235,234,232,0.5);backdrop-filter:blur(12px)
 .liquid-glass-card {
   --glass-reflex-light: 1;
   --glass-reflex-dark: 1;
-  transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform var(--dur-slow) var(--ease-out-expo);
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 .liquid-glass-card-lens {
   background: rgba(18,18,22,0.55);
@@ -80,9 +142,9 @@ html.light .t-bg-alt{background:rgba(235,234,232,0.5);backdrop-filter:blur(12px)
     0 8px 24px rgba(0,0,0,0.20),
     0 24px 48px rgba(0,0,0,0.16);
   transition:
-    box-shadow 0.55s cubic-bezier(0.25, 1, 0.5, 1),
-    border-color 0.4s ease,
-    background-color 0.4s ease;
+    box-shadow var(--dur-slow) var(--ease-out-expo),
+    border-color var(--dur-normal) var(--ease-smooth),
+    background-color var(--dur-normal) var(--ease-smooth);
 }
 .liquid-glass-card:hover {
   transform: translateY(-6px) scale(1.015);
@@ -148,7 +210,7 @@ html.light .liquid-glass-card:hover .liquid-glass-card-lens {
   -webkit-backdrop-filter: blur(12px);
   border: 0.5px solid rgba(255,255,255,0.12);
   border-radius: 100px;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: background var(--dur-normal) var(--ease-smooth), border-color var(--dur-normal) var(--ease-smooth);
 }
 .ios-pill:hover {
   background: rgba(255,255,255,0.14);
@@ -169,27 +231,65 @@ html.light .ios-divider {
   border-top: 0.5px solid rgba(0,0,0,0.06);
 }
 
-/* ── iOS-style detail button ── */
+/* ── iOS-style detail button (LIQUID GLASS PILL) ── */
 .ios-detail-btn {
-  background: rgba(220,38,38,0.12);
-  color: #ef4444;
-  border: none;
-  border-radius: 12px;
+  --gbl: 1;
+  --gbd: 1;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 0.5px solid rgba(255,255,255,0.10);
+  border-radius: 100px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: background 0.3s ease, transform 0.2s ease;
+  color: var(--text-1);
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--dur-normal) var(--ease-smooth);
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, white calc(var(--gbl) * 12%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 65%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 50%), transparent),
+    inset 0px -4px 1px -3px color-mix(in srgb, white calc(var(--gbl) * 35%), transparent),
+    inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 8%), transparent),
+    inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+    inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 6%), transparent),
+    0 1px 3px rgba(0,0,0,0.10),
+    0 4px 12px rgba(0,0,0,0.08);
 }
 .ios-detail-btn:hover {
-  background: rgba(220,38,38,0.22);
-  transform: scale(1.04);
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.18);
+  transform: scale(1.03);
+  box-shadow:
+    inset 0 0 0 0.5px color-mix(in srgb, white calc(var(--gbl) * 18%), transparent),
+    inset 0.5px 1px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 80%), transparent),
+    inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 65%), transparent),
+    inset 0px -4px 1px -3px color-mix(in srgb, white calc(var(--gbl) * 45%), transparent),
+    inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 10%), transparent),
+    inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 15%), transparent),
+    inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 15%), transparent),
+    inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 8%), transparent),
+    0 2px 6px rgba(0,0,0,0.12),
+    0 8px 20px rgba(0,0,0,0.12);
 }
+.ios-detail-btn:active {
+  transform: scale(0.96);
+}
+
 html.light .ios-detail-btn {
-  background: rgba(220,38,38,0.10);
+  background: rgba(0,0,0,0.04);
+  border: 0.5px solid rgba(0,0,0,0.08);
 }
 html.light .ios-detail-btn:hover {
-  background: rgba(220,38,38,0.18);
+  background: rgba(0,0,0,0.08);
+  border-color: rgba(0,0,0,0.12);
 }
 
 /* ── Wishlist frosted circle ── */
@@ -198,7 +298,7 @@ html.light .ios-detail-btn:hover {
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border: 0.5px solid rgba(255,255,255,0.15);
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background var(--dur-normal) var(--ease-smooth), transform var(--dur-fast) var(--ease-spring);
 }
 .ios-heart-btn:hover {
   background: rgba(0,0,0,0.4);
@@ -252,7 +352,7 @@ html.light #inventory {
   align-items:center;
   justify-content:center;
   box-shadow:0 4px 12px rgba(0,0,0,0.3),0 2px 4px rgba(0,0,0,0.2);
-  transition:background-color 0.2s ease,box-shadow 0.2s ease;
+  transition:background-color var(--dur-fast) var(--ease-smooth),box-shadow var(--dur-fast) var(--ease-smooth);
   -webkit-tap-highlight-color:transparent;
   will-change:auto;
   contain:layout style;
@@ -340,7 +440,7 @@ body, nav, .nav-bar, .t-bg, .t-bg-alt, .t-card, .t-input, .t-sub, .theme-btn, .c
 @keyframes float{0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}}
 .float-anim{animation:float 3s ease-in-out infinite}
 .car-card:hover .car-img{filter:grayscale(0)!important;transform:scale(1.05)}
-.car-card .car-img{filter:grayscale(40%);transition:all 700ms ease}
+.car-card .car-img{filter:grayscale(40%);transition:filter var(--dur-slow) var(--ease-smooth), transform var(--dur-slow) var(--ease-out-expo)}
 .toast{animation:slideInR 0.4s ease-out forwards}
 @keyframes slideInR{from{opacity:0;transform:translateX(100px)} to{opacity:1;transform:translateX(0)}}
 @keyframes fadeOut{from{opacity:1} to{opacity:0;transform:translateY(-20px)}}
@@ -371,11 +471,12 @@ html.light .theme-icon-moon{display:block}
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: none;
+  will-change: height, background, box-shadow;
   transition:
-    height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-    box-shadow 0.55s cubic-bezier(0.25, 1, 0.5, 1),
-    border-color 0.4s ease,
-    background-color 0.4s ease;
+    height var(--dur-normal) var(--ease-out-expo),
+    box-shadow var(--dur-slow) var(--ease-out-expo),
+    border-color var(--dur-normal) var(--ease-smooth),
+    background-color var(--dur-normal) var(--ease-smooth);
 }
 
 @media (min-width: 640px) {
@@ -456,7 +557,8 @@ html.light .liquid-glass-nav.scrolled {
   object-fit: cover;
   border: 0.5px solid rgba(255,255,255,0.14);
   cursor: zoom-in;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--dur-normal) var(--ease-spring), box-shadow var(--dur-normal) var(--ease-smooth);
+  will-change: transform;
 }
 
 .nav-logo-img:hover {
@@ -509,11 +611,12 @@ html.light .liquid-glass-nav-links {
   color: var(--text-3);
   padding: 6px 14px;
   border-radius: 100px;
-  transition: color 0.25s ease, transform 0.25s ease;
+  transition: color var(--dur-fast) var(--ease-smooth), transform var(--dur-fast) var(--ease-spring);
   white-space: nowrap;
   text-shadow: 0 1px 4px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.2);
   position: relative;
   z-index: 2;
+  will-change: transform;
 }
 
 html.light .nav-link {
@@ -587,9 +690,10 @@ html.light .nav-link.active::after {
     inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 6%), transparent),
     0 1px 3px rgba(0,0,0,0.10),
     0 4px 12px rgba(0,0,0,0.08);
+  will-change: box-shadow, border-color;
   transition:
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+    box-shadow var(--dur-normal) var(--ease-smooth),
+    border-color var(--dur-normal) var(--ease-smooth);
 }
 
 html.light .nav-pill {
@@ -777,7 +881,7 @@ html.light .glass-mob-panel {
   color: var(--text-2);
   text-decoration: none;
   border-radius: 12px;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background var(--dur-fast) var(--ease-smooth), color var(--dur-fast) var(--ease-smooth);
 }
 
 .mob-link:hover {
@@ -787,6 +891,43 @@ html.light .glass-mob-panel {
 
 html.light .mob-link:hover {
   background: rgba(0,0,0,0.04);
+}
+
+/* Pill hover effect on PC only */
+@media (min-width: 1024px) {
+  .mob-link:hover {
+    --gbl: 1;
+    --gbd: 1;
+    background: rgba(255,255,255,0.08);
+    border: 0.5px solid rgba(255,255,255,0.12);
+    box-shadow:
+      inset 0 0 0 0.5px color-mix(in srgb, white calc(var(--gbl) * 12%), transparent),
+      inset 0.5px 1px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 65%), transparent),
+      inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 50%), transparent),
+      inset 0px -4px 1px -3px color-mix(in srgb, white calc(var(--gbl) * 35%), transparent),
+      inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 8%), transparent),
+      inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+      inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 12%), transparent),
+      inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 6%), transparent),
+      0 1px 3px rgba(0,0,0,0.10),
+      0 4px 12px rgba(0,0,0,0.08);
+    color: #ffffff;
+  }
+  html.light .mob-link:hover {
+    background: rgba(0,0,0,0.06);
+    border: 0.5px solid rgba(0,0,0,0.08);
+    box-shadow:
+      inset 0 0 0 0.5px color-mix(in srgb, white calc(var(--gbl) * 50%), transparent),
+      inset 0.5px 1px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 85%), transparent),
+      inset -0.5px -0.5px 0px -0.5px color-mix(in srgb, white calc(var(--gbl) * 70%), transparent),
+      inset 0px -4px 1px -3px color-mix(in srgb, white calc(var(--gbl) * 55%), transparent),
+      inset -0.3px -1px 3px 0px color-mix(in srgb, black calc(var(--gbd) * 4%), transparent),
+      inset -1px 0px 0px -0.5px color-mix(in srgb, black calc(var(--gbd) * 5%), transparent),
+      inset 0px 2px 3px -1px color-mix(in srgb, black calc(var(--gbd) * 5%), transparent),
+      inset 1px -3px 1px -2px color-mix(in srgb, black calc(var(--gbd) * 2%), transparent),
+      0 1px 2px rgba(0,0,0,0.04);
+    color: #27272a;
+  }
 }
 
 .mob-call {
@@ -800,7 +941,7 @@ html.light .mob-link:hover {
   text-decoration: none;
   border-radius: 12px;
   text-align: center;
-  transition: background 0.2s ease;
+  transition: background var(--dur-fast) var(--ease-smooth);
 }
 
 .mob-call:hover {
@@ -888,7 +1029,7 @@ html.light .nav-bottom-inner {
   color: var(--text-3);
   padding: 10px 20px;
   border-radius: 100px;
-  transition: color 0.25s ease, transform 0.25s ease;
+  transition: color var(--dur-fast) var(--ease-smooth), transform var(--dur-fast) var(--ease-spring);
   white-space: nowrap;
   position: relative;
   z-index: 2;
@@ -898,6 +1039,7 @@ html.light .nav-bottom-inner {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  will-change: transform;
 }
 
 html.light .nav-bottom-link {
@@ -980,7 +1122,7 @@ html.light .t-glass {
   object-fit: cover;
   opacity: 1;
   filter: brightness(75%) contrast(115%);
-  transition: opacity 0.5s ease, filter 0.5s ease;
+  transition: opacity var(--dur-slow) var(--ease-smooth), filter var(--dur-slow) var(--ease-smooth);
 }
 html.light .hero-bg-img {
   opacity: 1;

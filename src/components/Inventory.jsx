@@ -187,7 +187,7 @@ const Inventory = ({ cars, showToast }) => {
                       <span className={`${isSold ? 'text-gray-400' : 'text-[#22c55e]'} font-bold text-lg sm:text-xl`}>
                         {isSold ? 'SOLD' : car.price}
                       </span>
-                      <button className={`ios-detail-btn px-5 py-2 sm:px-4 sm:py-1.5 text-sm sm:text-xs flex items-center gap-2 ${isSold ? 'opacity-40 cursor-not-allowed' : ''}`}>
+                      <button className={`ios-detail-btn flex items-center gap-2 ${isSold ? 'opacity-40 cursor-not-allowed' : ''}`}>
                         {isSold ? 'Unavailable' : 'Details'} {!isSold && <iconify-icon icon="lucide:arrow-right" width="14"></iconify-icon>}
                       </button>
                     </div>
