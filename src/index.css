@@ -670,7 +670,7 @@ html.light .liquid-glass-nav-links {
 }
 
 html.light .nav-link {
-  text-shadow: 0 0.5px 2px rgba(255,255,255,0.6), 0 0.5px 1px rgba(255,255,255,0.4);
+  text-shadow: none;
 }
 
 .nav-link:hover {
@@ -1094,30 +1094,48 @@ html.light .hero-glass-card {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
 }
 
-/* Overrides for text over dark hero image in light mode */
-#home .brand-tag,
-#home .t2,
-#home .t3,
-#home .brand-sub {
-  color: #ffffff !important;
-}
-
-/* Force dark-themed navbar when at the top (over the hero image) */
+/* Navbar at-top (over hero) — theme-aware */
 .liquid-glass-nav.at-top .nav-link {
-  color: rgba(255,255,255,0.85) !important;
+  color: var(--text-3);
 }
 .liquid-glass-nav.at-top .nav-link:hover {
-  color: #ffffff !important;
+  color: var(--text-1);
 }
 .liquid-glass-nav.at-top .nav-link.active {
-  color: #ffffff !important;
+  color: var(--text-1);
 }
 .liquid-glass-nav.at-top .brand-sub {
-  color: rgba(255,255,255,0.6) !important;
+  color: var(--text-3);
 }
 .liquid-glass-nav.at-top .menu-btn,
 .liquid-glass-nav.at-top .theme-btn {
-  color: #ffffff !important;
-  background: rgba(255,255,255,0.10) !important;
-  border-color: rgba(255,255,255,0.15) !important;
+  color: var(--text-1);
+  background: var(--bg-input);
+  border-color: var(--bdr);
+}
+
+/* ══════════════════════════════════════════════════════════
+   3D Canvas Styles
+   ══════════════════════════════════════════════════════════ */
+
+#home canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#home canvas:focus {
+  outline: none;
+}
+
+/* Loading spinner for 3D canvas */
+@keyframes spin3d {
+  to { transform: rotate(360deg); }
+}
+
+#home .animate-spin {
+  animation: spin3d 1s linear infinite;
 }

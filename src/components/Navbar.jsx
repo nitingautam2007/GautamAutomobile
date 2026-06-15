@@ -46,7 +46,7 @@ const Navbar = ({ toggleTheme, theme }) => {
         ([entry]) => {
           if (entry.isIntersecting) setActiveSection(id);
         },
-        { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+        { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
       );
       observer.observe(el);
       observers.push(observer);
@@ -76,6 +76,10 @@ const Navbar = ({ toggleTheme, theme }) => {
   }, [activeSection]);
 
   useEffect(() => { updatePill(); }, [updatePill]);
+  useEffect(() => {
+    const t = setTimeout(updatePill, 50);
+    return () => clearTimeout(t);
+  }, []);
   useEffect(() => { window.addEventListener('resize', updatePill); return () => window.removeEventListener('resize', updatePill); }, [updatePill]);
 
   const updateBottomPill = useCallback(() => {
