@@ -162,13 +162,13 @@ const Hero = ({ theme = 'light' }) => {
               </div>
             </motion.div>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons - Desktop only */}
             <motion.div
               variants={fadeInUp}
               initial="hidden"
               animate="visible"
               custom={5}
-              className="flex flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-4 max-w-lg mx-auto lg:mx-0"
+              className="hidden sm:flex flex-row items-center justify-start gap-4 max-w-lg mx-auto lg:mx-0"
             >
               <button
                 className="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-semibold px-6 sm:px-8 py-3 sm:py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wider shadow-md hover:shadow-lg"
