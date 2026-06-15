@@ -87,7 +87,7 @@ const Hero = ({ theme = 'light' }) => {
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center sm:min-h-screen py-16 sm:py-20 lg:py-24">
 
           {/* ── Text Content ── */}
-          <div className="flex flex-col gap-4 sm:gap-6 text-center lg:text-left order-2 sm:order-none">
+          <div className="flex flex-col gap-4 sm:gap-6 text-center lg:text-left order-2 sm:order-none pt-6 sm:pt-0">
             <motion.div variants={fadeInUp} initial="hidden" animate="visible" custom={0} className="hidden sm:block">
               <span
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[11px] sm:text-xs uppercase tracking-widest font-semibold"
