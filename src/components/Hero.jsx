@@ -84,11 +84,11 @@ const Hero = ({ theme = 'light' }) => {
       />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center min-h-[calc(100vh-80px)] sm:min-h-screen py-14 sm:py-20 lg:py-24">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center min-h-[calc(100vh-80px)] sm:min-h-screen py-14 sm:py-20 lg:py-24">
 
-          {/* ── Left: Text Content ── */}
-          <div className="flex flex-col gap-4 sm:gap-6 text-center lg:text-left">
-            <motion.div variants={fadeInUp} initial="hidden" animate="visible" custom={0}>
+          {/* ── Text Content ── */}
+          <div className="flex flex-col gap-4 sm:gap-6 text-center lg:text-left order-2 sm:order-none">
+            <motion.div variants={fadeInUp} initial="hidden" animate="visible" custom={0} className="hidden sm:block">
               <span
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[11px] sm:text-xs uppercase tracking-widest font-semibold"
                 style={{ borderColor: 'var(--red-bdr)', background: 'var(--red-bg)', color: '#dc2626' }}
@@ -97,7 +97,7 @@ const Hero = ({ theme = 'light' }) => {
               </span>
             </motion.div>
 
-            <motion.div variants={fadeInUp} initial="hidden" animate="visible" custom={1}>
+            <motion.div variants={fadeInUp} initial="hidden" animate="visible" custom={1} className="hidden sm:block">
               <h1 className="brand-name text-4xl sm:text-5xl lg:text-6xl brand-glow">
                 GAUTAM
               </h1>
@@ -191,12 +191,12 @@ const Hero = ({ theme = 'light' }) => {
             </motion.div>
           </div>
 
-          {/* ── Right: Car Showcase Image ── */}
+          {/* ── Car Showcase Image ── */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative flex items-center justify-center"
+            className="relative flex items-center justify-center order-1 sm:order-none"
           >
             {/* Background circle */}
             <div
