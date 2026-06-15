@@ -200,18 +200,18 @@ const Hero = ({ theme = 'light' }) => {
           >
             {/* Background circle */}
             <div
-              className="absolute w-[220px] h-[220px] sm:w-[380px] sm:h-[380px] lg:w-[450px] lg:h-[450px] rounded-full"
+              className="absolute w-[240px] h-[240px] sm:w-[380px] sm:h-[380px] lg:w-[450px] lg:h-[450px] rounded-full"
               style={{ background: 'linear-gradient(to bottom right, var(--bg-card), var(--bg-card2))' }}
             />
 
             {/* Red ring */}
             <div
-              className="absolute w-[240px] h-[240px] sm:w-[400px] sm:h-[400px] lg:w-[470px] lg:h-[470px] rounded-full border opacity-60"
+              className="absolute w-[260px] h-[260px] sm:w-[400px] sm:h-[400px] lg:w-[470px] lg:h-[470px] rounded-full border opacity-60"
               style={{ borderColor: 'var(--bdr)' }}
             />
 
             {/* Car image carousel */}
-            <div className="relative z-10 w-[260px] sm:w-[340px] lg:w-[420px] h-[200px] sm:h-[260px] lg:h-[320px] overflow-hidden">
+            <div className="relative z-10 w-[260px] sm:w-[340px] lg:w-[420px] h-[240px] sm:h-[260px] lg:h-[320px] overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentCarIndex}
