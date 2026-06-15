@@ -84,7 +84,7 @@ const Hero = ({ theme = 'light' }) => {
       />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center min-h-[calc(100vh-80px)] sm:min-h-screen py-14 sm:py-20 lg:py-24">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center sm:min-h-screen py-16 sm:py-20 lg:py-24">
 
           {/* ── Text Content ── */}
           <div className="flex flex-col gap-4 sm:gap-6 text-center lg:text-left order-2 sm:order-none">
