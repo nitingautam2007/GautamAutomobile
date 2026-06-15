@@ -101,7 +101,7 @@ const Hero = ({ theme = 'light' }) => {
               <h1 className="brand-name text-4xl sm:text-5xl lg:text-6xl brand-glow">
                 GAUTAM
               </h1>
-              <div className="brand-sub text-sm sm:text-base lg:text-lg mt-1 tracking-[0.3em]">AUTOMOBILE</div>
+              <div className="brand-sub text-sm sm:text-base lg:text-lg mt-1 tracking-[0.3em]" style={{ color: 'var(--brand-sub)' }}>AUTOMOBILE</div>
             </motion.div>
 
             <motion.p
@@ -110,6 +110,7 @@ const Hero = ({ theme = 'light' }) => {
               animate="visible"
               custom={2}
               className="brand-tag text-sm sm:text-base tracking-[0.15em] sm:tracking-[0.2em]"
+              style={{ color: 'var(--text-2)' }}
             >
               ★ REAL VALUE FOR YOUR DREAM DRIVE ★
             </motion.p>
@@ -119,7 +120,8 @@ const Hero = ({ theme = 'light' }) => {
               initial="hidden"
               animate="visible"
               custom={3}
-              className="t2 text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0"
+              className="text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0"
+              style={{ color: 'var(--text-2)' }}
             >
               Discover premium pre-owned vehicles at unbeatable prices. Every car
               inspected, certified, and ready to hit the road with confidence.
@@ -138,7 +140,7 @@ const Hero = ({ theme = 'light' }) => {
                 <div className="text-2xl sm:text-3xl font-bold text-red-600">
                   <AnimatedCounter target={50} suffix="+" />
                 </div>
-                <div className="t3 text-[10px] sm:text-xs uppercase tracking-wider font-medium mt-1">
+                <div className="text-[10px] sm:text-xs uppercase tracking-wider font-medium mt-1" style={{ color: 'var(--text-2)' }}>
                   Cars Sold
                 </div>
               </div>
@@ -146,7 +148,7 @@ const Hero = ({ theme = 'light' }) => {
                 <div className="text-2xl sm:text-3xl font-bold text-red-600">
                   <AnimatedCounter target={100} suffix="%" />
                 </div>
-                <div className="t3 text-[10px] sm:text-xs uppercase tracking-wider font-medium mt-1">
+                <div className="text-[10px] sm:text-xs uppercase tracking-wider font-medium mt-1" style={{ color: 'var(--text-2)' }}>
                   Certified
                 </div>
               </div>
@@ -154,7 +156,7 @@ const Hero = ({ theme = 'light' }) => {
                 <div className="text-2xl sm:text-3xl font-bold text-red-600">
                   <AnimatedCounter target={2025} />
                 </div>
-                <div className="t3 text-[10px] sm:text-xs uppercase tracking-wider font-medium mt-1">
+                <div className="text-[10px] sm:text-xs uppercase tracking-wider font-medium mt-1" style={{ color: 'var(--text-2)' }}>
                   Established
                 </div>
               </div>
