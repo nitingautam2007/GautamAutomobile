@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { CAR_DATA } from '../data';
+import { LiquidGlassCard } from './ui/liquid-glass-card';
 
 const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
   const [count, setCount] = useState(0);
@@ -248,38 +249,42 @@ const Hero = ({ theme = 'light' }) => {
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute top-2 sm:top-8 right-2 sm:right-0 rounded-xl shadow-lg px-2.5 py-1.5 sm:px-4 sm:py-3 flex items-center gap-1.5 sm:gap-2 z-20"
-              style={{ background: 'var(--bg-card2)', border: '1px solid var(--bdr)' }}
+              className="absolute top-2 sm:top-8 right-2 sm:right-0 z-20"
             >
-              <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)' }}>
-                <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-green-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <div>
-                <div className="t1 text-[9px] sm:text-xs font-bold text-green-700">Comfort & Value</div>
-                <div className="t3 text-[8px] sm:text-[10px]">Free Test Drive</div>
-              </div>
+              <LiquidGlassCard className="px-2.5 py-1.5 sm:px-4 sm:py-3">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)' }}>
+                    <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-green-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="t1 text-[9px] sm:text-xs font-bold text-green-700">Comfort & Value</div>
+                    <div className="t3 text-[8px] sm:text-[10px]">Free Test Drive</div>
+                  </div>
+                </div>
+              </LiquidGlassCard>
             </motion.div>
 
             {/* Trust badge */}
             <motion.div
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              className="absolute bottom-4 sm:bottom-12 left-0 sm:left-0 rounded-xl shadow-lg px-2.5 py-1.5 sm:px-4 sm:py-3 z-20"
-              style={{ background: 'var(--bg-card2)', border: '1px solid var(--bdr)' }}
+              className="absolute bottom-4 sm:bottom-12 left-0 sm:left-0 z-20"
             >
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)' }}>
-                  <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-green-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
+              <LiquidGlassCard className="px-2.5 py-1.5 sm:px-4 sm:py-3">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)' }}>
+                    <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-green-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="t1 text-[9px] sm:text-xs font-bold text-green-700">100% Certified</div>
+                    <div className="t3 text-[8px] sm:text-[10px]">Quality Assured</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="t1 text-[9px] sm:text-xs font-bold text-green-700">100% Certified</div>
-                  <div className="t3 text-[8px] sm:text-[10px]">Quality Assured</div>
-                </div>
-              </div>
+              </LiquidGlassCard>
             </motion.div>
           </motion.div>
         </div>
