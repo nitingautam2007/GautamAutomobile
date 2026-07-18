@@ -20,9 +20,12 @@ const initialFormData = {
 };
 
 const AdminPage = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [passwordInput, setPasswordInput] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [user, setUser] = useState(null);
+  const [authMode, setAuthMode] = useState('login');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
 
   const [cars, setCars] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -36,34 +39,52 @@ const AdminPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
 
-  const handlePasswordSubmit = (e) => {
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleAuth = async (e) => {
     e.preventDefault();
-    if (passwordInput === import.meta.env.VITE_ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      setPasswordError('');
-      sessionStorage.setItem('gautam-admin-auth', 'true');
-    } else {
-      setPasswordError('Incorrect password. Access denied.');
-      setPasswordInput('');
+    setAuthError('');
+    setAuthLoading(true);
+
+    try {
+      if (authMode === 'signup') {
+        const { error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+        setAuthError('');
+        setMessage('Account created! Check your email for confirmation link.');
+        setAuthMode('login');
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+      }
+    } catch (error) {
+      setAuthError(error.message);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (sessionStorage.getItem('gautam-admin-auth') === 'true') {
-      setIsAuthenticated(true);
-    }
-  }, []);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+  };
 
   const showTemporaryMessage = (msg) => {
     setMessage(msg);
-    setTimeout(() => {
-      setMessage('');
-    }, 4000);
+    setTimeout(() => setMessage(''), 4000);
   };
 
   useEffect(() => {
-    if (isAuthenticated) fetchCars();
-  }, [isAuthenticated]);
+    if (user) fetchCars();
+  }, [user]);
 
   const fetchCars = async () => {
     const { data, error } = await supabase
@@ -146,9 +167,7 @@ const AdminPage = () => {
         if (error) throw new Error(`Delete failed: ${error.message}`);
         
         showTemporaryMessage('Car and images deleted successfully!');
-        if (editingId === carId) {
-          handleCancelEdit();
-        }
+        if (editingId === carId) handleCancelEdit();
         fetchCars();
       } catch (error) {
         console.error(error);
@@ -165,7 +184,6 @@ const AdminPage = () => {
       const fileName = `${Math.random()}.${fileExt}`;
       const { error } = await supabase.storage.from('car-images').upload(fileName, file);
       if (error) throw new Error(`Upload failed: ${error.message}`);
-      
       const { data } = supabase.storage.from('car-images').getPublicUrl(fileName);
       urls.push(data.publicUrl);
     }
@@ -182,24 +200,20 @@ const AdminPage = () => {
       let finalExterior = [...formData.exterior_images];
       let finalInterior = [...formData.interior_images];
 
-      // Upload main image
       if (mainImageFile) {
         const fileExt = mainImageFile.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const { error } = await supabase.storage.from('car-images').upload(fileName, mainImageFile);
         if (error) throw new Error(`Main image upload failed: ${error.message}`);
-        
         const { data } = supabase.storage.from('car-images').getPublicUrl(fileName);
         finalMainUrl = data.publicUrl;
       }
 
-      // Upload multiple exterior images
       if (exteriorFiles.length > 0) {
         const urls = await uploadMultipleFiles(exteriorFiles);
         finalExterior = [...finalExterior, ...urls];
       }
 
-      // Upload multiple interior images
       if (interiorFiles.length > 0) {
         const urls = await uploadMultipleFiles(interiorFiles);
         finalInterior = [...finalInterior, ...urls];
@@ -243,9 +257,8 @@ const AdminPage = () => {
         showTemporaryMessage('Car added successfully!');
       }
 
-      handleCancelEdit(); // resets form
-      fetchCars(); // refresh list
-
+      handleCancelEdit();
+      fetchCars();
     } catch (error) {
       console.error(error);
       showTemporaryMessage(error.message);
@@ -254,40 +267,74 @@ const AdminPage = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
-      {!isAuthenticated ? (
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white p-8">
         <div className="max-w-md mx-auto mt-20">
           <div className="bg-gray-800 p-8 rounded-xl shadow-xl">
-            <h1 className="text-2xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
-              Admin Access
+            <h1 className="text-2xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
+              Admin Panel
             </h1>
-            <p className="text-gray-400 text-sm text-center mb-6">Enter password to access the admin panel</p>
-            <form onSubmit={handlePasswordSubmit} className="space-y-4">
-              <input
-                type="password"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Enter admin password"
-                className="w-full bg-gray-700 border border-gray-600 rounded px-4 py-3 text-white focus:outline-none focus:border-red-500"
-                autoFocus
-              />
-              {passwordError && (
-                <p className="text-red-400 text-sm text-center">{passwordError}</p>
-              )}
+            <p className="text-gray-400 text-sm text-center mb-6">
+              {authMode === 'login' ? 'Sign in to manage your inventory' : 'Create an admin account'}
+            </p>
+
+            <div className="flex gap-2 mb-6">
               <button
-                type="submit"
-                className="w-full py-3 bg-red-600 hover:bg-red-700 rounded font-bold transition"
+                onClick={() => { setAuthMode('login'); setAuthError(''); }}
+                className={`flex-1 py-2 rounded text-sm font-bold transition ${authMode === 'login' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400'}`}
               >
                 Login
               </button>
+              <button
+                onClick={() => { setAuthMode('signup'); setAuthError(''); }}
+                className={`flex-1 py-2 rounded text-sm font-bold transition ${authMode === 'signup' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400'}`}
+              >
+                Sign Up
+              </button>
+            </div>
+
+            <form onSubmit={handleAuth} className="space-y-4">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email address"
+                required
+                className="w-full bg-gray-700 border border-gray-600 rounded px-4 py-3 text-white focus:outline-none focus:border-red-500"
+                autoFocus
+              />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password (min 6 characters)"
+                required
+                minLength={6}
+                className="w-full bg-gray-700 border border-gray-600 rounded px-4 py-3 text-white focus:outline-none focus:border-red-500"
+              />
+              {authError && <p className="text-red-400 text-sm text-center">{authError}</p>}
+              {message && <p className="text-green-400 text-sm text-center">{message}</p>}
+              <button
+                type="submit"
+                disabled={authLoading}
+                className="w-full py-3 bg-red-600 hover:bg-red-700 rounded font-bold transition disabled:opacity-50"
+              >
+                {authLoading ? 'Please wait...' : (authMode === 'login' ? 'Login' : 'Create Account')}
+              </button>
             </form>
+
             <Link to="/" className="block text-center text-gray-400 hover:text-white mt-4 text-sm transition">
               &larr; Back to Home
             </Link>
           </div>
         </div>
-      ) : (
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
         
         {/* Form Column */}
@@ -296,9 +343,15 @@ const AdminPage = () => {
             <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
               {editingId ? 'Edit Car' : 'Add New Car'}
             </h1>
-            <Link to="/" className="text-gray-400 hover:text-white transition">
-              &larr; Back to Home
-            </Link>
+            <div className="flex items-center gap-4">
+              <span className="text-xs text-gray-500">{user.email}</span>
+              <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 text-sm transition">
+                Logout
+              </button>
+              <Link to="/" className="text-gray-400 hover:text-white transition">
+                &larr; Home
+              </Link>
+            </div>
           </div>
 
           {message && (
@@ -454,7 +507,6 @@ const AdminPage = () => {
         </div>
 
       </div>
-      )}
     </div>
   );
 };
