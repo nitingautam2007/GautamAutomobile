@@ -89,13 +89,41 @@ const AdminPage = () => {
     setFormKey(prev => prev + 1);
   };
 
+  const extractStoragePath = (url) => {
+    if (!url || !url.includes('car-images/')) return null;
+    const parts = url.split('car-images/');
+    return parts[1] ? decodeURIComponent(parts[1]) : null;
+  };
+
+  const deleteStorageFiles = async (paths) => {
+    const validPaths = paths.filter(Boolean);
+    if (validPaths.length === 0) return;
+    await supabase.storage.from('car-images').remove(validPaths);
+  };
+
   const handleDelete = async (carId) => {
     if (window.confirm('Are you sure you want to delete this car? This action cannot be undone.')) {
       try {
+        const { data: car, error: fetchError } = await supabase
+          .from('cars')
+          .select('image_url, exterior_images, interior_images')
+          .eq('id', carId)
+          .single();
+
+        if (fetchError) throw new Error(`Fetch failed: ${fetchError.message}`);
+
+        const allPaths = [
+          extractStoragePath(car?.image_url),
+          ...(car?.exterior_images || []).map(extractStoragePath),
+          ...(car?.interior_images || []).map(extractStoragePath),
+        ];
+
+        await deleteStorageFiles(allPaths);
+
         const { error } = await supabase.from('cars').delete().eq('id', carId);
         if (error) throw new Error(`Delete failed: ${error.message}`);
         
-        showTemporaryMessage('Car deleted successfully!');
+        showTemporaryMessage('Car and images deleted successfully!');
         if (editingId === carId) {
           handleCancelEdit();
         }
