@@ -12,8 +12,10 @@ import WhyChooseUs from './components/WhyChooseUs';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PremiumCarDetail from './components/PremiumCarDetail';
+import AdminPage from './pages/AdminPage';
 
 import { CAR_DATA } from './data';
+import { supabase } from './lib/supabaseClient';
 
 // ---------------- HOME PAGE ----------------
 
@@ -59,6 +61,41 @@ function HomePage() {
   const [isInitialMount, setIsInitialMount] = useState(true);
   useEffect(() => {
     setIsInitialMount(false);
+  }, []);
+
+  const [supabaseCars, setSupabaseCars] = useState([]);
+  
+  useEffect(() => {
+    async function fetchCars() {
+      const { data, error } = await supabase
+        .from('cars')
+        .select('*')
+        .order('created_at', { ascending: false });
+        
+      if (!error && data) {
+        // Map database fields to what your components expect if necessary
+        // Assuming your DB has id, make, model, year, price, image_url, description
+        // and your CAR_DATA uses similar fields (id, name, price, image, etc.)
+        // We will pass the raw data, and we might need to adjust mapping in Inventory
+        setSupabaseCars(data.map(car => ({
+          id: car.id,
+          name: `${car.year} ${car.make} ${car.model}`,
+          price: car.price,
+          description: car.description,
+          img: car.image_url,
+          status: car.status || 'available',
+          type: "Sports",
+          transmission: car.transmission || "Auto",
+          fuel: car.fuel || "Petrol",
+          mileage: car.km || "10km/l",
+          owner: car.owner || '1st',
+          color: car.color || '',
+          exterior_images: car.exterior_images || [],
+          interior_images: car.interior_images || []
+        })));
+      }
+    }
+    fetchCars();
   }, []);
 
   // Scroll to sections on link click
@@ -228,7 +265,7 @@ function HomePage() {
 
       <Hero theme={theme} />
 
-      <Inventory cars={CAR_DATA} showToast={showToast} />
+      <Inventory cars={[...supabaseCars, ...CAR_DATA]} showToast={showToast} />
 
       <About />
 
@@ -257,6 +294,11 @@ function App() {
         <Route
           path="/car/:id"
           element={<PremiumCarDetail />}
+        />
+
+        <Route
+          path="/admin"
+          element={<AdminPage />}
         />
       </Routes>
 

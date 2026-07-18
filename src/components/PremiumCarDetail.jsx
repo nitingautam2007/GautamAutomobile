@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CAR_DATA } from "../data";
+import { supabase } from '../lib/supabaseClient';
 import './PremiumCarDetail.css';
 
 // --- Icons Definition ---
@@ -121,21 +122,55 @@ const PremiumCarDetail = () => {
   useEffect(() => {
     if (!id) return;
 
-    const foundCar = CAR_DATA.find(c => {
-      const stringId = String(c.id);
-      const slugId = c.slug || c.name.replace(/\s+/g, '-').toLowerCase();
-      return stringId === id || slugId === id || c.name.replace(/\s+/g, '-').toLowerCase() === id;
-    });
+    async function loadCar() {
+      const foundCar = CAR_DATA.find(c => {
+        const stringId = String(c.id);
+        const slugId = c.slug || c.name.replace(/\s+/g, '-').toLowerCase();
+        return stringId === id || slugId === id || c.name.replace(/\s+/g, '-').toLowerCase() === id;
+      });
 
-    if (foundCar) {
-      setCar(foundCar);
-      setCurrentImgIndex(0);
-      setActiveTab('exterior');
-      window.scrollTo(0, 0);
-    } else {
-      console.error("Car not found for ID:", id);
-      setCar(null);
+      if (foundCar) {
+        setCar(foundCar);
+        setCurrentImgIndex(0);
+        setActiveTab('exterior');
+        window.scrollTo(0, 0);
+      } else {
+        // Try to fetch from Supabase
+        const { data, error } = await supabase
+          .from('cars')
+          .select('*')
+          .eq('id', id)
+          .single();
+          
+        if (!error && data) {
+          setCar({
+            id: data.id,
+            name: `${data.year} ${data.make} ${data.model}`,
+            price: data.price,
+            description: data.description,
+            img: data.image_url,
+            images: data.exterior_images || (data.image_url ? [data.image_url] : []),
+            interiorImages: data.interior_images || [],
+            type: "Sports",
+            transmission: data.transmission || "Auto",
+            fuel: data.fuel || "Petrol",
+            year: data.year,
+            owner: data.owner || '1st',
+            color: data.color || 'Not Specified',
+            km: data.km || 'N/A',
+            trans: data.transmission || "Auto"
+          });
+          setCurrentImgIndex(0);
+          setActiveTab('exterior');
+          window.scrollTo(0, 0);
+        } else {
+          console.error("Car not found for ID:", id);
+          setCar(null);
+        }
+      }
     }
+    
+    loadCar();
   }, [id]);
 
   if (!car) {
@@ -146,8 +181,8 @@ const PremiumCarDetail = () => {
     );
   }
 
-  const exteriorImages = car.images || (car.img ? [car.img] : []);
-  const interiorImages = car.interiorImages || [];
+  const exteriorImages = car.images && car.images.length > 0 ? car.images : (car.exterior_images && car.exterior_images.length > 0 ? car.exterior_images : (car.img ? [car.img] : []));
+  const interiorImages = car.interiorImages && car.interiorImages.length > 0 ? car.interiorImages : (car.interior_images && car.interior_images.length > 0 ? car.interior_images : []);
 
   const hasInterior = interiorImages.length > 0;
   const currentImages = activeTab === 'exterior'
