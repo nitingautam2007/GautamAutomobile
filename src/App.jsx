@@ -265,7 +265,7 @@ function HomePage() {
 
       <Hero theme={theme} supabaseCars={supabaseCars} />
 
-      <Inventory cars={[...supabaseCars, ...CAR_DATA].filter(car => car.status !== 'sold')} showToast={showToast} />
+      <Inventory cars={[...supabaseCars, ...CAR_DATA]} showToast={showToast} />
 
       <About />
 
