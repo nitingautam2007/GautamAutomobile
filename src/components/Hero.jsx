@@ -36,11 +36,11 @@ const fadeInUp = {
   }),
 };
 
-const Hero = ({ theme = 'light' }) => {
+const Hero = ({ theme = 'light', supabaseCars = [] }) => {
   const BASE = import.meta.env.BASE_URL;
   const isLight = theme === 'light';
 
-  const availableCars = CAR_DATA.filter(car => car.status !== 'sold');
+  const availableCars = [...supabaseCars, ...CAR_DATA].filter(car => car.status !== 'sold');
   const [currentCarIndex, setCurrentCarIndex] = useState(0);
 
   useEffect(() => {

@@ -263,7 +263,7 @@ function HomePage() {
         theme={theme}
       />
 
-      <Hero theme={theme} />
+      <Hero theme={theme} supabaseCars={supabaseCars} />
 
       <Inventory cars={[...supabaseCars, ...CAR_DATA]} showToast={showToast} />
 
