@@ -20,6 +20,10 @@ const initialFormData = {
 };
 
 const AdminPage = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   const [cars, setCars] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(initialFormData);
@@ -32,6 +36,24 @@ const AdminPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
 
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (passwordInput === import.meta.env.VITE_ADMIN_PASSWORD) {
+      setIsAuthenticated(true);
+      setPasswordError('');
+      sessionStorage.setItem('gautam-admin-auth', 'true');
+    } else {
+      setPasswordError('Incorrect password. Access denied.');
+      setPasswordInput('');
+    }
+  };
+
+  useEffect(() => {
+    if (sessionStorage.getItem('gautam-admin-auth') === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const showTemporaryMessage = (msg) => {
     setMessage(msg);
     setTimeout(() => {
@@ -40,8 +62,8 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
-    fetchCars();
-  }, []);
+    if (isAuthenticated) fetchCars();
+  }, [isAuthenticated]);
 
   const fetchCars = async () => {
     const { data, error } = await supabase
@@ -234,6 +256,38 @@ const AdminPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
+      {!isAuthenticated ? (
+        <div className="max-w-md mx-auto mt-20">
+          <div className="bg-gray-800 p-8 rounded-xl shadow-xl">
+            <h1 className="text-2xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
+              Admin Access
+            </h1>
+            <p className="text-gray-400 text-sm text-center mb-6">Enter password to access the admin panel</p>
+            <form onSubmit={handlePasswordSubmit} className="space-y-4">
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="Enter admin password"
+                className="w-full bg-gray-700 border border-gray-600 rounded px-4 py-3 text-white focus:outline-none focus:border-red-500"
+                autoFocus
+              />
+              {passwordError && (
+                <p className="text-red-400 text-sm text-center">{passwordError}</p>
+              )}
+              <button
+                type="submit"
+                className="w-full py-3 bg-red-600 hover:bg-red-700 rounded font-bold transition"
+              >
+                Login
+              </button>
+            </form>
+            <Link to="/" className="block text-center text-gray-400 hover:text-white mt-4 text-sm transition">
+              &larr; Back to Home
+            </Link>
+          </div>
+        </div>
+      ) : (
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
         
         {/* Form Column */}
@@ -400,6 +454,7 @@ const AdminPage = () => {
         </div>
 
       </div>
+      )}
     </div>
   );
 };
