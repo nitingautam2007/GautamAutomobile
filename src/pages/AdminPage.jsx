@@ -21,7 +21,6 @@ const initialFormData = {
 
 const AdminPage = () => {
   const [user, setUser] = useState(null);
-  const [authMode, setAuthMode] = useState('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
@@ -41,10 +40,18 @@ const AdminPage = () => {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      if (session?.user && session.user.email === import.meta.env.VITE_ADMIN_EMAIL) {
+        setUser(session.user);
+      } else if (session?.user) {
+        supabase.auth.signOut();
+      }
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+      if (session?.user && session.user.email === import.meta.env.VITE_ADMIN_EMAIL) {
+        setUser(session.user);
+      } else {
+        setUser(null);
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -55,15 +62,13 @@ const AdminPage = () => {
     setAuthLoading(true);
 
     try {
-      if (authMode === 'signup') {
-        const { error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
-        setAuthError('');
-        setMessage('Account created! Check your email for confirmation link.');
-        setAuthMode('login');
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+
+      if (data.user.email !== import.meta.env.VITE_ADMIN_EMAIL) {
+        await supabase.auth.signOut();
+        setAuthError('Access denied. This email is not authorized.');
+        return;
       }
     } catch (error) {
       setAuthError(error.message);
@@ -275,24 +280,7 @@ const AdminPage = () => {
             <h1 className="text-2xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
               Admin Panel
             </h1>
-            <p className="text-gray-400 text-sm text-center mb-6">
-              {authMode === 'login' ? 'Sign in to manage your inventory' : 'Create an admin account'}
-            </p>
-
-            <div className="flex gap-2 mb-6">
-              <button
-                onClick={() => { setAuthMode('login'); setAuthError(''); }}
-                className={`flex-1 py-2 rounded text-sm font-bold transition ${authMode === 'login' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400'}`}
-              >
-                Login
-              </button>
-              <button
-                onClick={() => { setAuthMode('signup'); setAuthError(''); }}
-                className={`flex-1 py-2 rounded text-sm font-bold transition ${authMode === 'signup' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400'}`}
-              >
-                Sign Up
-              </button>
-            </div>
+            <p className="text-gray-400 text-sm text-center mb-6">Sign in to manage your inventory</p>
 
             <form onSubmit={handleAuth} className="space-y-4">
               <input
@@ -320,7 +308,7 @@ const AdminPage = () => {
                 disabled={authLoading}
                 className="w-full py-3 bg-red-600 hover:bg-red-700 rounded font-bold transition disabled:opacity-50"
               >
-                {authLoading ? 'Please wait...' : (authMode === 'login' ? 'Login' : 'Create Account')}
+                {authLoading ? 'Please wait...' : 'Login'}
               </button>
             </form>
 
