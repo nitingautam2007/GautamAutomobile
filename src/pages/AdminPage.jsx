@@ -183,6 +183,17 @@ const AdminPage = () => {
         finalInterior = [...finalInterior, ...urls];
       }
 
+      let payloadExterior = finalExterior;
+      let payloadInterior = finalInterior;
+
+      if (formData.status === 'sold') {
+        const extPaths = finalExterior.map(extractStoragePath).filter(Boolean);
+        const intPaths = finalInterior.map(extractStoragePath).filter(Boolean);
+        await deleteStorageFiles([...extPaths, ...intPaths]);
+        payloadExterior = [];
+        payloadInterior = [];
+      }
+
       const payload = {
         make: formData.make,
         model: formData.model,
@@ -196,8 +207,8 @@ const AdminPage = () => {
         owner: formData.owner,
         color: formData.color,
         image_url: finalMainUrl,
-        exterior_images: finalExterior,
-        interior_images: finalInterior,
+        exterior_images: payloadExterior,
+        interior_images: payloadInterior,
       };
 
       if (editingId) {
