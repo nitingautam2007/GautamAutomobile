@@ -80,16 +80,20 @@ function HomePage() {
         setSupabaseCars(data.map(car => ({
           id: car.id,
           name: `${car.year} ${car.make} ${car.model}`,
+          year: car.year,
           price: car.price,
           description: car.description,
           img: car.image_url,
           status: car.status || 'available',
           type: "Sports",
-          transmission: car.transmission || "Auto",
+          trans: car.transmission || "Auto",
           fuel: car.fuel || "Petrol",
+          km: car.km || "N/A",
           mileage: car.km || "10km/l",
           owner: car.owner || '1st',
           color: car.color || '',
+          rtoCode: car.registration || 'HR',
+          registration: car.registration || '',
           exterior_images: car.exterior_images || [],
           interior_images: car.interior_images || []
         })));
