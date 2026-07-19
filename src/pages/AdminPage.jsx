@@ -739,13 +739,13 @@ const AdminPage = () => {
                             variant="filter"
                             selected={formData.status === 'available'}
                             label="Available"
-                            onClick={() => setFormData({ ...formData, status: 'available' })}
+                            onClick={() => setFormData({ ...formData, status: formData.status === 'available' ? '' : 'available' })}
                           />
                           <M3Chip
                             variant="filter"
                             selected={formData.status === 'sold'}
                             label="Sold"
-                            onClick={() => setFormData({ ...formData, status: 'sold' })}
+                            onClick={() => setFormData({ ...formData, status: formData.status === 'sold' ? '' : 'sold' })}
                           />
                         </div>
                       </div>
@@ -765,35 +765,35 @@ const AdminPage = () => {
                               variant="filter"
                               selected={formData.fuel === f}
                               label={f}
-                              onClick={() => setFormData({ ...formData, fuel: f })}
+                              onClick={() => setFormData({ ...formData, fuel: formData.fuel === f ? '' : f })}
                             />
                           ))}
                         </div>
                       </div>
                       <div>
                         <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Transmission</label>
-                        <div className="flex gap-1.5">
+                        <div className="flex gap-1.5 flex-wrap">
                           {TRANSMISSIONS.map(t => (
                             <M3Chip
                               key={t.value}
                               variant="filter"
                               selected={formData.transmission === t.value}
                               label={t.label}
-                              onClick={() => setFormData({ ...formData, transmission: t.value })}
+                              onClick={() => setFormData({ ...formData, transmission: formData.transmission === t.value ? '' : t.value })}
                             />
                           ))}
                         </div>
                       </div>
                       <div>
                         <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Ownership</label>
-                        <div className="flex gap-1.5">
+                        <div className="flex gap-1.5 flex-wrap">
                           {OWNERSHIPS.map(o => (
                             <M3Chip
                               key={o.value}
                               variant="filter"
                               selected={formData.owner === o.value}
                               label={o.label}
-                              onClick={() => setFormData({ ...formData, owner: o.value })}
+                              onClick={() => setFormData({ ...formData, owner: formData.owner === o.value ? '' : o.value })}
                             />
                           ))}
                         </div>
@@ -992,7 +992,6 @@ const AdminPage = () => {
         message={`Are you sure you want to delete ${deleteDialog.carName}? This action cannot be undone and all associated images will be removed.`}
         confirmLabel="Delete"
         cancelLabel="Cancel"
-        danger
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteDialog({ open: false, carId: null, carName: '' })}
       />
