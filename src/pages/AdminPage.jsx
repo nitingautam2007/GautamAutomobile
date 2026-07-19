@@ -40,6 +40,11 @@ const AdminPage = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
+    document.body.style.paddingBottom = '0';
+    return () => { document.body.style.paddingBottom = ''; };
+  }, []);
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user && session.user.email === (import.meta.env.VITE_ADMIN_EMAIL || 'automobilegautam@gmail.com')) {
         setUser(session.user);
