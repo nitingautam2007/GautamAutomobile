@@ -179,6 +179,12 @@ const Inventory = ({ cars, showToast }) => {
                           <iconify-icon icon="lucide:settings-2" width="12"></iconify-icon>
                           {car.trans}
                         </span>
+                        {car.owner && (
+                          <span className="ios-pill text-[10px] sm:text-[11px] t2 px-3 py-1.5 font-light flex items-center gap-1.5">
+                            <iconify-icon icon="lucide:user" width="12"></iconify-icon>
+                            {car.owner}
+                          </span>
+                        )}
                       </div>
                     </div>
 
