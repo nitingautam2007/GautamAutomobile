@@ -453,7 +453,7 @@ const AdminPage = () => {
   return (
     <div className="m3-admin min-h-screen bg-m3-surface flex">
       {/* ── Desktop Navigation Rail ── */}
-      <nav className="hidden lg:flex flex-col items-center w-[80px] bg-m3-surface-container-low py-5 border-r border-m3-outline-variant shrink-0 sticky top-0 h-screen z-50">
+      <nav className="hidden lg:flex flex-col items-center w-[80px] bg-m3-surface-container-low py-5 border-r border-m3-outline-variant shrink-0 fixed top-0 left-0 h-screen z-50">
         <div className="mb-8">
           <M3IconButton variant="standard" size="md">
             <svg className="w-6 h-6 text-m3-primary" viewBox="0 0 24 24" fill="currentColor">
@@ -533,7 +533,7 @@ const AdminPage = () => {
       </nav>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 min-h-screen pb-20 lg:pb-0 overflow-x-hidden">
+      <main className="flex-1 min-h-screen pb-20 lg:pb-0 lg:ml-[80px] overflow-x-hidden">
         {/* ── Top App Bar ── */}
         <header className="sticky top-0 z-40 bg-m3-surface/95 backdrop-blur-md border-b border-m3-outline-variant">
           <div className="flex items-center justify-between h-14 px-4 sm:px-6">
@@ -543,11 +543,6 @@ const AdminPage = () => {
               {activeTab === 'settings' && 'Account'}
             </h1>
             <div className="flex items-center gap-1 shrink-0">
-              <M3Chip
-                variant="suggestion"
-                label={user.email}
-                className="hidden sm:inline-flex max-w-[160px]"
-              />
               <M3IconButton variant="standard" size="sm" onClick={handleLogout} title="Logout">
                 <svg className="w-5 h-5 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
