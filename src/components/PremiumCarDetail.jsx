@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CAR_DATA } from "../data";
 import { supabase } from '../lib/supabaseClient';
 import { formatPrice } from '../lib/utils';
 import './PremiumCarDetail.css';
@@ -124,19 +123,6 @@ const PremiumCarDetail = () => {
     if (!id) return;
 
     async function loadCar() {
-      const foundCar = CAR_DATA.find(c => {
-        const stringId = String(c.id);
-        const slugId = c.slug || c.name.replace(/\s+/g, '-').toLowerCase();
-        return stringId === id || slugId === id || c.name.replace(/\s+/g, '-').toLowerCase() === id;
-      });
-
-      if (foundCar) {
-        setCar(foundCar);
-        setCurrentImgIndex(0);
-        setActiveTab('exterior');
-        window.scrollTo(0, 0);
-      } else {
-        // Try to fetch from Supabase
         const { data, error } = await supabase
           .from('cars')
           .select('*')
@@ -167,7 +153,6 @@ const PremiumCarDetail = () => {
           console.error("Car not found for ID:", id);
           setCar(null);
         }
-      }
     }
     
     loadCar();

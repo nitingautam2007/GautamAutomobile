@@ -14,7 +14,6 @@ import Footer from './components/Footer';
 import PremiumCarDetail from './components/PremiumCarDetail';
 import AdminPage from './pages/AdminPage';
 
-import { CAR_DATA } from './data';
 import { supabase } from './lib/supabaseClient';
 import { formatPrice } from './lib/utils';
 
@@ -270,7 +269,7 @@ function HomePage() {
 
       <Hero theme={theme} supabaseCars={supabaseCars} />
 
-      <Inventory cars={[...supabaseCars, ...CAR_DATA]} showToast={showToast} />
+      <Inventory cars={supabaseCars} showToast={showToast} />
 
       <About />
 
