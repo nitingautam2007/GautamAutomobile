@@ -22,7 +22,7 @@ export default function M3TextField({
 }) {
   const [focused, setFocused] = useState(false);
   const id = useId();
-  const isActive = focused || (value && String(value).length > 0);
+  const isActive = focused || select || (value && String(value).length > 0);
 
   const handleFocus = () => { setFocused(true); onFocusProp?.(); };
   const handleBlur = () => { setFocused(false); onBlurProp?.(); };
@@ -66,6 +66,8 @@ export default function M3TextField({
                 id={id}
                 value={value}
                 onChange={onChange}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 disabled={disabled}
                 required={required}
                 className={cn(
