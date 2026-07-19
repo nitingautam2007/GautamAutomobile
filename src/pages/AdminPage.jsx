@@ -275,13 +275,13 @@ const AdminPage = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white p-8">
-        <div className="max-w-md mx-auto mt-20">
-          <div className="bg-gray-800 p-8 rounded-xl shadow-xl">
-            <h1 className="text-2xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
+      <div className="min-h-screen bg-gray-900 text-white px-4 py-12 sm:p-8">
+        <div className="max-w-md mx-auto sm:mt-20">
+          <div className="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-xl">
+            <h1 className="text-xl sm:text-2xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
               Admin Panel
             </h1>
-            <p className="text-gray-400 text-sm text-center mb-6">Sign in to manage your inventory</p>
+            <p className="text-gray-400 text-xs sm:text-sm text-center mb-6">Sign in to manage your inventory</p>
 
             <form onSubmit={handleAuth} className="space-y-4">
               <input
@@ -290,7 +290,7 @@ const AdminPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
                 required
-                className="w-full bg-gray-700 border border-gray-600 rounded px-4 py-3 text-white focus:outline-none focus:border-red-500"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 text-sm sm:text-base"
                 autoFocus
               />
               <input
@@ -300,20 +300,20 @@ const AdminPage = () => {
                 placeholder="Password (min 6 characters)"
                 required
                 minLength={6}
-                className="w-full bg-gray-700 border border-gray-600 rounded px-4 py-3 text-white focus:outline-none focus:border-red-500"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 text-sm sm:text-base"
               />
-              {authError && <p className="text-red-400 text-sm text-center">{authError}</p>}
-              {message && <p className="text-green-400 text-sm text-center">{message}</p>}
+              {authError && <p className="text-red-400 text-xs sm:text-sm text-center">{authError}</p>}
+              {message && <p className="text-green-400 text-xs sm:text-sm text-center">{message}</p>}
               <button
                 type="submit"
                 disabled={authLoading}
-                className="w-full py-3 bg-red-600 hover:bg-red-700 rounded font-bold transition disabled:opacity-50"
+                className="w-full py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition disabled:opacity-50 text-sm sm:text-base"
               >
                 {authLoading ? 'Please wait...' : 'Login'}
               </button>
             </form>
 
-            <Link to="/" className="block text-center text-gray-400 hover:text-white mt-4 text-sm transition">
+            <Link to="/" className="block text-center text-gray-400 hover:text-white mt-4 text-xs sm:text-sm transition">
               &larr; Back to Home
             </Link>
           </div>
@@ -323,21 +323,21 @@ const AdminPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+    <div className="min-h-screen bg-gray-900 text-white px-4 py-6 sm:p-8">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         
         {/* Form Column */}
         <div>
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6 sm:mb-8">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
               {editingId ? 'Edit Car' : 'Add New Car'}
             </h1>
-            <div className="flex items-center gap-4">
-              <span className="text-xs text-gray-500">{user.email}</span>
-              <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 text-sm transition">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <span className="text-[10px] sm:text-xs text-gray-500 truncate max-w-[120px] sm:max-w-none">{user.email}</span>
+              <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 text-xs sm:text-sm transition">
                 Logout
               </button>
-              <Link to="/" className="text-gray-400 hover:text-white transition">
+              <Link to="/" className="text-gray-400 hover:text-white text-xs sm:text-sm transition">
                 &larr; Home
               </Link>
             </div>
@@ -349,42 +349,42 @@ const AdminPage = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-xl shadow-xl space-y-6">
+          <form onSubmit={handleSubmit} className="bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-xl space-y-5 sm:space-y-6">
             
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Make</label>
-                <input type="text" name="make" value={formData.make} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" placeholder="Toyota" />
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Make</label>
+                <input type="text" name="make" value={formData.make} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" placeholder="Toyota" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Model</label>
-                <input type="text" name="model" value={formData.model} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" placeholder="Supra" />
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Model</label>
+                <input type="text" name="model" value={formData.model} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" placeholder="Supra" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Year</label>
-                <input type="number" name="year" value={formData.year} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" />
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Year</label>
+                <input type="number" name="year" value={formData.year} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Price (₹)</label>
-                <input type="number" name="price" value={formData.price} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" />
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Price (₹)</label>
+                <input type="number" name="price" value={formData.price} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Status</label>
-                <select name="status" value={formData.status} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Status</label>
+                <select name="status" value={formData.status} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
                   <option value="available">Available</option>
                   <option value="sold">Sold</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">KM Driven</label>
-                <input type="text" name="km" value={formData.km} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" placeholder="25,000" />
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">KM Driven</label>
+                <input type="text" name="km" value={formData.km} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" placeholder="25,000" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Fuel Type</label>
-                <select name="fuel" value={formData.fuel} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Fuel Type</label>
+                <select name="fuel" value={formData.fuel} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
                   <option value="">Select</option>
                   <option value="Petrol">Petrol</option>
                   <option value="Diesel">Diesel</option>
@@ -393,30 +393,30 @@ const AdminPage = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Transmission</label>
-                <select name="transmission" value={formData.transmission} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Transmission</label>
+                <select name="transmission" value={formData.transmission} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
                   <option value="">Select</option>
                   <option value="Auto">Automatic</option>
                   <option value="Manual">Manual</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Ownership</label>
-                <select name="owner" value={formData.owner} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Ownership</label>
+                <select name="owner" value={formData.owner} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
                   <option value="1st">1st Owner</option>
                   <option value="2nd">2nd Owner</option>
                   <option value="3rd+">3rd+ Owner</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Color</label>
-                <input type="text" name="color" value={formData.color} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" placeholder="e.g. Pearl White" />
+                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Color</label>
+                <input type="text" name="color" value={formData.color} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" placeholder="e.g. Pearl White" />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Registration</label>
-              <select name="registration" value={formData.registration} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Registration</label>
+              <select name="registration" value={formData.registration} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
                 <option value="">Select</option>
                 <option value="HR">HR (Haryana)</option>
                 <option value="DL">DL (Delhi)</option>
@@ -458,29 +458,29 @@ const AdminPage = () => {
 
             <div className="space-y-4 pt-4 border-t border-gray-700">
               <div>
-                <label className="block text-sm font-bold text-red-400 mb-1">Main Inventory Image (Single)</label>
-                <input key={`main-${formKey}`} type="file" accept="image/*" onChange={(e) => setMainImageFile(e.target.files[0])} className="w-full text-sm" />
-                {formData.image_url && !mainImageFile && <p className="text-xs text-gray-500 mt-1">Current main image will be kept.</p>}
+                <label className="block text-xs sm:text-sm font-bold text-red-400 mb-1">Main Inventory Image (Single)</label>
+                <input key={`main-${formKey}`} type="file" accept="image/*" onChange={(e) => setMainImageFile(e.target.files[0])} className="w-full text-xs sm:text-sm" />
+                {formData.image_url && !mainImageFile && <p className="text-[10px] sm:text-xs text-gray-500 mt-1">Current main image will be kept.</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-red-400 mb-1">Exterior Details (Multiple)</label>
-                <input key={`ext-${formKey}`} type="file" accept="image/*" multiple onChange={(e) => setExteriorFiles(e.target.files)} className="w-full text-sm" />
-                {formData.exterior_images.length > 0 && <p className="text-xs text-gray-500 mt-1">{formData.exterior_images.length} existing images.</p>}
+                <label className="block text-xs sm:text-sm font-bold text-red-400 mb-1">Exterior Details (Multiple)</label>
+                <input key={`ext-${formKey}`} type="file" accept="image/*" multiple onChange={(e) => setExteriorFiles(e.target.files)} className="w-full text-xs sm:text-sm" />
+                {formData.exterior_images.length > 0 && <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{formData.exterior_images.length} existing images.</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-red-400 mb-1">Interior Details (Multiple)</label>
-                <input key={`int-${formKey}`} type="file" accept="image/*" multiple onChange={(e) => setInteriorFiles(e.target.files)} className="w-full text-sm" />
-                {formData.interior_images.length > 0 && <p className="text-xs text-gray-500 mt-1">{formData.interior_images.length} existing images.</p>}
+                <label className="block text-xs sm:text-sm font-bold text-red-400 mb-1">Interior Details (Multiple)</label>
+                <input key={`int-${formKey}`} type="file" accept="image/*" multiple onChange={(e) => setInteriorFiles(e.target.files)} className="w-full text-xs sm:text-sm" />
+                {formData.interior_images.length > 0 && <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{formData.interior_images.length} existing images.</p>}
               </div>
             </div>
 
-            <div className="flex gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 py-3 bg-red-600 hover:bg-red-700 rounded font-bold transition"
+                className="flex-1 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition text-sm sm:text-base"
               >
                 {isSubmitting ? 'Saving...' : (editingId ? 'Update Car' : 'Add Car')}
               </button>
@@ -488,7 +488,7 @@ const AdminPage = () => {
                 <button
                   type="button"
                   onClick={handleCancelEdit}
-                  className="px-6 py-3 bg-gray-600 hover:bg-gray-500 rounded font-bold transition"
+                  className="px-6 py-3 bg-gray-600 hover:bg-gray-500 rounded-lg font-bold transition text-sm sm:text-base"
                 >
                   Cancel
                 </button>
@@ -499,36 +499,36 @@ const AdminPage = () => {
 
         {/* List Column */}
         <div>
-          <h2 className="text-2xl font-bold mb-6 text-gray-300">Manage Inventory</h2>
-          <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
+          <h2 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-300">Manage Inventory</h2>
+          <div className="space-y-3 max-h-[80vh] overflow-y-auto pr-1 sm:pr-2">
             {cars.map((car) => (
-              <div key={car.id} className="bg-gray-800 p-4 rounded-lg flex items-center justify-between border border-gray-700 hover:border-red-900 transition">
-                <div className="flex items-center gap-4">
+              <div key={car.id} className="bg-gray-800 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border border-gray-700 hover:border-red-900 transition">
+                <div className="flex items-center gap-3 min-w-0">
                   {car.image_url && (
-                    <img src={car.image_url} alt={car.model} className="w-16 h-12 object-cover rounded" />
+                    <img src={car.image_url} alt={car.model} className="w-14 h-10 sm:w-16 sm:h-12 object-cover rounded-lg flex-shrink-0" />
                   )}
-                  <div>
-                    <h3 className="font-bold">{car.year} {car.make} {car.model}</h3>
-                    <p className="text-sm text-gray-400">{formatPrice(car.price)} {car.registration && <span className="ml-2 text-blue-400">• {car.registration} Registered</span>} {car.status === 'sold' && <span className="ml-2 text-red-500 font-bold">(SOLD)</span>}</p>
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-sm sm:text-base truncate">{car.year} {car.make} {car.model}</h3>
+                    <p className="text-[10px] sm:text-sm text-gray-400 truncate">{formatPrice(car.price)} {car.registration && <span className="ml-1 sm:ml-2 text-blue-400">• {car.registration}</span>} {car.status === 'sold' && <span className="ml-1 sm:ml-2 text-red-500 font-bold">(SOLD)</span>}</p>
                   </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 sm:flex-shrink-0">
                   <button
                     onClick={() => handleEdit(car)}
-                    className="px-4 py-2 bg-gray-700 hover:bg-blue-600 rounded transition text-sm font-bold"
+                    className="flex-1 sm:flex-none px-4 py-2 bg-gray-700 hover:bg-blue-600 rounded-lg transition text-xs sm:text-sm font-bold"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(car.id)}
-                    className="px-4 py-2 bg-gray-700 hover:bg-red-600 rounded transition text-sm font-bold"
+                    className="flex-1 sm:flex-none px-4 py-2 bg-gray-700 hover:bg-red-600 rounded-lg transition text-xs sm:text-sm font-bold"
                   >
                     Delete
                   </button>
                 </div>
               </div>
             ))}
-            {cars.length === 0 && <p className="text-gray-500">No cars uploaded yet.</p>}
+            {cars.length === 0 && <p className="text-gray-500 text-sm">No cars uploaded yet.</p>}
           </div>
         </div>
 
