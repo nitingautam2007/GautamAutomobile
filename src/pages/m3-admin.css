@@ -264,11 +264,3 @@ html.light .m3-admin {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
-@keyframes m3-circular-rotate {
-  100% { transform: rotate(360deg); }
-}
-@keyframes m3-circular-dash {
-  0% { stroke-dashoffset: 0; stroke-dasharray: 31.4 31.4; }
-  50% { stroke-dasharray: 8 31.4; stroke-dashoffset: -12; }
-  100% { stroke-dashoffset: -31.4; stroke-dasharray: 31.4 31.4; }
-}

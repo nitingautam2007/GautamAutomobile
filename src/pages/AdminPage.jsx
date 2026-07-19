@@ -400,9 +400,8 @@ const AdminPage = () => {
               >
                 {authLoading && (
                   <span className="absolute inset-0 flex items-center justify-center bg-m3-primary">
-                    <svg className="w-5 h-5 text-m3-on-primary animate-[m3-circular-rotate_1.4s_linear_infinite]" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
-                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" strokeLinecap="round" className="animate-[m3-circular-dash_1.4s_ease-in-out_infinite]" />
+                    <svg className="w-5 h-5 text-m3-on-primary animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="15 50" strokeLinecap="round" />
                     </svg>
                   </span>
                 )}
