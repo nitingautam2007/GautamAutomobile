@@ -16,6 +16,7 @@ import AdminPage from './pages/AdminPage';
 
 import { CAR_DATA } from './data';
 import { supabase } from './lib/supabaseClient';
+import { formatPrice } from './lib/utils';
 
 // ---------------- HOME PAGE ----------------
 
@@ -81,7 +82,7 @@ function HomePage() {
           id: car.id,
           name: `${car.year} ${car.make} ${car.model}`,
           year: car.year,
-          price: car.price,
+          price: formatPrice(car.price),
           description: car.description,
           img: car.image_url,
           status: car.status || 'available',

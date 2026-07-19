@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CAR_DATA } from "../data";
 import { supabase } from '../lib/supabaseClient';
+import { formatPrice } from '../lib/utils';
 import './PremiumCarDetail.css';
 
 // --- Icons Definition ---
@@ -146,8 +147,7 @@ const PremiumCarDetail = () => {
           setCar({
             id: data.id,
             name: `${data.year} ${data.make} ${data.model}`,
-            price: data.price,
-            description: data.description,
+            price: formatPrice(data.price),
             img: data.image_url,
             images: data.exterior_images || (data.image_url ? [data.image_url] : []),
             interiorImages: data.interior_images || [],

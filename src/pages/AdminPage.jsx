@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { Link } from 'react-router-dom';
+import { formatPrice } from '../lib/utils';
 
 const initialFormData = {
   make: '',
@@ -508,7 +509,7 @@ const AdminPage = () => {
                   )}
                   <div>
                     <h3 className="font-bold">{car.year} {car.make} {car.model}</h3>
-                    <p className="text-sm text-gray-400">₹{Number(car.price).toLocaleString('en-IN')} {car.registration && <span className="ml-2 text-blue-400">• {car.registration} Registered</span>} {car.status === 'sold' && <span className="ml-2 text-red-500 font-bold">(SOLD)</span>}</p>
+                    <p className="text-sm text-gray-400">{formatPrice(car.price)} {car.registration && <span className="ml-2 text-blue-400">• {car.registration} Registered</span>} {car.status === 'sold' && <span className="ml-2 text-red-500 font-bold">(SOLD)</span>}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
