@@ -1,0 +1,215 @@
+/* ══════════════════════════════════════════════════════════
+   Material 3 Design Tokens — Scoped to .m3-admin
+   ══════════════════════════════════════════════════════════ */
+
+/* ── M3 Dark Theme (Default) ── */
+.m3-admin {
+  --m3-primary: #FFB3B1;
+  --m3-on-primary: #690005;
+  --m3-primary-container: #8E0009;
+  --m3-on-primary-container: #FFDAD6;
+  --m3-secondary: #E7BDB9;
+  --m3-on-secondary: #44292A;
+  --m3-secondary-container: #5D3F40;
+  --m3-on-secondary-container: #FFDAD6;
+  --m3-tertiary: #E5C18D;
+  --m3-on-tertiary: #462B00;
+  --m3-tertiary-container: #634017;
+  --m3-surface: #201A1A;
+  --m3-surface-dim: #201A1A;
+  --m3-surface-bright: #3B2F2F;
+  --m3-surface-container-lowest: #1A1414;
+  --m3-surface-container-low: #2C2525;
+  --m3-surface-container: #312A2A;
+  --m3-surface-container-high: #3C3434;
+  --m3-surface-container-highest: #47403F;
+  --m3-on-surface: #F0DEDE;
+  --m3-on-surface-variant: #D8C2C2;
+  --m3-outline: #A08C8C;
+  --m3-outline-variant: #534343;
+  --m3-error: #FFB4AB;
+  --m3-on-error: #690005;
+  --m3-error-container: #93000A;
+  --m3-on-error-container: #FFDAD6;
+  --m3-inverse-surface: #F0DEDE;
+  --m3-inverse-on-surface: #2C2525;
+  --m3-inverse-primary: #B71C1C;
+  --m3-shadow: #000000;
+
+  color-scheme: dark;
+}
+
+.m3-admin html.light &,
+html.light .m3-admin {
+  --m3-primary: #B71C1C;
+  --m3-on-primary: #FFFFFF;
+  --m3-primary-container: #FFDAD6;
+  --m3-on-primary-container: #410002;
+  --m3-secondary: #775657;
+  --m3-on-secondary: #FFFFFF;
+  --m3-secondary-container: #FFDAD6;
+  --m3-on-secondary-container: #2C1516;
+  --m3-tertiary: #755A2F;
+  --m3-on-tertiary: #FFFFFF;
+  --m3-tertiary-container: #FFDEA1;
+  --m3-surface: #FFF8F7;
+  --m3-surface-dim: #E3D7D6;
+  --m3-surface-bright: #FFF8F7;
+  --m3-surface-container-lowest: #FFFFFF;
+  --m3-surface-container-low: #FDF0EF;
+  --m3-surface-container: #F7EAEA;
+  --m3-surface-container-high: #F1E4E4;
+  --m3-surface-container-highest: #EBDFDE;
+  --m3-on-surface: #201A1A;
+  --m3-on-surface-variant: #534343;
+  --m3-outline: #857373;
+  --m3-outline-variant: #D8C2C2;
+  --m3-error: #BA1A1A;
+  --m3-on-error: #FFFFFF;
+  --m3-error-container: #FFDAD6;
+  --m3-on-error-container: #410002;
+  --m3-inverse-surface: #362F2F;
+  --m3-inverse-on-surface: #FBEEED;
+  --m3-inverse-primary: #FFB3B1;
+  --m3-shadow: #000000;
+
+  color-scheme: light;
+}
+
+/* ── M3 Motion Tokens ── */
+.m3-admin {
+  --m3-duration-short1: 50ms;
+  --m3-duration-short2: 100ms;
+  --m3-duration-short3: 150ms;
+  --m3-duration-short4: 200ms;
+  --m3-duration-medium1: 250ms;
+  --m3-duration-medium2: 300ms;
+  --m3-duration-medium3: 350ms;
+  --m3-duration-medium4: 400ms;
+  --m3-duration-long1: 450ms;
+  --m3-duration-long2: 500ms;
+  --m3-duration-long3: 550ms;
+  --m3-duration-long4: 600ms;
+  --m3-duration-extra-long: 800ms;
+
+  --m3-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --m3-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+  --m3-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --m3-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --m3-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --m3-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+}
+
+/* ── M3 Base Reset ── */
+.m3-admin *,
+.m3-admin *::before,
+.m3-admin *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.m3-admin {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── M3 Scrollbar ── */
+.m3-admin ::-webkit-scrollbar { width: 8px; }
+.m3-admin ::-webkit-scrollbar-track { background: transparent; }
+.m3-admin ::-webkit-scrollbar-thumb {
+  background: var(--m3-outline-variant);
+  border-radius: 9999px;
+}
+.m3-admin ::-webkit-scrollbar-thumb:hover {
+  background: var(--m3-outline);
+}
+
+/* ── M3 Focus Ring ── */
+.m3-admin :focus-visible {
+  outline: 2px solid var(--m3-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── M3 State Layer Utilities ── */
+.m3-state-hover {
+  position: relative;
+  overflow: hidden;
+}
+.m3-state-hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity var(--m3-duration-short4) var(--m3-easing-standard);
+  pointer-events: none;
+}
+.m3-state-hover:hover::before {
+  opacity: 0.08;
+}
+.m3-state-hover:active::before {
+  opacity: 0.12;
+}
+
+/* ── M3 Ripple Effect ── */
+.m3-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.m3-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), currentColor 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(0);
+  transition: transform var(--m3-duration-long2) var(--m3-easing-standard),
+              opacity var(--m3-duration-long2) var(--m3-easing-standard);
+  pointer-events: none;
+}
+.m3-ripple:active::after {
+  opacity: 0.12;
+  transform: scale(2.5);
+  transition: transform 0ms, opacity 0ms;
+}
+
+/* ── M3 Divider ── */
+.m3-divider {
+  height: 1px;
+  background: var(--m3-outline-variant);
+  border: none;
+  margin: 0;
+}
+
+/* ── M3 Animation Keyframes ── */
+@keyframes m3-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes m3-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes m3-scale-in {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes m3-slide-in-bottom {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes m3-slide-in-top {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+@keyframes m3-slide-out-bottom {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+@keyframes m3-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

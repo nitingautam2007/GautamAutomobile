@@ -1,0 +1,115 @@
+import { useState, useRef, useEffect } from 'react';
+import { cn } from '../../../lib/utils';
+
+export default function M3Select({
+  label,
+  value,
+  onChange,
+  options = [],
+  placeholder = 'Select',
+  required,
+  disabled,
+  error,
+  helperText,
+  className,
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const selected = options.find(o => o.value === value);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative w-full">
+      <button
+        type="button"
+        onClick={() => !disabled && setOpen(!open)}
+        className={cn(
+          'w-full h-14 rounded-m3-md border px-4 flex items-center justify-between',
+          'bg-transparent transition-all duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
+          'text-left cursor-pointer',
+          disabled ? 'opacity-38 cursor-not-allowed' : '',
+          error
+            ? 'border-m3-error'
+            : open
+              ? 'border-m3-primary'
+              : 'border-m3-outline hover:border-m3-on-surface',
+          className
+        )}
+      >
+        <div className="flex flex-col flex-1 min-w-0">
+          <span className={cn(
+            'transition-all duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
+            value
+              ? 'text-xs text-m3-on-surface-variant mt-0.5'
+              : 'text-m3-body-lg text-m3-on-surface-variant'
+          )}>
+            {label}
+            {required && <span className="ml-0.5 text-m3-error">*</span>}
+          </span>
+          {value && (
+            <span className="text-m3-body-lg text-m3-on-surface truncate">
+              {selected?.label || value}
+            </span>
+          )}
+        </div>
+        <svg
+          className={cn(
+            'w-5 h-5 text-m3-on-surface-variant transition-transform duration-200',
+            open && 'rotate-180'
+          )}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M7 10l5 5 5-5" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className={cn(
+          'absolute z-50 w-full mt-1',
+          'bg-m3-surface-container rounded-m3-md shadow-m3-2',
+          'py-2 max-h-60 overflow-y-auto',
+          'animate-[m3-scale-in_var(--m3-duration-medium1)_var(--m3-easing-emphasized-decelerate)]'
+        )}>
+          {options.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => {
+                onChange({ target: { value: option.value, name: 'select' } });
+                setOpen(false);
+              }}
+              className={cn(
+                'w-full px-4 py-3 text-left text-m3-body-lg',
+                'transition-colors duration-100 cursor-pointer',
+                option.value === value
+                  ? 'bg-m3-secondary-container text-m3-on-secondary-container font-medium'
+                  : 'text-m3-on-surface hover:bg-m3-on-surface/8'
+              )}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {(helperText || error) && (
+        <p className={cn(
+          'mt-1 ml-4 text-m3-body-sm',
+          error ? 'text-m3-error' : 'text-m3-on-surface-variant'
+        )}>
+          {error || helperText}
+        </p>
+      )}
+    </div>
+  );
+}

@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../lib/utils';
+import M3Button from '../components/ui/m3/M3Button';
+import M3IconButton from '../components/ui/m3/M3IconButton';
+import M3TextField from '../components/ui/m3/M3TextField';
+import M3Card from '../components/ui/m3/M3Card';
+import M3Chip from '../components/ui/m3/M3Chip';
+import M3Snackbar from '../components/ui/m3/M3Snackbar';
+import M3Dialog from '../components/ui/m3/M3Dialog';
+import './m3-admin.css';
 
 const initialFormData = {
   make: '',
@@ -20,6 +28,51 @@ const initialFormData = {
   interior_images: [],
 };
 
+const CAR_BRANDS = [
+  'Maruti Suzuki','Hyundai','Tata','Mahindra','Toyota','Kia','Honda','MG',
+  'Volkswagen','Skoda','Renault','Nissan','Jeep','Citroen','Ford','Chevrolet',
+  'Force','Isuzu','BYD','BMW','Mercedes-Benz','Audi','Lexus','Volvo','Porsche',
+  'Land Rover','Jaguar','Mini','Rolls-Royce','Bentley','Maserati','Lamborghini',
+  'Ferrari','Aston Martin','McLaren','Other'
+];
+
+const FUEL_TYPES = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
+const TRANSMISSIONS = [
+  { value: 'Auto', label: 'Automatic' },
+  { value: 'Manual', label: 'Manual' },
+];
+const OWNERSHIPS = [
+  { value: '1st', label: '1st Owner' },
+  { value: '2nd', label: '2nd Owner' },
+  { value: '3rd+', label: '3rd+ Owner' },
+];
+const REGISTRATIONS = [
+  { value: 'HR', label: 'HR — Haryana' },
+  { value: 'DL', label: 'DL — Delhi' },
+  { value: 'MH', label: 'MH — Maharashtra' },
+  { value: 'KA', label: 'KA — Karnataka' },
+  { value: 'TN', label: 'TN — Tamil Nadu' },
+  { value: 'UP', label: 'UP — Uttar Pradesh' },
+  { value: 'RJ', label: 'RJ — Rajasthan' },
+  { value: 'GJ', label: 'GJ — Gujarat' },
+  { value: 'PB', label: 'PB — Punjab' },
+  { value: 'AP', label: 'AP — Andhra Pradesh' },
+  { value: 'TS', label: 'TS — Telangana' },
+  { value: 'KL', label: 'KL — Kerala' },
+  { value: 'WB', label: 'WB — West Bengal' },
+  { value: 'MP', label: 'MP — Madhya Pradesh' },
+  { value: 'BR', label: 'BR — Bihar' },
+  { value: 'OR', label: 'OR — Odisha' },
+  { value: 'CG', label: 'CG — Chhattisgarh' },
+  { value: 'JH', label: 'JH — Jharkhand' },
+  { value: 'UA', label: 'UA — Uttarakhand' },
+  { value: 'HP', label: 'HP — Himachal Pradesh' },
+  { value: 'JK', label: 'JK — Jammu & Kashmir' },
+  { value: 'GA', label: 'GA — Goa' },
+  { value: 'CH', label: 'CH — Chandigarh' },
+  { value: 'OTHER', label: 'Other' },
+];
+
 const AdminPage = () => {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState('');
@@ -31,13 +84,17 @@ const AdminPage = () => {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(initialFormData);
   const [formKey, setFormKey] = useState(0);
-  
+
   const [mainImageFile, setMainImageFile] = useState(null);
   const [exteriorFiles, setExteriorFiles] = useState([]);
   const [interiorFiles, setInteriorFiles] = useState([]);
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState('');
+  const [activeTab, setActiveTab] = useState('inventory');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', type: 'default' });
+  const [deleteDialog, setDeleteDialog] = useState({ open: false, carId: null, carName: '' });
 
   useEffect(() => {
     document.body.style.paddingBottom = '0';
@@ -66,11 +123,9 @@ const AdminPage = () => {
     e.preventDefault();
     setAuthError('');
     setAuthLoading(true);
-
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-
       if (data.user.email !== (import.meta.env.VITE_ADMIN_EMAIL || 'automobilegautam@gmail.com')) {
         await supabase.auth.signOut();
         setAuthError('Access denied. This email is not authorized.');
@@ -88,17 +143,12 @@ const AdminPage = () => {
     setUser(null);
   };
 
-  const showTemporaryMessage = (msg) => {
-    setMessage(msg);
-    setTimeout(() => setMessage(''), 4000);
-  };
-
   useEffect(() => {
     if (user) fetchCars();
   }, [user]);
 
   const fetchCars = async () => {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('cars')
       .select('*')
       .order('created_at', { ascending: false });
@@ -131,6 +181,7 @@ const AdminPage = () => {
     setExteriorFiles([]);
     setInteriorFiles([]);
     setFormKey(prev => prev + 1);
+    setActiveTab('add');
     window.scrollTo(0, 0);
   };
 
@@ -155,35 +206,41 @@ const AdminPage = () => {
     await supabase.storage.from('car-images').remove(validPaths);
   };
 
-  const handleDelete = async (carId) => {
-    if (window.confirm('Are you sure you want to delete this car? This action cannot be undone.')) {
-      try {
-        const { data: car, error: fetchError } = await supabase
-          .from('cars')
-          .select('image_url, exterior_images, interior_images')
-          .eq('id', carId)
-          .single();
+  const handleDeleteClick = (car) => {
+    setDeleteDialog({
+      open: true,
+      carId: car.id,
+      carName: `${car.year} ${car.make} ${car.model}`,
+    });
+  };
 
-        if (fetchError) throw new Error(`Fetch failed: ${fetchError.message}`);
+  const handleDeleteConfirm = async () => {
+    const { carId } = deleteDialog;
+    setDeleteDialog({ open: false, carId: null, carName: '' });
+    try {
+      const { data: car, error: fetchError } = await supabase
+        .from('cars')
+        .select('image_url, exterior_images, interior_images')
+        .eq('id', carId)
+        .single();
+      if (fetchError) throw new Error(`Fetch failed: ${fetchError.message}`);
 
-        const allPaths = [
-          extractStoragePath(car?.image_url),
-          ...(car?.exterior_images || []).map(extractStoragePath),
-          ...(car?.interior_images || []).map(extractStoragePath),
-        ];
+      const allPaths = [
+        extractStoragePath(car?.image_url),
+        ...(car?.exterior_images || []).map(extractStoragePath),
+        ...(car?.interior_images || []).map(extractStoragePath),
+      ];
+      await deleteStorageFiles(allPaths);
 
-        await deleteStorageFiles(allPaths);
+      const { error } = await supabase.from('cars').delete().eq('id', carId);
+      if (error) throw new Error(`Delete failed: ${error.message}`);
 
-        const { error } = await supabase.from('cars').delete().eq('id', carId);
-        if (error) throw new Error(`Delete failed: ${error.message}`);
-        
-        showTemporaryMessage('Car and images deleted successfully!');
-        if (editingId === carId) handleCancelEdit();
-        fetchCars();
-      } catch (error) {
-        console.error(error);
-        setMessage(error.message);
-      }
+      setSnackbar({ open: true, message: 'Car deleted successfully', type: 'success' });
+      if (editingId === carId) handleCancelEdit();
+      fetchCars();
+    } catch (error) {
+      console.error(error);
+      setSnackbar({ open: true, message: error.message, type: 'error' });
     }
   };
 
@@ -204,8 +261,6 @@ const AdminPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setMessage('');
-
     try {
       let finalMainUrl = formData.image_url;
       let finalExterior = [...formData.exterior_images];
@@ -261,321 +316,707 @@ const AdminPage = () => {
       if (editingId) {
         const { error } = await supabase.from('cars').update(payload).eq('id', editingId);
         if (error) throw new Error(`Update failed: ${error.message}`);
-        showTemporaryMessage('Car updated successfully!');
+        setSnackbar({ open: true, message: 'Car updated successfully', type: 'success' });
       } else {
         const { error } = await supabase.from('cars').insert([payload]);
         if (error) throw new Error(`Insert failed: ${error.message}`);
-        showTemporaryMessage('Car added successfully!');
+        setSnackbar({ open: true, message: 'Car added successfully', type: 'success' });
       }
 
       handleCancelEdit();
       fetchCars();
     } catch (error) {
       console.error(error);
-      showTemporaryMessage(error.message);
+      setSnackbar({ open: true, message: error.message, type: 'error' });
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // ── Login View ──
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white px-4 py-12 sm:p-8">
-        <div className="max-w-md mx-auto sm:mt-20">
-          <div className="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-xl">
-            <h1 className="text-xl sm:text-2xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
+      <div className="m3-admin min-h-screen bg-m3-surface flex items-center justify-center p-4">
+        <M3Card variant="elevated" className="w-full max-w-md p-8">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-m3-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h1 className="text-m3-headline-lg text-m3-on-surface font-semibold">
               Admin Panel
             </h1>
-            <p className="text-gray-400 text-xs sm:text-sm text-center mb-6">Sign in to manage your inventory</p>
+            <p className="text-m3-body-lg text-m3-on-surface-variant mt-1">
+              Sign in to manage your inventory
+            </p>
+          </div>
 
-            <form onSubmit={handleAuth} className="space-y-4">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email address"
-                required
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 text-sm sm:text-base"
-                autoFocus
-              />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password (min 6 characters)"
-                required
-                minLength={6}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 text-sm sm:text-base"
-              />
-              {authError && <p className="text-red-400 text-xs sm:text-sm text-center">{authError}</p>}
-              {message && <p className="text-green-400 text-xs sm:text-sm text-center">{message}</p>}
-              <button
-                type="submit"
-                disabled={authLoading}
-                className="w-full py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition disabled:opacity-50 text-sm sm:text-base"
-              >
-                {authLoading ? 'Please wait...' : 'Login'}
-              </button>
-            </form>
+          <form onSubmit={handleAuth} className="space-y-4">
+            <M3TextField
+              label="Email address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoFocus
+              icon={
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              }
+            />
+            <M3TextField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              icon={
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+              }
+            />
 
-            <Link to="/" className="block text-center text-gray-400 hover:text-white mt-4 text-xs sm:text-sm transition">
-              &larr; Back to Home
+            {authError && (
+              <div className="flex items-center gap-2 p-3 rounded-m3-md bg-m3-error-container text-m3-on-error-container text-m3-body-sm">
+                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                </svg>
+                {authError}
+              </div>
+            )}
+
+            <M3Button
+              type="submit"
+              variant="filled"
+              size="lg"
+              disabled={authLoading}
+              className="w-full"
+            >
+              {authLoading ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Please wait...
+                </span>
+              ) : 'Sign In'}
+            </M3Button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <Link
+              to="/"
+              className="text-m3-body-md text-m3-primary hover:underline inline-flex items-center gap-1"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              Back to Home
             </Link>
           </div>
-        </div>
+        </M3Card>
       </div>
     );
   }
 
+  // ── Admin Dashboard ──
+  const navItems = [
+    { id: 'inventory', label: 'Inventory', icon: (
+      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </svg>
+    )},
+    { id: 'add', label: 'Add Car', icon: (
+      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 8v8M8 12h8" />
+      </svg>
+    )},
+    { id: 'settings', label: 'Account', icon: (
+      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    )},
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white px-4 py-6 sm:p-8">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-        
-        {/* Form Column */}
-        <div>
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6 sm:mb-8">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
-              {editingId ? 'Edit Car' : 'Add New Car'}
-            </h1>
-            <div className="flex items-center gap-3 sm:gap-4">
-              <span className="text-[10px] sm:text-xs text-gray-500 truncate max-w-[120px] sm:max-w-none">{user.email}</span>
-              <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 text-xs sm:text-sm transition">
-                Logout
-              </button>
-              <Link to="/" className="text-gray-400 hover:text-white text-xs sm:text-sm transition">
-                &larr; Home
+    <div className="m3-admin min-h-screen bg-m3-surface flex">
+      {/* ── Desktop Navigation Rail ── */}
+      <nav className="hidden lg:flex flex-col items-center w-[80px] bg-m3-surface-container-low py-4 border-r border-m3-outline-variant">
+        <div className="mb-6">
+          <M3IconButton variant="standard" size="md">
+            <svg className="w-6 h-6 text-m3-primary" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+          </M3IconButton>
+        </div>
+        <div className="flex flex-col gap-1 flex-1">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                if (item.id === 'add') handleCancelEdit();
+              }}
+              className={`flex flex-col items-center gap-1 py-2 px-1 rounded-m3-lg w-[72px] transition-all duration-200 ${
+                activeTab === item.id
+                  ? 'bg-m3-secondary-container'
+                  : 'hover:bg-m3-on-surface/8'
+              }`}
+            >
+              <div className={`flex items-center justify-center w-14 h-8 rounded-m3-full transition-all ${
+                activeTab === item.id
+                  ? 'text-m3-on-secondary-container'
+                  : 'text-m3-on-surface-variant'
+              }`}>
+                {item.icon}
+              </div>
+              <span className={`text-m3-label-sm ${
+                activeTab === item.id
+                  ? 'text-m3-on-surface font-medium'
+                  : 'text-m3-on-surface-variant'
+              }`}>
+                {item.label}
+              </span>
+            </button>
+          ))}
+        </div>
+        <M3IconButton variant="standard" size="md" onClick={handleLogout} title="Logout">
+          <svg className="w-6 h-6 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+          </svg>
+        </M3IconButton>
+      </nav>
+
+      {/* ── Mobile Bottom Navigation ── */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-m3-surface-container border-t border-m3-outline-variant">
+        <div className="flex items-center justify-around h-16">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                if (item.id === 'add') handleCancelEdit();
+              }}
+              className="flex flex-col items-center gap-0.5 py-1 px-3"
+            >
+              <div className={`flex items-center justify-center w-14 h-8 rounded-m3-full transition-all ${
+                activeTab === item.id
+                  ? 'bg-m3-secondary-container text-m3-on-secondary-container'
+                  : 'text-m3-on-surface-variant'
+              }`}>
+                {item.icon}
+              </div>
+              <span className={`text-m3-label-xs ${
+                activeTab === item.id
+                  ? 'text-m3-on-surface font-medium'
+                  : 'text-m3-on-surface-variant'
+              }`}>
+                {item.label}
+              </span>
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      {/* ── Main Content ── */}
+      <main className="flex-1 min-h-screen pb-20 lg:pb-0">
+        {/* ── Top App Bar ── */}
+        <header className="sticky top-0 z-40 bg-m3-surface/95 backdrop-blur-md border-b border-m3-outline-variant">
+          <div className="flex items-center justify-between h-16 px-4 lg:px-6">
+            <div className="flex items-center gap-3">
+              <M3IconButton variant="standard" size="sm" className="lg:hidden">
+                <svg className="w-5 h-5 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </M3IconButton>
+              <h1 className="text-m3-title-lg text-m3-on-surface font-semibold">
+                {activeTab === 'inventory' && 'Inventory'}
+                {activeTab === 'add' && (editingId ? 'Edit Car' : 'Add New Car')}
+                {activeTab === 'settings' && 'Account'}
+              </h1>
+            </div>
+            <div className="flex items-center gap-2">
+              <M3Chip
+                variant="suggestion"
+                label={user.email}
+                className="hidden sm:inline-flex max-w-[200px] truncate"
+              />
+              <M3IconButton variant="standard" size="sm" onClick={handleLogout} title="Logout">
+                <svg className="w-5 h-5 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+                </svg>
+              </M3IconButton>
+              <Link to="/">
+                <M3IconButton variant="standard" size="sm" title="Back to Home">
+                  <svg className="w-5 h-5 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                </M3IconButton>
               </Link>
             </div>
           </div>
+        </header>
 
-          {message && (
-            <div className={`p-4 mb-6 rounded ${message.includes('success') ? 'bg-green-600/20 text-green-400 border border-green-600/50' : 'bg-red-600/20 text-red-400 border border-red-600/50'}`}>
-              {message}
+        {/* ── Content Area ── */}
+        <div className="p-4 lg:p-6">
+
+          {/* ═══ INVENTORY TAB ═══ */}
+          {activeTab === 'inventory' && (
+            <div className="animate-[m3-fade-in_var(--m3-duration-medium2)_var(--m3-easing-emphasized-decelerate)]">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <p className="text-m3-body-lg text-m3-on-surface-variant">
+                    {cars.length} {cars.length === 1 ? 'vehicle' : 'vehicles'} in inventory
+                  </p>
+                </div>
+                <M3Button
+                  variant="filled"
+                  size="md"
+                  onClick={() => { setActiveTab('add'); handleCancelEdit(); }}
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                  Add Car
+                </M3Button>
+              </div>
+
+              {cars.length === 0 ? (
+                <M3Card variant="outlined" className="p-12 text-center">
+                  <div className="w-16 h-16 rounded-m3-full bg-m3-surface-container-highest flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                    </svg>
+                  </div>
+                  <p className="text-m3-body-lg text-m3-on-surface-variant mb-4">No cars in inventory yet</p>
+                  <M3Button variant="tonal" onClick={() => { setActiveTab('add'); handleCancelEdit(); }}>
+                    Add your first car
+                  </M3Button>
+                </M3Card>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {cars.map((car, idx) => (
+                    <M3Card
+                      key={car.id}
+                      variant="elevated"
+                      className="group"
+                      style={{ animationDelay: `${idx * 40}ms` }}
+                    >
+                      <div className="flex items-start gap-3 p-4">
+                        {car.image_url ? (
+                          <img
+                            src={car.image_url}
+                            alt={`${car.year} ${car.make} ${car.model}`}
+                            className="w-20 h-14 object-cover rounded-m3-sm flex-shrink-0"
+                          />
+                        ) : (
+                          <div className="w-20 h-14 rounded-m3-sm bg-m3-surface-container-highest flex items-center justify-center flex-shrink-0">
+                            <svg className="w-6 h-6 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                              <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-m3-title-sm text-m3-on-surface font-medium truncate">
+                            {car.year} {car.make} {car.model}
+                          </h3>
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-0.5">
+                            {formatPrice(car.price)}
+                          </p>
+                          <div className="flex items-center gap-2 mt-2 flex-wrap">
+                            {car.registration && (
+                              <M3Chip variant="suggestion" label={car.registration} className="h-6 text-m3-label-sm" />
+                            )}
+                            {car.status === 'sold' ? (
+                              <M3Chip variant="filter" label="Sold" className="h-6 text-m3-label-sm" />
+                            ) : (
+                              <M3Chip variant="filter" selected label="Available" className="h-6 text-m3-label-sm" />
+                            )}
+                            {car.fuel && (
+                              <M3Chip variant="suggestion" label={car.fuel} className="h-6 text-m3-label-sm" />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex border-t border-m3-outline-variant">
+                        <button
+                          onClick={() => handleEdit(car)}
+                          className="flex-1 py-3 text-m3-label-lg text-m3-primary hover:bg-m3-primary/8 transition-colors flex items-center justify-center gap-2"
+                        >
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                          Edit
+                        </button>
+                        <div className="w-px bg-m3-outline-variant" />
+                        <button
+                          onClick={() => handleDeleteClick(car)}
+                          className="flex-1 py-3 text-m3-label-lg text-m3-error hover:bg-m3-error/8 transition-colors flex items-center justify-center gap-2"
+                        >
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                          Delete
+                        </button>
+                      </div>
+                    </M3Card>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-xl space-y-5 sm:space-y-6">
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Make</label>
-                <select name="make" value={formData.make} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
-                  <option value="">Select Brand</option>
-                  <option value="Maruti Suzuki">Maruti Suzuki</option>
-                  <option value="Hyundai">Hyundai</option>
-                  <option value="Tata">Tata</option>
-                  <option value="Mahindra">Mahindra</option>
-                  <option value="Toyota">Toyota</option>
-                  <option value="Kia">Kia</option>
-                  <option value="Honda">Honda</option>
-                  <option value="MG">MG</option>
-                  <option value="Volkswagen">Volkswagen</option>
-                  <option value="Skoda">Skoda</option>
-                  <option value="Renault">Renault</option>
-                  <option value="Nissan">Nissan</option>
-                  <option value="Jeep">Jeep</option>
-                  <option value="Citroen">Citroen</option>
-                  <option value="Ford">Ford</option>
-                  <option value="Chevrolet">Chevrolet</option>
-                  <option value="Force">Force</option>
-                  <option value="Isuzu">Isuzu</option>
-                  <option value="BYD">BYD</option>
-                  <option value="BMW">BMW</option>
-                  <option value="Mercedes-Benz">Mercedes-Benz</option>
-                  <option value="Audi">Audi</option>
-                  <option value="Lexus">Lexus</option>
-                  <option value="Volvo">Volvo</option>
-                  <option value="Porsche">Porsche</option>
-                  <option value="Land Rover">Land Rover</option>
-                  <option value="Jaguar">Jaguar</option>
-                  <option value="Mini">Mini</option>
-                  <option value="Rolls-Royce">Rolls-Royce</option>
-                  <option value="Bentley">Bentley</option>
-                  <option value="Maserati">Maserati</option>
-                  <option value="Lamborghini">Lamborghini</option>
-                  <option value="Ferrari">Ferrari</option>
-                  <option value="Aston Martin">Aston Martin</option>
-                  <option value="McLaren">McLaren</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Model</label>
-                <input type="text" name="model" value={formData.model} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" placeholder="Supra" />
-              </div>
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Year</label>
-                <input type="number" name="year" value={formData.year} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" />
-              </div>
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Price (₹)</label>
-                <input type="number" name="price" value={formData.price} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" />
-              </div>
-            </div>
+          {/* ═══ ADD/EDIT CAR TAB ═══ */}
+          {activeTab === 'add' && (
+            <div className="max-w-3xl animate-[m3-fade-in_var(--m3-duration-medium2)_var(--m3-easing-emphasized-decelerate)]">
+              <form onSubmit={handleSubmit}>
+                {/* ── Vehicle Details Section ── */}
+                <M3Card variant="outlined" className="mb-4">
+                  <div className="p-4 border-b border-m3-outline-variant">
+                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2">
+                      <svg className="w-5 h-5 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                        <path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                      </svg>
+                      Vehicle Details
+                    </h2>
+                  </div>
+                  <div className="p-4 space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Make</label>
+                        <select
+                          name="make"
+                          value={formData.make}
+                          onChange={handleChange}
+                          required
+                          className="w-full h-14 rounded-m3-md border border-m3-outline bg-transparent px-4 text-m3-body-lg text-m3-on-surface appearance-none cursor-pointer hover:border-m3-on-surface focus:border-m3-primary focus:outline-none transition-colors"
+                        >
+                          <option value="" className="bg-m3-surface-container text-m3-on-surface">Select Brand</option>
+                          {CAR_BRANDS.map(b => (
+                            <option key={b} value={b} className="bg-m3-surface-container text-m3-on-surface">{b}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <M3TextField
+                        label="Model"
+                        name="model"
+                        value={formData.model}
+                        onChange={handleChange}
+                        required
+                        placeholder="e.g. Supra"
+                      />
+                      <M3TextField
+                        label="Year"
+                        type="number"
+                        name="year"
+                        value={formData.year}
+                        onChange={handleChange}
+                        required
+                      />
+                      <M3TextField
+                        label="Price (INR)"
+                        type="number"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                </M3Card>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Status</label>
-                <select name="status" value={formData.status} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
-                  <option value="available">Available</option>
-                  <option value="sold">Sold</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">KM Driven</label>
-                <input type="text" name="km" value={formData.km} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" placeholder="25,000" />
-              </div>
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Fuel Type</label>
-                <select name="fuel" value={formData.fuel} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
-                  <option value="">Select</option>
-                  <option value="Petrol">Petrol</option>
-                  <option value="Diesel">Diesel</option>
-                  <option value="Electric">Electric</option>
-                  <option value="Hybrid">Hybrid</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Transmission</label>
-                <select name="transmission" value={formData.transmission} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
-                  <option value="">Select</option>
-                  <option value="Auto">Automatic</option>
-                  <option value="Manual">Manual</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Ownership</label>
-                <select name="owner" value={formData.owner} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
-                  <option value="1st">1st Owner</option>
-                  <option value="2nd">2nd Owner</option>
-                  <option value="3rd+">3rd+ Owner</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Color</label>
-                <input type="text" name="color" value={formData.color} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" placeholder="e.g. Pearl White" />
-              </div>
-            </div>
+                {/* ── Specifications Section ── */}
+                <M3Card variant="outlined" className="mb-4">
+                  <div className="p-4 border-b border-m3-outline-variant">
+                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2">
+                      <svg className="w-5 h-5 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      Specifications
+                    </h2>
+                  </div>
+                  <div className="p-4 space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Status</label>
+                        <div className="flex gap-2">
+                          <M3Chip
+                            variant="filter"
+                            selected={formData.status === 'available'}
+                            label="Available"
+                            onClick={() => setFormData({ ...formData, status: 'available' })}
+                          />
+                          <M3Chip
+                            variant="filter"
+                            selected={formData.status === 'sold'}
+                            label="Sold"
+                            onClick={() => setFormData({ ...formData, status: 'sold' })}
+                          />
+                        </div>
+                      </div>
+                      <M3TextField
+                        label="KM Driven"
+                        name="km"
+                        value={formData.km}
+                        onChange={handleChange}
+                        placeholder="e.g. 25,000"
+                      />
+                      <div>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Fuel Type</label>
+                        <div className="flex gap-2 flex-wrap">
+                          {FUEL_TYPES.map(f => (
+                            <M3Chip
+                              key={f}
+                              variant="filter"
+                              selected={formData.fuel === f}
+                              label={f}
+                              onClick={() => setFormData({ ...formData, fuel: f })}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Transmission</label>
+                        <div className="flex gap-2">
+                          {TRANSMISSIONS.map(t => (
+                            <M3Chip
+                              key={t.value}
+                              variant="filter"
+                              selected={formData.transmission === t.value}
+                              label={t.label}
+                              onClick={() => setFormData({ ...formData, transmission: t.value })}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Ownership</label>
+                        <div className="flex gap-2">
+                          {OWNERSHIPS.map(o => (
+                            <M3Chip
+                              key={o.value}
+                              variant="filter"
+                              selected={formData.owner === o.value}
+                              label={o.label}
+                              onClick={() => setFormData({ ...formData, owner: o.value })}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <M3TextField
+                        label="Color"
+                        name="color"
+                        value={formData.color}
+                        onChange={handleChange}
+                        placeholder="e.g. Pearl White"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Registration State</label>
+                      <select
+                        name="registration"
+                        value={formData.registration}
+                        onChange={handleChange}
+                        className="w-full h-14 rounded-m3-md border border-m3-outline bg-transparent px-4 text-m3-body-lg text-m3-on-surface appearance-none cursor-pointer hover:border-m3-on-surface focus:border-m3-primary focus:outline-none transition-colors"
+                      >
+                        <option value="" className="bg-m3-surface-container text-m3-on-surface">Select State</option>
+                        {REGISTRATIONS.map(r => (
+                          <option key={r.value} value={r.value} className="bg-m3-surface-container text-m3-on-surface">
+                            {r.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </M3Card>
 
-            <div>
-              <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Registration</label>
-              <select name="registration" value={formData.registration} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
-                <option value="">Select</option>
-                <option value="HR">HR (Haryana)</option>
-                <option value="DL">DL (Delhi)</option>
-                <option value="MH">MH (Maharashtra)</option>
-                <option value="KA">KA (Karnataka)</option>
-                <option value="TN">TN (Tamil Nadu)</option>
-                <option value="UP">UP (Uttar Pradesh)</option>
-                <option value="RJ">RJ (Rajasthan)</option>
-                <option value="GJ">GJ (Gujarat)</option>
-                <option value="PB">PB (Punjab)</option>
-                <option value="AP">AP (Andhra Pradesh)</option>
-                <option value="TS">TS (Telangana)</option>
-                <option value="KL">KL (Kerala)</option>
-                <option value="WB">WB (West Bengal)</option>
-                <option value="MP">MP (Madhya Pradesh)</option>
-                <option value="BR">BR (Bihar)</option>
-                <option value="OR">OR (Odisha)</option>
-                <option value="CG">CG (Chhattisgarh)</option>
-                <option value="JH">JH (Jharkhand)</option>
-                <option value="UA">UA (Uttarakhand)</option>
-                <option value="HP">HP (Himachal Pradesh)</option>
-                <option value="JK">JK (Jammu & Kashmir)</option>
-                <option value="GA">GA (Goa)</option>
-                <option value="MN">MN (Manipur)</option>
-                <option value="NL">NL (Nagaland)</option>
-                <option value="MZ">MZ (Mizoram)</option>
-                <option value="SK">SK (Sikkim)</option>
-                <option value="AR">AR (Arunachal Pradesh)</option>
-                <option value="ML">ML (Meghalaya)</option>
-                <option value="TR">TR (Tripura)</option>
-                <option value="PY">PY (Puducherry)</option>
-                <option value="CH">CH (Chandigarh)</option>
-                <option value="AN">AN (Andaman & Nicobar)</option>
-                <option value="LD">LD (Lakshadweep)</option>
-                <option value="DD">DD (Dadra & Nagar Haveli and Daman & Diu)</option>
-                <option value="OTHER">Other</option>
-              </select>
-            </div>
+                {/* ── Images Section ── */}
+                <M3Card variant="outlined" className="mb-4">
+                  <div className="p-4 border-b border-m3-outline-variant">
+                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2">
+                      <svg className="w-5 h-5 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      Images
+                    </h2>
+                  </div>
+                  <div className="p-4 space-y-4">
+                    <div>
+                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2">
+                        Main Inventory Image
+                      </label>
+                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-6 text-center hover:border-m3-primary transition-colors">
+                        <input
+                          key={`main-${formKey}`}
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => setMainImageFile(e.target.files[0])}
+                          className="w-full text-m3-body-sm text-m3-on-surface-variant"
+                        />
+                        {formData.image_url && !mainImageFile && (
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-2">
+                            Current image will be kept
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2">
+                        Exterior Details (Multiple)
+                      </label>
+                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-6 text-center hover:border-m3-primary transition-colors">
+                        <input
+                          key={`ext-${formKey}`}
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={(e) => setExteriorFiles(e.target.files)}
+                          className="w-full text-m3-body-sm text-m3-on-surface-variant"
+                        />
+                        {formData.exterior_images.length > 0 && (
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-2">
+                            {formData.exterior_images.length} existing images
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2">
+                        Interior Details (Multiple)
+                      </label>
+                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-6 text-center hover:border-m3-primary transition-colors">
+                        <input
+                          key={`int-${formKey}`}
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={(e) => setInteriorFiles(e.target.files)}
+                          className="w-full text-m3-body-sm text-m3-on-surface-variant"
+                        />
+                        {formData.interior_images.length > 0 && (
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-2">
+                            {formData.interior_images.length} existing images
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </M3Card>
 
-            <div className="space-y-4 pt-4 border-t border-gray-700">
-              <div>
-                <label className="block text-xs sm:text-sm font-bold text-red-400 mb-1">Main Inventory Image (Single)</label>
-                <input key={`main-${formKey}`} type="file" accept="image/*" onChange={(e) => setMainImageFile(e.target.files[0])} className="w-full text-xs sm:text-sm" />
-                {formData.image_url && !mainImageFile && <p className="text-[10px] sm:text-xs text-gray-500 mt-1">Current main image will be kept.</p>}
-              </div>
-
-              <div>
-                <label className="block text-xs sm:text-sm font-bold text-red-400 mb-1">Exterior Details (Multiple)</label>
-                <input key={`ext-${formKey}`} type="file" accept="image/*" multiple onChange={(e) => setExteriorFiles(e.target.files)} className="w-full text-xs sm:text-sm" />
-                {formData.exterior_images.length > 0 && <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{formData.exterior_images.length} existing images.</p>}
-              </div>
-
-              <div>
-                <label className="block text-xs sm:text-sm font-bold text-red-400 mb-1">Interior Details (Multiple)</label>
-                <input key={`int-${formKey}`} type="file" accept="image/*" multiple onChange={(e) => setInteriorFiles(e.target.files)} className="w-full text-xs sm:text-sm" />
-                {formData.interior_images.length > 0 && <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{formData.interior_images.length} existing images.</p>}
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 pt-4">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex-1 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition text-sm sm:text-base"
-              >
-                {isSubmitting ? 'Saving...' : (editingId ? 'Update Car' : 'Add Car')}
-              </button>
-              {editingId && (
-                <button
-                  type="button"
-                  onClick={handleCancelEdit}
-                  className="px-6 py-3 bg-gray-600 hover:bg-gray-500 rounded-lg font-bold transition text-sm sm:text-base"
-                >
-                  Cancel
-                </button>
-              )}
-            </div>
-          </form>
-        </div>
-
-        {/* List Column */}
-        <div>
-          <h2 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-300">Manage Inventory</h2>
-          <div className="space-y-3 max-h-[80vh] overflow-y-auto pr-1 sm:pr-2">
-            {cars.map((car) => (
-              <div key={car.id} className="bg-gray-800 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border border-gray-700 hover:border-red-900 transition">
-                <div className="flex items-center gap-3 min-w-0">
-                  {car.image_url && (
-                    <img src={car.image_url} alt={car.model} className="w-14 h-10 sm:w-16 sm:h-12 object-cover rounded-lg flex-shrink-0" />
+                {/* ── Action Buttons ── */}
+                <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                  <M3Button
+                    type="submit"
+                    variant="filled"
+                    size="lg"
+                    disabled={isSubmitting}
+                    className="flex-1"
+                  >
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        </svg>
+                        Saving...
+                      </span>
+                    ) : editingId ? 'Update Car' : 'Add Car'}
+                  </M3Button>
+                  {editingId && (
+                    <M3Button
+                      type="button"
+                      variant="outlined"
+                      size="lg"
+                      onClick={handleCancelEdit}
+                    >
+                      Cancel
+                    </M3Button>
                   )}
-                  <div className="min-w-0">
-                    <h3 className="font-bold text-sm sm:text-base truncate">{car.year} {car.make} {car.model}</h3>
-                    <p className="text-[10px] sm:text-sm text-gray-400 truncate">{formatPrice(car.price)} {car.registration && <span className="ml-1 sm:ml-2 text-blue-400">• {car.registration}</span>} {car.status === 'sold' && <span className="ml-1 sm:ml-2 text-red-500 font-bold">(SOLD)</span>}</p>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* ═══ SETTINGS TAB ═══ */}
+          {activeTab === 'settings' && (
+            <div className="max-w-lg animate-[m3-fade-in_var(--m3-duration-medium2)_var(--m3-easing-emphasized-decelerate)]">
+              <M3Card variant="outlined">
+                <div className="p-6 text-center">
+                  <div className="w-20 h-20 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-10 h-10 text-m3-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-m3-headline-sm text-m3-on-surface font-semibold mb-1">
+                    Admin Account
+                  </h2>
+                  <p className="text-m3-body-lg text-m3-on-surface-variant mb-6">
+                    {user.email}
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-4 rounded-m3-md bg-m3-surface-container">
+                      <span className="text-m3-body-lg text-m3-on-surface">Role</span>
+                      <M3Chip variant="filter" selected label="Administrator" />
+                    </div>
+                    <div className="flex items-center justify-between p-4 rounded-m3-md bg-m3-surface-container">
+                      <span className="text-m3-body-lg text-m3-on-surface">Inventory</span>
+                      <span className="text-m3-body-lg text-m3-on-surface-variant">
+                        {cars.length} {cars.length === 1 ? 'vehicle' : 'vehicles'}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-2 sm:flex-shrink-0">
-                  <button
-                    onClick={() => handleEdit(car)}
-                    className="flex-1 sm:flex-none px-4 py-2 bg-gray-700 hover:bg-blue-600 rounded-lg transition text-xs sm:text-sm font-bold"
+                <div className="p-4 border-t border-m3-outline-variant">
+                  <M3Button
+                    variant="outlined"
+                    size="lg"
+                    onClick={handleLogout}
+                    className="w-full"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(car.id)}
-                    className="flex-1 sm:flex-none px-4 py-2 bg-gray-700 hover:bg-red-600 rounded-lg transition text-xs sm:text-sm font-bold"
-                  >
-                    Delete
-                  </button>
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+                    </svg>
+                    Sign Out
+                  </M3Button>
                 </div>
-              </div>
-            ))}
-            {cars.length === 0 && <p className="text-gray-500 text-sm">No cars uploaded yet.</p>}
-          </div>
+              </M3Card>
+            </div>
+          )}
         </div>
+      </main>
 
-      </div>
+      {/* ── Snackbar ── */}
+      <M3Snackbar
+        open={snackbar.open}
+        message={snackbar.message}
+        type={snackbar.type}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      />
+
+      {/* ── Delete Confirmation Dialog ── */}
+      <M3Dialog
+        open={deleteDialog.open}
+        title="Delete Vehicle"
+        message={`Are you sure you want to delete ${deleteDialog.carName}? This action cannot be undone and all associated images will be removed.`}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        danger
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteDialog({ open: false, carId: null, carName: '' })}
+      />
     </div>
   );
 };
