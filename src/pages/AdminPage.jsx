@@ -396,17 +396,19 @@ const AdminPage = () => {
                 variant="filled"
                 size="lg"
                 disabled={authLoading}
-                className="w-full mt-2"
+                className="w-full mt-2 relative overflow-hidden"
               >
-                {authLoading ? (
-                  <span className="flex items-center gap-2.5">
-                    <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                {authLoading && (
+                  <span className="absolute inset-0 flex items-center justify-center bg-m3-primary">
+                    <svg className="w-5 h-5 text-m3-on-primary animate-[m3-circular-rotate_1.4s_linear_infinite]" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" strokeLinecap="round" className="animate-[m3-circular-dash_1.4s_ease-in-out_infinite]" />
                     </svg>
-                    Please wait...
                   </span>
-                ) : 'Login'}
+                )}
+                <span className={`transition-opacity duration-200 ${authLoading ? 'opacity-0' : 'opacity-100'}`}>
+                  Login
+                </span>
               </M3Button>
             </form>
 
