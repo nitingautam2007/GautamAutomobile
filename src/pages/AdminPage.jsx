@@ -336,23 +336,23 @@ const AdminPage = () => {
   if (!user) {
     return (
       <div className="m3-admin min-h-screen bg-m3-surface flex items-center justify-center p-6">
-        <M3Card variant="elevated" className="w-full max-w-md">
-          <div className="p-8 sm:p-10">
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-5">
-                <svg className="w-8 h-8 text-m3-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <M3Card variant="elevated" className="w-full max-w-sm">
+          <div className="p-6 sm:p-8">
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-3">
+                <svg className="w-6 h-6 text-m3-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
-              <h1 className="text-m3-headline-lg text-m3-on-surface font-semibold">
+              <h1 className="text-m3-headline-sm text-m3-on-surface font-semibold">
                 Admin Panel
               </h1>
-              <p className="text-m3-body-lg text-m3-on-surface-variant mt-1.5">
+              <p className="text-m3-body-md text-m3-on-surface-variant mt-1">
                 Sign in to manage your inventory
               </p>
             </div>
 
-            <form onSubmit={handleAuth} className="space-y-5">
+            <form onSubmit={handleAuth} className="space-y-3">
               <M3TextField
                 label="Email address"
                 type="email"
@@ -393,9 +393,9 @@ const AdminPage = () => {
               <M3Button
                 type="submit"
                 variant="filled"
-                size="lg"
+                size="md"
                 disabled={authLoading}
-                className="w-full h-14 text-m3-title-md"
+                className="w-full"
               >
                 {authLoading ? (
                   <span className="flex items-center gap-2.5">
@@ -536,19 +536,17 @@ const AdminPage = () => {
       <main className="flex-1 min-h-screen pb-20 lg:pb-0 overflow-x-hidden">
         {/* ── Top App Bar ── */}
         <header className="sticky top-0 z-40 bg-m3-surface/95 backdrop-blur-md border-b border-m3-outline-variant">
-          <div className="flex items-center justify-between h-16 px-4 sm:px-6">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <h1 className="text-m3-title-lg text-m3-on-surface font-semibold">
-                {activeTab === 'inventory' && 'Inventory'}
-                {activeTab === 'add' && (editingId ? 'Edit Car' : 'Add New Car')}
-                {activeTab === 'settings' && 'Account'}
-              </h1>
-            </div>
-            <div className="flex items-center gap-1.5">
+          <div className="flex items-center justify-between h-14 px-4 sm:px-6">
+            <h1 className="text-m3-title-md text-m3-on-surface font-semibold truncate">
+              {activeTab === 'inventory' && 'Inventory'}
+              {activeTab === 'add' && (editingId ? 'Edit Car' : 'Add New Car')}
+              {activeTab === 'settings' && 'Account'}
+            </h1>
+            <div className="flex items-center gap-1 shrink-0">
               <M3Chip
                 variant="suggestion"
                 label={user.email}
-                className="hidden sm:inline-flex max-w-[180px]"
+                className="hidden sm:inline-flex max-w-[160px]"
               />
               <M3IconButton variant="standard" size="sm" onClick={handleLogout} title="Logout">
                 <svg className="w-5 h-5 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -671,28 +669,28 @@ const AdminPage = () => {
           {/* ═══ ADD/EDIT CAR TAB ═══ */}
           {activeTab === 'add' && (
             <div className="max-w-3xl animate-[m3-fade-in_var(--m3-duration-medium2)_var(--m3-easing-emphasized-decelerate)]">
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-3">
                 {/* ── Vehicle Details Section ── */}
                 <M3Card variant="outlined">
-                  <div className="px-5 py-4 border-b border-m3-outline-variant">
-                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2.5">
-                      <svg className="w-5 h-5 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <div className="px-4 py-3 border-b border-m3-outline-variant">
+                    <h2 className="text-m3-title-sm text-m3-on-surface font-medium flex items-center gap-2">
+                      <svg className="w-4 h-4 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
                         <path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                       </svg>
                       Vehicle Details
                     </h2>
                   </div>
-                  <div className="p-5 space-y-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="p-4 space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2 pl-1">Make</label>
+                        <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Make</label>
                         <select
                           name="make"
                           value={formData.make}
                           onChange={handleChange}
                           required
-                          className="w-full h-14 rounded-m3-md border border-m3-outline bg-transparent px-4 text-m3-body-lg text-m3-on-surface appearance-none cursor-pointer hover:border-m3-on-surface focus:outline-none focus:ring-2 focus:ring-m3-primary/20 focus:border-m3-outline transition-colors"
+                          className="w-full h-10 rounded-m3-sm border border-transparent bg-m3-surface-container-high px-3 text-m3-body-md text-m3-on-surface appearance-none cursor-pointer hover:border-m3-outline-variant focus:outline-none transition-colors"
                         >
                           <option value="" className="bg-m3-surface-container text-m3-on-surface">Select Brand</option>
                           {CAR_BRANDS.map(b => (
@@ -730,20 +728,20 @@ const AdminPage = () => {
 
                 {/* ── Specifications Section ── */}
                 <M3Card variant="outlined">
-                  <div className="px-5 py-4 border-b border-m3-outline-variant">
-                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2.5">
-                      <svg className="w-5 h-5 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <div className="px-4 py-3 border-b border-m3-outline-variant">
+                    <h2 className="text-m3-title-sm text-m3-on-surface font-medium flex items-center gap-2">
+                      <svg className="w-4 h-4 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                       Specifications
                     </h2>
                   </div>
-                  <div className="p-5 space-y-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="p-4 space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2.5 pl-1">Status</label>
-                        <div className="flex gap-2">
+                        <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Status</label>
+                        <div className="flex gap-1.5">
                           <M3Chip
                             variant="filter"
                             selected={formData.status === 'available'}
@@ -766,8 +764,8 @@ const AdminPage = () => {
                         placeholder="e.g. 25,000"
                       />
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2.5 pl-1">Fuel Type</label>
-                        <div className="flex gap-2 flex-wrap">
+                        <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Fuel Type</label>
+                        <div className="flex gap-1.5 flex-wrap">
                           {FUEL_TYPES.map(f => (
                             <M3Chip
                               key={f}
@@ -780,8 +778,8 @@ const AdminPage = () => {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2.5 pl-1">Transmission</label>
-                        <div className="flex gap-2">
+                        <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Transmission</label>
+                        <div className="flex gap-1.5">
                           {TRANSMISSIONS.map(t => (
                             <M3Chip
                               key={t.value}
@@ -794,8 +792,8 @@ const AdminPage = () => {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2.5 pl-1">Ownership</label>
-                        <div className="flex gap-2">
+                        <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Ownership</label>
+                        <div className="flex gap-1.5">
                           {OWNERSHIPS.map(o => (
                             <M3Chip
                               key={o.value}
@@ -816,12 +814,12 @@ const AdminPage = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2 pl-1">Registration State</label>
+                      <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Registration State</label>
                       <select
                         name="registration"
                         value={formData.registration}
                         onChange={handleChange}
-                        className="w-full h-14 rounded-m3-md border border-m3-outline bg-transparent px-4 text-m3-body-lg text-m3-on-surface appearance-none cursor-pointer hover:border-m3-on-surface focus:outline-none focus:ring-2 focus:ring-m3-primary/20 focus:border-m3-outline transition-colors"
+                        className="w-full h-10 rounded-m3-sm border border-transparent bg-m3-surface-container-high px-3 text-m3-body-md text-m3-on-surface appearance-none cursor-pointer hover:border-m3-outline-variant focus:outline-none transition-colors"
                       >
                         <option value="" className="bg-m3-surface-container text-m3-on-surface">Select State</option>
                         {REGISTRATIONS.map(r => (
@@ -836,69 +834,69 @@ const AdminPage = () => {
 
                 {/* ── Images Section ── */}
                 <M3Card variant="outlined">
-                  <div className="px-5 py-4 border-b border-m3-outline-variant">
-                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2.5">
-                      <svg className="w-5 h-5 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <div className="px-4 py-3 border-b border-m3-outline-variant">
+                    <h2 className="text-m3-title-sm text-m3-on-surface font-medium flex items-center gap-2">
+                      <svg className="w-4 h-4 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                       Images
                     </h2>
                   </div>
-                  <div className="p-5 space-y-5">
+                  <div className="p-4 space-y-3">
                     <div>
-                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2 pl-1">
+                      <label className="block text-m3-label-md text-m3-primary font-medium mb-1 pl-1">
                         Main Inventory Image
                       </label>
-                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-5 text-center hover:border-m3-primary transition-colors">
+                      <div className="border border-dashed border-m3-outline-variant rounded-m3-sm p-3 text-center hover:border-m3-outline transition-colors">
                         <input
                           key={`main-${formKey}`}
                           type="file"
                           accept="image/*"
                           onChange={(e) => setMainImageFile(e.target.files[0])}
-                          className="w-full text-m3-body-sm text-m3-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-m3-sm file:border-0 file:text-m3-label-lg file:font-medium file:bg-m3-primary-container file:text-m3-on-primary-container hover:file:bg-m3-primary-container/80 file:cursor-pointer"
+                          className="w-full text-m3-body-sm text-m3-on-surface-variant file:mr-3 file:py-1.5 file:px-3 file:rounded-m3-sm file:border-0 file:text-m3-label-md file:font-medium file:bg-m3-primary-container file:text-m3-on-primary-container hover:file:bg-m3-primary-container/80 file:cursor-pointer"
                         />
                         {formData.image_url && !mainImageFile && (
-                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-3">
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-2">
                             Current image will be kept
                           </p>
                         )}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2 pl-1">
+                      <label className="block text-m3-label-md text-m3-primary font-medium mb-1 pl-1">
                         Exterior Details (Multiple)
                       </label>
-                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-5 text-center hover:border-m3-primary transition-colors">
+                      <div className="border border-dashed border-m3-outline-variant rounded-m3-sm p-3 text-center hover:border-m3-outline transition-colors">
                         <input
                           key={`ext-${formKey}`}
                           type="file"
                           accept="image/*"
                           multiple
                           onChange={(e) => setExteriorFiles(e.target.files)}
-                          className="w-full text-m3-body-sm text-m3-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-m3-sm file:border-0 file:text-m3-label-lg file:font-medium file:bg-m3-primary-container file:text-m3-on-primary-container hover:file:bg-m3-primary-container/80 file:cursor-pointer"
+                          className="w-full text-m3-body-sm text-m3-on-surface-variant file:mr-3 file:py-1.5 file:px-3 file:rounded-m3-sm file:border-0 file:text-m3-label-md file:font-medium file:bg-m3-primary-container file:text-m3-on-primary-container hover:file:bg-m3-primary-container/80 file:cursor-pointer"
                         />
                         {formData.exterior_images.length > 0 && (
-                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-3">
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-2">
                             {formData.exterior_images.length} existing images
                           </p>
                         )}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2 pl-1">
+                      <label className="block text-m3-label-md text-m3-primary font-medium mb-1 pl-1">
                         Interior Details (Multiple)
                       </label>
-                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-5 text-center hover:border-m3-primary transition-colors">
+                      <div className="border border-dashed border-m3-outline-variant rounded-m3-sm p-3 text-center hover:border-m3-outline transition-colors">
                         <input
                           key={`int-${formKey}`}
                           type="file"
                           accept="image/*"
                           multiple
                           onChange={(e) => setInteriorFiles(e.target.files)}
-                          className="w-full text-m3-body-sm text-m3-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-m3-sm file:border-0 file:text-m3-label-lg file:font-medium file:bg-m3-primary-container file:text-m3-on-primary-container hover:file:bg-m3-primary-container/80 file:cursor-pointer"
+                          className="w-full text-m3-body-sm text-m3-on-surface-variant file:mr-3 file:py-1.5 file:px-3 file:rounded-m3-sm file:border-0 file:text-m3-label-md file:font-medium file:bg-m3-primary-container file:text-m3-on-primary-container hover:file:bg-m3-primary-container/80 file:cursor-pointer"
                         />
                         {formData.interior_images.length > 0 && (
-                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-3">
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-2">
                             {formData.interior_images.length} existing images
                           </p>
                         )}
@@ -912,9 +910,9 @@ const AdminPage = () => {
                   <M3Button
                     type="submit"
                     variant="filled"
-                    size="lg"
+                    size="md"
                     disabled={isSubmitting}
-                    className="w-full sm:h-14 sm:px-10 sm:text-m3-title-md"
+                    className="w-full"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2.5">
@@ -930,9 +928,8 @@ const AdminPage = () => {
                     <M3Button
                       type="button"
                       variant="outlined"
-                      size="lg"
+                      size="md"
                       onClick={handleCancelEdit}
-                      className="sm:h-14 sm:px-10 sm:text-m3-title-md"
                     >
                       Cancel
                     </M3Button>

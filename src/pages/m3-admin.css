@@ -126,11 +126,9 @@ html.light .m3-admin {
   background: var(--m3-outline);
 }
 
-/* ── M3 Focus Ring ── */
+/* ── M3 Focus Ring — Hidden for clean look ── */
 .m3-admin :focus-visible {
-  outline: 2px solid var(--m3-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: none;
 }
 
 /* ── M3 State Layer Utilities ── */

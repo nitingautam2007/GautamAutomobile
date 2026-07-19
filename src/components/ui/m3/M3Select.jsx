@@ -32,38 +32,36 @@ export default function M3Select({
         type="button"
         onClick={() => !disabled && setOpen(!open)}
         className={cn(
-          'w-full rounded-m3-md border',
-          'bg-transparent transition-all duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
+          'w-full rounded-m3-sm border',
+          'bg-m3-surface-container-high transition-colors duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
           'text-left cursor-pointer',
           disabled ? 'opacity-38 cursor-not-allowed' : '',
           error
-            ? 'border-m3-error ring-1 ring-m3-error/30'
-            : open
-              ? 'border-m3-outline ring-2 ring-m3-primary/20'
-              : 'border-m3-outline hover:border-m3-on-surface',
+            ? 'border-m3-error'
+            : 'border-transparent hover:border-m3-outline-variant',
         )}
       >
         <div className="flex items-center">
-          <div className="flex-1 min-w-0 px-4">
+          <div className="flex-1 min-w-0 px-3">
             <span className={cn(
               'block transition-all duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
               isActive
-                ? 'text-[12px] text-m3-on-surface-variant pt-[8px] pb-[2px] scale-85 origin-left'
-                : 'text-m3-body-lg text-m3-on-surface-variant pt-[16px] pb-[16px]'
+                ? 'text-[11px] text-m3-on-surface-variant pt-[3px] pb-[0px]'
+                : 'text-m3-body-md text-m3-on-surface-variant pt-[12px] pb-[12px]'
             )}>
               {label}
               {required && <span className="ml-0.5 text-m3-error">*</span>}
             </span>
             {isActive && (
-              <span className="block text-m3-body-lg text-m3-on-surface -mt-1 pb-[10px]">
+              <span className="block text-m3-body-md text-m3-on-surface -mt-0.5 pb-[6px]">
                 {selected?.label || value}
               </span>
             )}
           </div>
-          <span className="pr-4 flex items-center">
+          <span className="pr-3 flex items-center">
             <svg
               className={cn(
-                'w-5 h-5 text-m3-on-surface-variant transition-transform duration-200',
+                'w-4 h-4 text-m3-on-surface-variant transition-transform duration-200',
                 open && 'rotate-180'
               )}
               viewBox="0 0 24 24"
@@ -81,7 +79,7 @@ export default function M3Select({
         <div className={cn(
           'absolute z-50 w-full mt-1',
           'bg-m3-surface-container rounded-m3-md shadow-m3-2',
-          'py-2 max-h-60 overflow-y-auto',
+          'py-1.5 max-h-60 overflow-y-auto',
           'animate-[m3-scale-in_var(--m3-duration-medium1)_var(--m3-easing-emphasized-decelerate)]'
         )}>
           {options.map((option) => (
@@ -93,7 +91,7 @@ export default function M3Select({
                 setOpen(false);
               }}
               className={cn(
-                'w-full px-4 py-3 text-left text-m3-body-lg leading-snug',
+                'w-full px-3 py-2.5 text-left text-m3-body-md leading-snug',
                 'transition-colors duration-100 cursor-pointer',
                 option.value === value
                   ? 'bg-m3-secondary-container text-m3-on-secondary-container font-medium'
@@ -108,7 +106,7 @@ export default function M3Select({
 
       {(helperText || error) && (
         <p className={cn(
-          'mt-1 ml-4 text-m3-body-sm',
+          'mt-0.5 ml-3 text-m3-body-sm',
           error ? 'text-m3-error' : 'text-m3-on-surface-variant'
         )}>
           {error || helperText}
