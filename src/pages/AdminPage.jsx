@@ -453,7 +453,7 @@ const AdminPage = () => {
   return (
     <div className="m3-admin min-h-screen bg-m3-surface flex">
       {/* ── Desktop Navigation Rail ── */}
-      <nav className="hidden lg:flex flex-col items-center w-[80px] bg-m3-surface-container-low py-5 border-r border-m3-outline-variant shrink-0">
+      <nav className="hidden lg:flex flex-col items-center w-[80px] bg-m3-surface-container-low py-5 border-r border-m3-outline-variant shrink-0 sticky top-0 h-screen z-50">
         <div className="mb-8">
           <M3IconButton variant="standard" size="md">
             <svg className="w-6 h-6 text-m3-primary" viewBox="0 0 24 24" fill="currentColor">

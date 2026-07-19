@@ -127,8 +127,19 @@ html.light .m3-admin {
 }
 
 /* ── M3 Focus Ring — Hidden for clean look ── */
-.m3-admin :focus-visible {
-  outline: none;
+.m3-admin :focus,
+.m3-admin :focus-visible,
+.m3-admin :focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  ring: none !important;
+}
+.m3-admin input:focus,
+.m3-admin select:focus,
+.m3-admin button:focus,
+.m3-admin textarea:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* ── M3 State Layer Utilities ── */
