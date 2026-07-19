@@ -10,12 +10,13 @@ export default function M3Card({
   variant = 'elevated',
   className,
   children,
+  noPadding = false,
   ...props
 }) {
   return (
     <div
       className={cn(
-        'rounded-m3-md overflow-hidden',
+        'rounded-m3-md',
         'transition-shadow duration-[var(--m3-duration-medium1)] ease-[var(--m3-easing-standard)]',
         variants[variant],
         className

@@ -31,7 +31,7 @@ export default function M3Dialog({
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 sm:p-6">
       <div
         className={cn(
           'absolute inset-0 bg-black/40',
@@ -43,29 +43,33 @@ export default function M3Dialog({
       <div
         className={cn(
           'relative bg-m3-surface-container-high rounded-m3-xl shadow-m3-3',
-          'p-6 w-full max-w-md',
+          'w-full max-w-sm',
           'transition-all duration-[var(--m3-duration-medium2)] ease-[var(--m3-easing-emphasized-decelerate)]',
           exiting
             ? 'opacity-0 scale-90'
             : 'opacity-100 scale-100'
         )}
       >
-        <h2 className="text-m3-headline-sm text-m3-on-surface mb-2">
-          {title}
-        </h2>
-        <p className="text-m3-body-lg text-m3-on-surface-variant mb-6">
-          {message}
-        </p>
-        <div className="flex justify-end gap-2">
-          <M3Button variant="text" onClick={onCancel}>
-            {cancelLabel}
-          </M3Button>
-          <M3Button
-            variant={danger ? 'danger' : 'filled'}
-            onClick={onConfirm}
-          >
-            {confirmLabel}
-          </M3Button>
+        <div className="px-6 pt-6 pb-2">
+          <h2 className="text-m3-headline-sm text-m3-on-surface">
+            {title}
+          </h2>
+        </div>
+        <div className="px-6 pb-6">
+          <p className="text-m3-body-lg text-m3-on-surface-variant mt-2 mb-6">
+            {message}
+          </p>
+          <div className="flex justify-end gap-2">
+            <M3Button variant="text" onClick={onCancel}>
+              {cancelLabel}
+            </M3Button>
+            <M3Button
+              variant={danger ? 'danger' : 'filled'}
+              onClick={onConfirm}
+            >
+              {confirmLabel}
+            </M3Button>
+          </div>
         </div>
       </div>
     </div>

@@ -91,7 +91,6 @@ const AdminPage = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('inventory');
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const [snackbar, setSnackbar] = useState({ open: false, message: '', type: 'default' });
   const [deleteDialog, setDeleteDialog] = useState({ open: false, carId: null, carName: '' });
@@ -336,89 +335,91 @@ const AdminPage = () => {
   // ── Login View ──
   if (!user) {
     return (
-      <div className="m3-admin min-h-screen bg-m3-surface flex items-center justify-center p-4">
-        <M3Card variant="elevated" className="w-full max-w-md p-8">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-m3-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </div>
-            <h1 className="text-m3-headline-lg text-m3-on-surface font-semibold">
-              Admin Panel
-            </h1>
-            <p className="text-m3-body-lg text-m3-on-surface-variant mt-1">
-              Sign in to manage your inventory
-            </p>
-          </div>
-
-          <form onSubmit={handleAuth} className="space-y-4">
-            <M3TextField
-              label="Email address"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoFocus
-              icon={
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      <div className="m3-admin min-h-screen bg-m3-surface flex items-center justify-center p-6">
+        <M3Card variant="elevated" className="w-full max-w-md">
+          <div className="p-8 sm:p-10">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-5">
+                <svg className="w-8 h-8 text-m3-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
-              }
-            />
-            <M3TextField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              icon={
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 0110 0v4" />
-                </svg>
-              }
-            />
-
-            {authError && (
-              <div className="flex items-center gap-2 p-3 rounded-m3-md bg-m3-error-container text-m3-on-error-container text-m3-body-sm">
-                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                </svg>
-                {authError}
               </div>
-            )}
+              <h1 className="text-m3-headline-lg text-m3-on-surface font-semibold">
+                Admin Panel
+              </h1>
+              <p className="text-m3-body-lg text-m3-on-surface-variant mt-1.5">
+                Sign in to manage your inventory
+              </p>
+            </div>
 
-            <M3Button
-              type="submit"
-              variant="filled"
-              size="lg"
-              disabled={authLoading}
-              className="w-full"
-            >
-              {authLoading ? (
-                <span className="flex items-center gap-2">
-                  <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            <form onSubmit={handleAuth} className="space-y-5">
+              <M3TextField
+                label="Email address"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoFocus
+                icon={
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
-                  Please wait...
-                </span>
-              ) : 'Sign In'}
-            </M3Button>
-          </form>
+                }
+              />
+              <M3TextField
+                label="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                icon={
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg>
+                }
+              />
 
-          <div className="mt-6 text-center">
-            <Link
-              to="/"
-              className="text-m3-body-md text-m3-primary hover:underline inline-flex items-center gap-1"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-              Back to Home
-            </Link>
+              {authError && (
+                <div className="flex items-center gap-3 p-3.5 rounded-m3-md bg-m3-error-container text-m3-on-error-container text-m3-body-sm">
+                  <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                  </svg>
+                  <span>{authError}</span>
+                </div>
+              )}
+
+              <M3Button
+                type="submit"
+                variant="filled"
+                size="lg"
+                disabled={authLoading}
+                className="w-full"
+              >
+                {authLoading ? (
+                  <span className="flex items-center gap-2.5">
+                    <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Please wait...
+                  </span>
+                ) : 'Sign In'}
+              </M3Button>
+            </form>
+
+            <div className="mt-6 text-center">
+              <Link
+                to="/"
+                className="text-m3-body-md text-m3-primary hover:underline inline-flex items-center gap-1.5"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back to Home
+              </Link>
+            </div>
           </div>
         </M3Card>
       </div>
@@ -452,15 +453,15 @@ const AdminPage = () => {
   return (
     <div className="m3-admin min-h-screen bg-m3-surface flex">
       {/* ── Desktop Navigation Rail ── */}
-      <nav className="hidden lg:flex flex-col items-center w-[80px] bg-m3-surface-container-low py-4 border-r border-m3-outline-variant">
-        <div className="mb-6">
+      <nav className="hidden lg:flex flex-col items-center w-[80px] bg-m3-surface-container-low py-5 border-r border-m3-outline-variant shrink-0">
+        <div className="mb-8">
           <M3IconButton variant="standard" size="md">
             <svg className="w-6 h-6 text-m3-primary" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
           </M3IconButton>
         </div>
-        <div className="flex flex-col gap-1 flex-1">
+        <div className="flex flex-col items-center gap-2 flex-1">
           {navItems.map((item) => (
             <button
               key={item.id}
@@ -468,7 +469,7 @@ const AdminPage = () => {
                 setActiveTab(item.id);
                 if (item.id === 'add') handleCancelEdit();
               }}
-              className={`flex flex-col items-center gap-1 py-2 px-1 rounded-m3-lg w-[72px] transition-all duration-200 ${
+              className={`flex flex-col items-center gap-1.5 py-2 px-1 rounded-m3-lg w-[72px] transition-all duration-200 ${
                 activeTab === item.id
                   ? 'bg-m3-secondary-container'
                   : 'hover:bg-m3-on-surface/8'
@@ -491,16 +492,18 @@ const AdminPage = () => {
             </button>
           ))}
         </div>
-        <M3IconButton variant="standard" size="md" onClick={handleLogout} title="Logout">
-          <svg className="w-6 h-6 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
-          </svg>
-        </M3IconButton>
+        <div className="mt-auto">
+          <M3IconButton variant="standard" size="md" onClick={handleLogout} title="Logout">
+            <svg className="w-6 h-6 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+            </svg>
+          </M3IconButton>
+        </div>
       </nav>
 
       {/* ── Mobile Bottom Navigation ── */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-m3-surface-container border-t border-m3-outline-variant">
-        <div className="flex items-center justify-around h-16">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-m3-surface-container border-t border-m3-outline-variant safe-area-bottom">
+        <div className="flex items-center justify-around h-16 px-2">
           {navItems.map((item) => (
             <button
               key={item.id}
@@ -508,7 +511,7 @@ const AdminPage = () => {
                 setActiveTab(item.id);
                 if (item.id === 'add') handleCancelEdit();
               }}
-              className="flex flex-col items-center gap-0.5 py-1 px-3"
+              className="flex flex-col items-center gap-1 py-1.5 px-4 rounded-m3-lg"
             >
               <div className={`flex items-center justify-center w-14 h-8 rounded-m3-full transition-all ${
                 activeTab === item.id
@@ -530,27 +533,22 @@ const AdminPage = () => {
       </nav>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 min-h-screen pb-20 lg:pb-0">
+      <main className="flex-1 min-h-screen pb-20 lg:pb-0 overflow-x-hidden">
         {/* ── Top App Bar ── */}
         <header className="sticky top-0 z-40 bg-m3-surface/95 backdrop-blur-md border-b border-m3-outline-variant">
-          <div className="flex items-center justify-between h-16 px-4 lg:px-6">
-            <div className="flex items-center gap-3">
-              <M3IconButton variant="standard" size="sm" className="lg:hidden">
-                <svg className="w-5 h-5 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </M3IconButton>
+          <div className="flex items-center justify-between h-16 px-4 sm:px-6">
+            <div className="flex items-center gap-2 sm:gap-3">
               <h1 className="text-m3-title-lg text-m3-on-surface font-semibold">
                 {activeTab === 'inventory' && 'Inventory'}
                 {activeTab === 'add' && (editingId ? 'Edit Car' : 'Add New Car')}
                 {activeTab === 'settings' && 'Account'}
               </h1>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <M3Chip
                 variant="suggestion"
                 label={user.email}
-                className="hidden sm:inline-flex max-w-[200px] truncate"
+                className="hidden sm:inline-flex max-w-[180px]"
               />
               <M3IconButton variant="standard" size="sm" onClick={handleLogout} title="Logout">
                 <svg className="w-5 h-5 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -569,17 +567,15 @@ const AdminPage = () => {
         </header>
 
         {/* ── Content Area ── */}
-        <div className="p-4 lg:p-6">
+        <div className="p-4 sm:p-6 lg:p-8">
 
           {/* ═══ INVENTORY TAB ═══ */}
           {activeTab === 'inventory' && (
             <div className="animate-[m3-fade-in_var(--m3-duration-medium2)_var(--m3-easing-emphasized-decelerate)]">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <p className="text-m3-body-lg text-m3-on-surface-variant">
-                    {cars.length} {cars.length === 1 ? 'vehicle' : 'vehicles'} in inventory
-                  </p>
-                </div>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <p className="text-m3-body-lg text-m3-on-surface-variant">
+                  {cars.length} {cars.length === 1 ? 'vehicle' : 'vehicles'} in inventory
+                </p>
                 <M3Button
                   variant="filled"
                   size="md"
@@ -593,58 +589,53 @@ const AdminPage = () => {
               </div>
 
               {cars.length === 0 ? (
-                <M3Card variant="outlined" className="p-12 text-center">
-                  <div className="w-16 h-16 rounded-m3-full bg-m3-surface-container-highest flex items-center justify-center mx-auto mb-4">
+                <M3Card variant="outlined" className="p-12 sm:p-16 text-center">
+                  <div className="w-16 h-16 rounded-m3-full bg-m3-surface-container-highest flex items-center justify-center mx-auto mb-5">
                     <svg className="w-8 h-8 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                     </svg>
                   </div>
-                  <p className="text-m3-body-lg text-m3-on-surface-variant mb-4">No cars in inventory yet</p>
+                  <p className="text-m3-body-lg text-m3-on-surface-variant mb-5">No cars in inventory yet</p>
                   <M3Button variant="tonal" onClick={() => { setActiveTab('add'); handleCancelEdit(); }}>
                     Add your first car
                   </M3Button>
                 </M3Card>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {cars.map((car, idx) => (
-                    <M3Card
-                      key={car.id}
-                      variant="elevated"
-                      className="group"
-                      style={{ animationDelay: `${idx * 40}ms` }}
-                    >
-                      <div className="flex items-start gap-3 p-4">
+                  {cars.map((car) => (
+                    <M3Card key={car.id} variant="elevated">
+                      <div className="flex items-start gap-3.5 p-4">
                         {car.image_url ? (
                           <img
                             src={car.image_url}
                             alt={`${car.year} ${car.make} ${car.model}`}
-                            className="w-20 h-14 object-cover rounded-m3-sm flex-shrink-0"
+                            className="w-[76px] h-[52px] object-cover rounded-m3-sm flex-shrink-0"
                           />
                         ) : (
-                          <div className="w-20 h-14 rounded-m3-sm bg-m3-surface-container-highest flex items-center justify-center flex-shrink-0">
+                          <div className="w-[76px] h-[52px] rounded-m3-sm bg-m3-surface-container-highest flex items-center justify-center flex-shrink-0">
                             <svg className="w-6 h-6 text-m3-on-surface-variant" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                               <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-m3-title-sm text-m3-on-surface font-medium truncate">
+                          <h3 className="text-m3-title-sm text-m3-on-surface font-medium truncate leading-snug">
                             {car.year} {car.make} {car.model}
                           </h3>
-                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-0.5">
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-1">
                             {formatPrice(car.price)}
                           </p>
-                          <div className="flex items-center gap-2 mt-2 flex-wrap">
+                          <div className="flex items-center gap-1.5 mt-2.5 flex-wrap">
                             {car.registration && (
-                              <M3Chip variant="suggestion" label={car.registration} className="h-6 text-m3-label-sm" />
+                              <M3Chip variant="suggestion" label={car.registration} className="h-6 text-m3-label-sm px-2" />
                             )}
                             {car.status === 'sold' ? (
-                              <M3Chip variant="filter" label="Sold" className="h-6 text-m3-label-sm" />
+                              <M3Chip variant="filter" label="Sold" className="h-6 text-m3-label-sm px-2" />
                             ) : (
-                              <M3Chip variant="filter" selected label="Available" className="h-6 text-m3-label-sm" />
+                              <M3Chip variant="filter" selected label="Available" className="h-6 text-m3-label-sm px-2" />
                             )}
                             {car.fuel && (
-                              <M3Chip variant="suggestion" label={car.fuel} className="h-6 text-m3-label-sm" />
+                              <M3Chip variant="suggestion" label={car.fuel} className="h-6 text-m3-label-sm px-2" />
                             )}
                           </div>
                         </div>
@@ -652,7 +643,7 @@ const AdminPage = () => {
                       <div className="flex border-t border-m3-outline-variant">
                         <button
                           onClick={() => handleEdit(car)}
-                          className="flex-1 py-3 text-m3-label-lg text-m3-primary hover:bg-m3-primary/8 transition-colors flex items-center justify-center gap-2"
+                          className="flex-1 py-3.5 text-m3-label-lg text-m3-primary hover:bg-m3-primary/8 transition-colors flex items-center justify-center gap-2"
                         >
                           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -662,7 +653,7 @@ const AdminPage = () => {
                         <div className="w-px bg-m3-outline-variant" />
                         <button
                           onClick={() => handleDeleteClick(car)}
-                          className="flex-1 py-3 text-m3-label-lg text-m3-error hover:bg-m3-error/8 transition-colors flex items-center justify-center gap-2"
+                          className="flex-1 py-3.5 text-m3-label-lg text-m3-error hover:bg-m3-error/8 transition-colors flex items-center justify-center gap-2"
                         >
                           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -680,11 +671,11 @@ const AdminPage = () => {
           {/* ═══ ADD/EDIT CAR TAB ═══ */}
           {activeTab === 'add' && (
             <div className="max-w-3xl animate-[m3-fade-in_var(--m3-duration-medium2)_var(--m3-easing-emphasized-decelerate)]">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} className="space-y-5">
                 {/* ── Vehicle Details Section ── */}
-                <M3Card variant="outlined" className="mb-4">
-                  <div className="p-4 border-b border-m3-outline-variant">
-                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2">
+                <M3Card variant="outlined">
+                  <div className="px-5 py-4 border-b border-m3-outline-variant">
+                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2.5">
                       <svg className="w-5 h-5 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
                         <path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
@@ -692,10 +683,10 @@ const AdminPage = () => {
                       Vehicle Details
                     </h2>
                   </div>
-                  <div className="p-4 space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-5 space-y-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Make</label>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2 pl-1">Make</label>
                         <select
                           name="make"
                           value={formData.make}
@@ -738,9 +729,9 @@ const AdminPage = () => {
                 </M3Card>
 
                 {/* ── Specifications Section ── */}
-                <M3Card variant="outlined" className="mb-4">
-                  <div className="p-4 border-b border-m3-outline-variant">
-                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2">
+                <M3Card variant="outlined">
+                  <div className="px-5 py-4 border-b border-m3-outline-variant">
+                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2.5">
                       <svg className="w-5 h-5 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -748,10 +739,10 @@ const AdminPage = () => {
                       Specifications
                     </h2>
                   </div>
-                  <div className="p-4 space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-5 space-y-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Status</label>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2.5 pl-1">Status</label>
                         <div className="flex gap-2">
                           <M3Chip
                             variant="filter"
@@ -775,7 +766,7 @@ const AdminPage = () => {
                         placeholder="e.g. 25,000"
                       />
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Fuel Type</label>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2.5 pl-1">Fuel Type</label>
                         <div className="flex gap-2 flex-wrap">
                           {FUEL_TYPES.map(f => (
                             <M3Chip
@@ -789,7 +780,7 @@ const AdminPage = () => {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Transmission</label>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2.5 pl-1">Transmission</label>
                         <div className="flex gap-2">
                           {TRANSMISSIONS.map(t => (
                             <M3Chip
@@ -803,7 +794,7 @@ const AdminPage = () => {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Ownership</label>
+                        <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2.5 pl-1">Ownership</label>
                         <div className="flex gap-2">
                           {OWNERSHIPS.map(o => (
                             <M3Chip
@@ -825,7 +816,7 @@ const AdminPage = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2">Registration State</label>
+                      <label className="block text-m3-label-lg text-m3-on-surface-variant mb-2 pl-1">Registration State</label>
                       <select
                         name="registration"
                         value={formData.registration}
@@ -844,70 +835,70 @@ const AdminPage = () => {
                 </M3Card>
 
                 {/* ── Images Section ── */}
-                <M3Card variant="outlined" className="mb-4">
-                  <div className="p-4 border-b border-m3-outline-variant">
-                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2">
+                <M3Card variant="outlined">
+                  <div className="px-5 py-4 border-b border-m3-outline-variant">
+                    <h2 className="text-m3-title-md text-m3-on-surface font-medium flex items-center gap-2.5">
                       <svg className="w-5 h-5 text-m3-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                       Images
                     </h2>
                   </div>
-                  <div className="p-4 space-y-4">
+                  <div className="p-5 space-y-5">
                     <div>
-                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2">
+                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2 pl-1">
                         Main Inventory Image
                       </label>
-                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-6 text-center hover:border-m3-primary transition-colors">
+                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-5 text-center hover:border-m3-primary transition-colors">
                         <input
                           key={`main-${formKey}`}
                           type="file"
                           accept="image/*"
                           onChange={(e) => setMainImageFile(e.target.files[0])}
-                          className="w-full text-m3-body-sm text-m3-on-surface-variant"
+                          className="w-full text-m3-body-sm text-m3-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-m3-sm file:border-0 file:text-m3-label-lg file:font-medium file:bg-m3-primary-container file:text-m3-on-primary-container hover:file:bg-m3-primary-container/80 file:cursor-pointer"
                         />
                         {formData.image_url && !mainImageFile && (
-                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-2">
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-3">
                             Current image will be kept
                           </p>
                         )}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2">
+                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2 pl-1">
                         Exterior Details (Multiple)
                       </label>
-                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-6 text-center hover:border-m3-primary transition-colors">
+                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-5 text-center hover:border-m3-primary transition-colors">
                         <input
                           key={`ext-${formKey}`}
                           type="file"
                           accept="image/*"
                           multiple
                           onChange={(e) => setExteriorFiles(e.target.files)}
-                          className="w-full text-m3-body-sm text-m3-on-surface-variant"
+                          className="w-full text-m3-body-sm text-m3-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-m3-sm file:border-0 file:text-m3-label-lg file:font-medium file:bg-m3-primary-container file:text-m3-on-primary-container hover:file:bg-m3-primary-container/80 file:cursor-pointer"
                         />
                         {formData.exterior_images.length > 0 && (
-                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-2">
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-3">
                             {formData.exterior_images.length} existing images
                           </p>
                         )}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2">
+                      <label className="block text-m3-label-lg text-m3-primary font-medium mb-2 pl-1">
                         Interior Details (Multiple)
                       </label>
-                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-6 text-center hover:border-m3-primary transition-colors">
+                      <div className="border-2 border-dashed border-m3-outline-variant rounded-m3-md p-5 text-center hover:border-m3-primary transition-colors">
                         <input
                           key={`int-${formKey}`}
                           type="file"
                           accept="image/*"
                           multiple
                           onChange={(e) => setInteriorFiles(e.target.files)}
-                          className="w-full text-m3-body-sm text-m3-on-surface-variant"
+                          className="w-full text-m3-body-sm text-m3-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-m3-sm file:border-0 file:text-m3-label-lg file:font-medium file:bg-m3-primary-container file:text-m3-on-primary-container hover:file:bg-m3-primary-container/80 file:cursor-pointer"
                         />
                         {formData.interior_images.length > 0 && (
-                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-2">
+                          <p className="text-m3-body-sm text-m3-on-surface-variant mt-3">
                             {formData.interior_images.length} existing images
                           </p>
                         )}
@@ -917,16 +908,16 @@ const AdminPage = () => {
                 </M3Card>
 
                 {/* ── Action Buttons ── */}
-                <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <M3Button
                     type="submit"
                     variant="filled"
                     size="lg"
                     disabled={isSubmitting}
-                    className="flex-1"
+                    className="flex-1 sm:flex-initial sm:min-w-[160px]"
                   >
                     {isSubmitting ? (
-                      <span className="flex items-center gap-2">
+                      <span className="flex items-center gap-2.5">
                         <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -941,6 +932,7 @@ const AdminPage = () => {
                       variant="outlined"
                       size="lg"
                       onClick={handleCancelEdit}
+                      className="sm:flex-initial"
                     >
                       Cancel
                     </M3Button>
@@ -954,13 +946,13 @@ const AdminPage = () => {
           {activeTab === 'settings' && (
             <div className="max-w-lg animate-[m3-fade-in_var(--m3-duration-medium2)_var(--m3-easing-emphasized-decelerate)]">
               <M3Card variant="outlined">
-                <div className="p-6 text-center">
-                  <div className="w-20 h-20 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-4">
+                <div className="p-6 sm:p-8 text-center">
+                  <div className="w-20 h-20 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-5">
                     <svg className="w-10 h-10 text-m3-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" />
                     </svg>
                   </div>
-                  <h2 className="text-m3-headline-sm text-m3-on-surface font-semibold mb-1">
+                  <h2 className="text-m3-headline-sm text-m3-on-surface font-semibold mb-1.5">
                     Admin Account
                   </h2>
                   <p className="text-m3-body-lg text-m3-on-surface-variant mb-6">
@@ -979,7 +971,7 @@ const AdminPage = () => {
                     </div>
                   </div>
                 </div>
-                <div className="p-4 border-t border-m3-outline-variant">
+                <div className="p-5 border-t border-m3-outline-variant">
                   <M3Button
                     variant="outlined"
                     size="lg"

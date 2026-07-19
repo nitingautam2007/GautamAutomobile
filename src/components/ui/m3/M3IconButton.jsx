@@ -24,7 +24,7 @@ export default function M3IconButton({
   return (
     <button
       className={cn(
-        'inline-flex items-center justify-center rounded-m3-full',
+        'inline-flex items-center justify-center justify-items-center rounded-m3-full shrink-0',
         'transition-all cursor-pointer select-none',
         'duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
         'disabled:opacity-38 disabled:pointer-events-none',

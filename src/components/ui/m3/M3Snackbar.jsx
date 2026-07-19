@@ -25,20 +25,20 @@ export default function M3Snackbar({
         }, 200);
       }, duration);
       return () => clearTimeout(timer);
-    } else {
+    } else if (visible) {
       setExiting(true);
       setTimeout(() => setVisible(false), 200);
     }
-  }, [open, duration, onClose]);
+  }, [open, duration]);
 
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999]">
+    <div className="fixed bottom-20 sm:bottom-6 left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 sm:w-auto z-[9999] flex justify-center sm:block">
       <div
         className={cn(
           'flex items-center gap-3 px-4 py-3 rounded-m3-md',
-          'shadow-m3-3 min-w-[300px] max-w-[560px]',
+          'shadow-m3-3 sm:min-w-[300px] sm:max-w-[560px] w-full',
           'text-m3-inverse-on-surface bg-m3-inverse-surface',
           'transition-all duration-[var(--m3-duration-medium2)] ease-[var(--m3-easing-emphasized-decelerate)]',
           exiting
@@ -48,7 +48,7 @@ export default function M3Snackbar({
       >
         {type === 'error' && (
           <svg className="w-5 h-5 text-m3-error flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
           </svg>
         )}
         {type === 'success' && (
@@ -56,11 +56,11 @@ export default function M3Snackbar({
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
           </svg>
         )}
-        <span className="flex-1 text-m3-body-md">{message}</span>
+        <span className="flex-1 text-m3-body-md leading-snug">{message}</span>
         {actionLabel && (
           <button
             onClick={onAction}
-            className="text-m3-inverse-primary text-m3-label-lg font-medium hover:underline flex-shrink-0"
+            className="text-m3-inverse-primary text-m3-label-lg font-medium hover:underline flex-shrink-0 ml-2"
           >
             {actionLabel}
           </button>

@@ -16,6 +16,7 @@ export default function M3Select({
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const selected = options.find(o => o.value === value);
+  const isActive = !!value;
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -26,12 +27,12 @@ export default function M3Select({
   }, []);
 
   return (
-    <div ref={ref} className="relative w-full">
+    <div ref={ref} className={cn('relative w-full', className)}>
       <button
         type="button"
         onClick={() => !disabled && setOpen(!open)}
         className={cn(
-          'w-full h-14 rounded-m3-md border px-4 flex items-center justify-between',
+          'w-full rounded-m3-md border',
           'bg-transparent transition-all duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
           'text-left cursor-pointer',
           disabled ? 'opacity-38 cursor-not-allowed' : '',
@@ -40,37 +41,40 @@ export default function M3Select({
             : open
               ? 'border-m3-primary'
               : 'border-m3-outline hover:border-m3-on-surface',
-          className
         )}
       >
-        <div className="flex flex-col flex-1 min-w-0">
-          <span className={cn(
-            'transition-all duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
-            value
-              ? 'text-xs text-m3-on-surface-variant mt-0.5'
-              : 'text-m3-body-lg text-m3-on-surface-variant'
-          )}>
-            {label}
-            {required && <span className="ml-0.5 text-m3-error">*</span>}
-          </span>
-          {value && (
-            <span className="text-m3-body-lg text-m3-on-surface truncate">
-              {selected?.label || value}
+        <div className="flex items-center">
+          <div className="flex-1 min-w-0 px-4">
+            <span className={cn(
+              'block transition-all duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
+              isActive
+                ? 'text-[12px] text-m3-on-surface-variant pt-[8px] pb-[2px] scale-85 origin-left'
+                : 'text-m3-body-lg text-m3-on-surface-variant pt-[16px] pb-[16px]'
+            )}>
+              {label}
+              {required && <span className="ml-0.5 text-m3-error">*</span>}
             </span>
-          )}
+            {isActive && (
+              <span className="block text-m3-body-lg text-m3-on-surface -mt-1 pb-[10px]">
+                {selected?.label || value}
+              </span>
+            )}
+          </div>
+          <span className="pr-4 flex items-center">
+            <svg
+              className={cn(
+                'w-5 h-5 text-m3-on-surface-variant transition-transform duration-200',
+                open && 'rotate-180'
+              )}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M7 10l5 5 5-5" />
+            </svg>
+          </span>
         </div>
-        <svg
-          className={cn(
-            'w-5 h-5 text-m3-on-surface-variant transition-transform duration-200',
-            open && 'rotate-180'
-          )}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M7 10l5 5 5-5" />
-        </svg>
       </button>
 
       {open && (
@@ -89,7 +93,7 @@ export default function M3Select({
                 setOpen(false);
               }}
               className={cn(
-                'w-full px-4 py-3 text-left text-m3-body-lg',
+                'w-full px-4 py-3 text-left text-m3-body-lg leading-snug',
                 'transition-colors duration-100 cursor-pointer',
                 option.value === value
                   ? 'bg-m3-secondary-container text-m3-on-secondary-container font-medium'

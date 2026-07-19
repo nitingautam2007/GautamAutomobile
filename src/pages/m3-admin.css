@@ -184,6 +184,48 @@ html.light .m3-admin {
   margin: 0;
 }
 
+/* ── M3 Safe Area (Mobile Bottom Nav) ── */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* ── M3 File Input Styling ── */
+.m3-admin input[type="file"] {
+  color: var(--m3-on-surface-variant);
+}
+.m3-admin input[type="file"]::-webkit-file-upload-button {
+  background: var(--m3-primary-container);
+  color: var(--m3-on-primary-container);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.m3-admin input[type="file"]::-webkit-file-upload-button:hover {
+  opacity: 0.85;
+}
+.m3-admin input[type="file"]::-moz-file-upload-button {
+  background: var(--m3-primary-container);
+  color: var(--m3-on-primary-container);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* ── M3 Select Arrow (native) ── */
+.m3-admin select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23A08C8C' stroke-width='2'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+}
+
 /* ── M3 Animation Keyframes ── */
 @keyframes m3-fade-in {
   from { opacity: 0; }

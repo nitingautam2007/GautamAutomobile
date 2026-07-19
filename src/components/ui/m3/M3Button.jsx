@@ -10,9 +10,9 @@ const variants = {
 };
 
 const sizes = {
-  sm: 'h-9 px-4 text-m3-label-lg gap-2',
-  md: 'h-10 px-6 text-m3-label-lg gap-2',
-  lg: 'h-12 px-8 text-m3-label-lg gap-3',
+  sm: 'h-9 px-5 text-m3-label-lg gap-2 min-w-[64px]',
+  md: 'h-10 px-6 text-m3-label-lg gap-2 min-w-[80px]',
+  lg: 'h-12 px-8 text-m3-label-lg gap-2.5 min-w-[96px]',
   icon: 'h-10 w-10 p-0 justify-center',
   'icon-sm': 'h-9 w-9 p-0 justify-center',
 };
@@ -28,8 +28,8 @@ export default function M3Button({
   return (
     <button
       className={cn(
-        'inline-flex items-center justify-center rounded-m3-full font-medium',
-        'transition-all cursor-pointer select-none',
+        'inline-flex items-center justify-center rounded-m3-full font-medium leading-none',
+        'transition-all cursor-pointer select-none whitespace-nowrap',
         'duration-[var(--m3-duration-medium1)] ease-[var(--m3-easing-standard)]',
         'disabled:opacity-38 disabled:pointer-events-none disabled:shadow-none',
         variants[variant],
