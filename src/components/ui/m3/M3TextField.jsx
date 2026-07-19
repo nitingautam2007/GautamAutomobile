@@ -32,14 +32,14 @@ export default function M3TextField({
         <div
           className={cn(
             'relative w-full rounded-m3-lg',
-            'bg-transparent border',
+            'bg-transparent border border-m3-outline-variant/50',
             'transition-all duration-300 ease-[var(--m3-easing-standard)]',
             disabled ? 'opacity-38 cursor-not-allowed' : 'cursor-text',
             error
-              ? 'border-m3-error shadow-[0_0_0_1px_var(--m3-error)]'
+              ? 'border-m3-error'
               : focused
-                ? 'border-m3-primary shadow-[0_0_0_1px_var(--m3-primary)]'
-                : 'border-m3-outline-variant/50 hover:border-m3-outline-variant hover:shadow-sm',
+                ? 'border-m3-primary'
+                : 'hover:border-m3-outline-variant',
           )}
         >
         <div className="flex items-center">
