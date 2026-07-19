@@ -678,21 +678,19 @@ const AdminPage = () => {
                   </div>
                   <div className="p-4 space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Make</label>
-                        <select
-                          name="make"
-                          value={formData.make}
-                          onChange={handleChange}
-                          required
-                          className="w-full h-10 rounded-m3-sm border border-transparent bg-m3-surface-container-high px-3 text-m3-body-md text-m3-on-surface appearance-none cursor-pointer hover:border-m3-outline-variant focus:outline-none transition-colors"
-                        >
-                          <option value="" className="bg-m3-surface-container text-m3-on-surface">Select Brand</option>
-                          {CAR_BRANDS.map(b => (
-                            <option key={b} value={b} className="bg-m3-surface-container text-m3-on-surface">{b}</option>
-                          ))}
-                        </select>
-                      </div>
+                      <M3TextField
+                        label="Make"
+                        name="make"
+                        value={formData.make}
+                        onChange={handleChange}
+                        required
+                        select
+                      >
+                        <option value="">Select Brand</option>
+                        {CAR_BRANDS.map(b => (
+                          <option key={b} value={b}>{b}</option>
+                        ))}
+                      </M3TextField>
                       <M3TextField
                         label="Model"
                         name="model"
@@ -808,22 +806,18 @@ const AdminPage = () => {
                         placeholder="e.g. Pearl White"
                       />
                     </div>
-                    <div>
-                      <label className="block text-m3-label-md text-m3-on-surface-variant mb-1 pl-1">Registration State</label>
-                      <select
-                        name="registration"
-                        value={formData.registration}
-                        onChange={handleChange}
-                        className="w-full h-10 rounded-m3-sm border border-transparent bg-m3-surface-container-high px-3 text-m3-body-md text-m3-on-surface appearance-none cursor-pointer hover:border-m3-outline-variant focus:outline-none transition-colors"
-                      >
-                        <option value="" className="bg-m3-surface-container text-m3-on-surface">Select State</option>
-                        {REGISTRATIONS.map(r => (
-                          <option key={r.value} value={r.value} className="bg-m3-surface-container text-m3-on-surface">
-                            {r.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <M3TextField
+                      label="Registration State"
+                      name="registration"
+                      value={formData.registration}
+                      onChange={handleChange}
+                      select
+                    >
+                      <option value="">Select State</option>
+                      {REGISTRATIONS.map(r => (
+                        <option key={r.value} value={r.value}>{r.label}</option>
+                      ))}
+                    </M3TextField>
                   </div>
                 </M3Card>
 
@@ -907,7 +901,7 @@ const AdminPage = () => {
                     variant="filled"
                     size="md"
                     disabled={isSubmitting}
-                    className="w-full"
+                    className="w-full sm:w-auto"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2.5">
@@ -925,6 +919,7 @@ const AdminPage = () => {
                       variant="outlined"
                       size="md"
                       onClick={handleCancelEdit}
+                      className="sm:w-auto"
                     >
                       Cancel
                     </M3Button>
