@@ -33,7 +33,7 @@ export default function M3TextField({
           className={cn(
             'relative w-full rounded-m3-lg',
             'bg-transparent border border-m3-outline-variant/50',
-            'transition-all duration-300 ease-[var(--m3-easing-standard)]',
+            'transition-colors duration-300 ease-[var(--m3-easing-standard)]',
             disabled ? 'opacity-38 cursor-not-allowed' : 'cursor-text',
             error
               ? 'border-m3-error'
@@ -44,7 +44,7 @@ export default function M3TextField({
         >
         <div className="flex items-center">
           {icon && (
-            <span className="pl-3 pr-1 text-m3-on-surface-variant flex-shrink-0 flex items-center self-stretch">
+            <span className="pl-3 pr-2.5 text-m3-on-surface-variant flex-shrink-0 flex items-center self-stretch">
               {icon}
             </span>
           )}
@@ -98,7 +98,6 @@ export default function M3TextField({
                   'w-full bg-transparent border-none outline-none ring-0',
                   'text-m3-body-md text-m3-on-surface',
                   'placeholder:text-transparent',
-                  'transition-all duration-300 ease-[var(--m3-easing-standard)]',
                   isActive ? 'pt-[22px] pb-[8px]' : 'py-[14px]',
                   icon ? 'pr-3 pl-0' : 'px-3',
                   inputClassName
