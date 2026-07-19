@@ -32,7 +32,7 @@ export default function M3TextField({
         <div
           className={cn(
             'relative w-full rounded-m3-lg',
-            'bg-m3-surface-container-high border',
+            'bg-transparent border',
             'transition-all duration-300 ease-[var(--m3-easing-standard)]',
             disabled ? 'opacity-38 cursor-not-allowed' : 'cursor-text',
             error

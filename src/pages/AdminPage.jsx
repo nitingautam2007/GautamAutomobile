@@ -383,8 +383,8 @@ const AdminPage = () => {
               />
 
               {authError && (
-                <div className="flex items-center gap-3 p-3.5 rounded-m3-md bg-m3-error-container text-m3-on-error-container text-m3-body-sm">
-                  <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <div className="flex items-center gap-3 p-3.5 rounded-m3-md border border-m3-error/30 bg-m3-error/10 text-m3-on-surface text-m3-body-sm">
+                  <svg className="w-5 h-5 flex-shrink-0 text-m3-error" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
                   </svg>
                   <span>{authError}</span>
