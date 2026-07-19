@@ -7,7 +7,7 @@ const initialFormData = {
   model: '',
   year: '',
   price: '',
-  description: '',
+  registration: '',
   status: 'available',
   km: '',
   fuel: '',
@@ -110,7 +110,7 @@ const AdminPage = () => {
       model: car.model || '',
       year: car.year || '',
       price: car.price || '',
-      description: car.description || '',
+      registration: car.registration || '',
       status: car.status || 'available',
       km: car.km || '',
       fuel: car.fuel || '',
@@ -240,7 +240,7 @@ const AdminPage = () => {
         model: formData.model,
         year: parseInt(formData.year),
         price: parseFloat(formData.price),
-        description: formData.description,
+        registration: formData.registration,
         status: formData.status,
         km: formData.km,
         fuel: formData.fuel,
@@ -364,7 +364,7 @@ const AdminPage = () => {
                 <input type="number" name="year" value={formData.year} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Price ($)</label>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Price (₹)</label>
                 <input type="number" name="price" value={formData.price} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" />
               </div>
             </div>
@@ -414,8 +414,45 @@ const AdminPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Description</label>
-              <textarea name="description" value={formData.description} onChange={handleChange} rows="3" className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"></textarea>
+              <label className="block text-sm font-medium text-gray-400 mb-1">Registration</label>
+              <select name="registration" value={formData.registration} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                <option value="">Select</option>
+                <option value="HR">HR (Haryana)</option>
+                <option value="DL">DL (Delhi)</option>
+                <option value="MH">MH (Maharashtra)</option>
+                <option value="KA">KA (Karnataka)</option>
+                <option value="TN">TN (Tamil Nadu)</option>
+                <option value="UP">UP (Uttar Pradesh)</option>
+                <option value="RJ">RJ (Rajasthan)</option>
+                <option value="GJ">GJ (Gujarat)</option>
+                <option value="PB">PB (Punjab)</option>
+                <option value="AP">AP (Andhra Pradesh)</option>
+                <option value="TS">TS (Telangana)</option>
+                <option value="KL">KL (Kerala)</option>
+                <option value="WB">WB (West Bengal)</option>
+                <option value="MP">MP (Madhya Pradesh)</option>
+                <option value="BR">BR (Bihar)</option>
+                <option value="OR">OR (Odisha)</option>
+                <option value="CG">CG (Chhattisgarh)</option>
+                <option value="JH">JH (Jharkhand)</option>
+                <option value="UA">UA (Uttarakhand)</option>
+                <option value="HP">HP (Himachal Pradesh)</option>
+                <option value="JK">JK (Jammu & Kashmir)</option>
+                <option value="GA">GA (Goa)</option>
+                <option value="MN">MN (Manipur)</option>
+                <option value="NL">NL (Nagaland)</option>
+                <option value="MZ">MZ (Mizoram)</option>
+                <option value="SK">SK (Sikkim)</option>
+                <option value="AR">AR (Arunachal Pradesh)</option>
+                <option value="ML">ML (Meghalaya)</option>
+                <option value="TR">TR (Tripura)</option>
+                <option value="PY">PY (Puducherry)</option>
+                <option value="CH">CH (Chandigarh)</option>
+                <option value="AN">AN (Andaman & Nicobar)</option>
+                <option value="LD">LD (Lakshadweep)</option>
+                <option value="DD">DD (Dadra & Nagar Haveli and Daman & Diu)</option>
+                <option value="OTHER">Other</option>
+              </select>
             </div>
 
             <div className="space-y-4 pt-4 border-t border-gray-700">
@@ -471,7 +508,7 @@ const AdminPage = () => {
                   )}
                   <div>
                     <h3 className="font-bold">{car.year} {car.make} {car.model}</h3>
-                    <p className="text-sm text-gray-400">${car.price} {car.status === 'sold' && <span className="ml-2 text-red-500 font-bold">(SOLD)</span>}</p>
+                    <p className="text-sm text-gray-400">₹{Number(car.price).toLocaleString('en-IN')} {car.registration && <span className="ml-2 text-blue-400">• {car.registration} Registered</span>} {car.status === 'sold' && <span className="ml-2 text-red-500 font-bold">(SOLD)</span>}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
