@@ -359,7 +359,45 @@ const AdminPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
                 <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Make</label>
-                <input type="text" name="make" value={formData.make} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm" placeholder="Toyota" />
+                <select name="make" value={formData.make} onChange={handleChange} required className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2.5 text-sm">
+                  <option value="">Select Brand</option>
+                  <option value="Maruti Suzuki">Maruti Suzuki</option>
+                  <option value="Hyundai">Hyundai</option>
+                  <option value="Tata">Tata</option>
+                  <option value="Mahindra">Mahindra</option>
+                  <option value="Toyota">Toyota</option>
+                  <option value="Kia">Kia</option>
+                  <option value="Honda">Honda</option>
+                  <option value="MG">MG</option>
+                  <option value="Volkswagen">Volkswagen</option>
+                  <option value="Skoda">Skoda</option>
+                  <option value="Renault">Renault</option>
+                  <option value="Nissan">Nissan</option>
+                  <option value="Jeep">Jeep</option>
+                  <option value="Citroen">Citroen</option>
+                  <option value="Ford">Ford</option>
+                  <option value="Chevrolet">Chevrolet</option>
+                  <option value="Force">Force</option>
+                  <option value="Isuzu">Isuzu</option>
+                  <option value="BYD">BYD</option>
+                  <option value="BMW">BMW</option>
+                  <option value="Mercedes-Benz">Mercedes-Benz</option>
+                  <option value="Audi">Audi</option>
+                  <option value="Lexus">Lexus</option>
+                  <option value="Volvo">Volvo</option>
+                  <option value="Porsche">Porsche</option>
+                  <option value="Land Rover">Land Rover</option>
+                  <option value="Jaguar">Jaguar</option>
+                  <option value="Mini">Mini</option>
+                  <option value="Rolls-Royce">Rolls-Royce</option>
+                  <option value="Bentley">Bentley</option>
+                  <option value="Maserati">Maserati</option>
+                  <option value="Lamborghini">Lamborghini</option>
+                  <option value="Ferrari">Ferrari</option>
+                  <option value="Aston Martin">Aston Martin</option>
+                  <option value="McLaren">McLaren</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
               <div>
                 <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1">Model</label>
