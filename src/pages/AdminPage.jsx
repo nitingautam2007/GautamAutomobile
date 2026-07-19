@@ -40,14 +40,14 @@ const AdminPage = () => {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user && session.user.email === import.meta.env.VITE_ADMIN_EMAIL) {
+      if (session?.user && session.user.email === (import.meta.env.VITE_ADMIN_EMAIL || 'automobilegautam@gmail.com')) {
         setUser(session.user);
       } else if (session?.user) {
         supabase.auth.signOut();
       }
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user && session.user.email === import.meta.env.VITE_ADMIN_EMAIL) {
+      if (session?.user && session.user.email === (import.meta.env.VITE_ADMIN_EMAIL || 'automobilegautam@gmail.com')) {
         setUser(session.user);
       } else {
         setUser(null);
