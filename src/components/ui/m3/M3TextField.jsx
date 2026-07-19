@@ -36,9 +36,9 @@ export default function M3TextField({
           'transition-all duration-[var(--m3-duration-short4)] ease-[var(--m3-easing-standard)]',
           disabled ? 'opacity-38 cursor-not-allowed' : 'cursor-text',
           error
-            ? 'border-m3-error'
+            ? 'border-m3-error ring-1 ring-m3-error/30'
             : focused
-              ? 'border-m3-primary'
+              ? 'border-m3-outline ring-2 ring-m3-primary/20'
               : 'border-m3-outline hover:border-m3-on-surface',
         )}
       >
@@ -56,7 +56,7 @@ export default function M3TextField({
                 isActive
                   ? 'text-[12px] top-[8px] text-m3-on-surface-variant scale-85'
                   : 'text-m3-body-lg top-[16px] text-m3-on-surface-variant',
-                icon && (isActive ? 'left-0' : 'left-0'),
+                icon && 'left-0',
                 error && !focused && 'text-m3-error'
               )}
             >
@@ -93,7 +93,7 @@ export default function M3TextField({
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 className={cn(
-                  'w-full bg-transparent border-none outline-none',
+                  'w-full bg-transparent border-none outline-none ring-0',
                   'text-m3-body-lg text-m3-on-surface',
                   'placeholder:text-transparent',
                   isActive ? 'pt-[30px] pb-[10px]' : 'pt-[18px] pb-[18px]',

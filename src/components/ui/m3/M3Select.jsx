@@ -37,9 +37,9 @@ export default function M3Select({
           'text-left cursor-pointer',
           disabled ? 'opacity-38 cursor-not-allowed' : '',
           error
-            ? 'border-m3-error'
+            ? 'border-m3-error ring-1 ring-m3-error/30'
             : open
-              ? 'border-m3-primary'
+              ? 'border-m3-outline ring-2 ring-m3-primary/20'
               : 'border-m3-outline hover:border-m3-on-surface',
         )}
       >

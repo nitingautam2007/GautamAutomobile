@@ -395,7 +395,7 @@ const AdminPage = () => {
                 variant="filled"
                 size="lg"
                 disabled={authLoading}
-                className="w-full"
+                className="w-full h-14 text-m3-title-md"
               >
                 {authLoading ? (
                   <span className="flex items-center gap-2.5">
@@ -692,7 +692,7 @@ const AdminPage = () => {
                           value={formData.make}
                           onChange={handleChange}
                           required
-                          className="w-full h-14 rounded-m3-md border border-m3-outline bg-transparent px-4 text-m3-body-lg text-m3-on-surface appearance-none cursor-pointer hover:border-m3-on-surface focus:border-m3-primary focus:outline-none transition-colors"
+                          className="w-full h-14 rounded-m3-md border border-m3-outline bg-transparent px-4 text-m3-body-lg text-m3-on-surface appearance-none cursor-pointer hover:border-m3-on-surface focus:outline-none focus:ring-2 focus:ring-m3-primary/20 focus:border-m3-outline transition-colors"
                         >
                           <option value="" className="bg-m3-surface-container text-m3-on-surface">Select Brand</option>
                           {CAR_BRANDS.map(b => (
@@ -821,7 +821,7 @@ const AdminPage = () => {
                         name="registration"
                         value={formData.registration}
                         onChange={handleChange}
-                        className="w-full h-14 rounded-m3-md border border-m3-outline bg-transparent px-4 text-m3-body-lg text-m3-on-surface appearance-none cursor-pointer hover:border-m3-on-surface focus:border-m3-primary focus:outline-none transition-colors"
+                        className="w-full h-14 rounded-m3-md border border-m3-outline bg-transparent px-4 text-m3-body-lg text-m3-on-surface appearance-none cursor-pointer hover:border-m3-on-surface focus:outline-none focus:ring-2 focus:ring-m3-primary/20 focus:border-m3-outline transition-colors"
                       >
                         <option value="" className="bg-m3-surface-container text-m3-on-surface">Select State</option>
                         {REGISTRATIONS.map(r => (
@@ -908,13 +908,13 @@ const AdminPage = () => {
                 </M3Card>
 
                 {/* ── Action Buttons ── */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <div className="flex flex-col sm:flex-row gap-3 pt-4 pb-2">
                   <M3Button
                     type="submit"
                     variant="filled"
                     size="lg"
                     disabled={isSubmitting}
-                    className="flex-1 sm:flex-initial sm:min-w-[160px]"
+                    className="w-full sm:h-14 sm:px-10 sm:text-m3-title-md"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2.5">
@@ -932,7 +932,7 @@ const AdminPage = () => {
                       variant="outlined"
                       size="lg"
                       onClick={handleCancelEdit}
-                      className="sm:flex-initial"
+                      className="sm:h-14 sm:px-10 sm:text-m3-title-md"
                     >
                       Cancel
                     </M3Button>
