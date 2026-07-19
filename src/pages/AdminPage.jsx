@@ -66,7 +66,7 @@ const AdminPage = () => {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
 
-      if (data.user.email !== import.meta.env.VITE_ADMIN_EMAIL) {
+      if (data.user.email !== (import.meta.env.VITE_ADMIN_EMAIL || 'automobilegautam@gmail.com')) {
         await supabase.auth.signOut();
         setAuthError('Access denied. This email is not authorized.');
         return;
