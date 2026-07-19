@@ -338,21 +338,21 @@ const AdminPage = () => {
       <div className="m3-admin min-h-screen bg-m3-surface flex items-center justify-center p-6">
         <M3Card variant="elevated" className="w-full max-w-sm">
           <div className="p-6 sm:p-8">
-            <div className="text-center mb-6">
-              <div className="w-12 h-12 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-3">
-                <svg className="w-6 h-6 text-m3-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <div className="text-center mb-8">
+              <div className="w-14 h-14 rounded-m3-full bg-m3-primary-container flex items-center justify-center mx-auto mb-4 shadow-m3-1">
+                <svg className="w-7 h-7 text-m3-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
               <h1 className="text-m3-headline-sm text-m3-on-surface font-semibold">
                 Admin Panel
               </h1>
-              <p className="text-m3-body-md text-m3-on-surface-variant mt-1">
+              <p className="text-m3-body-md text-m3-on-surface-variant mt-1.5">
                 Sign in to manage your inventory
               </p>
             </div>
 
-            <form onSubmit={handleAuth} className="space-y-3">
+            <form onSubmit={handleAuth} className="space-y-4">
               <M3TextField
                 label="Email address"
                 type="email"
@@ -361,10 +361,11 @@ const AdminPage = () => {
                 required
                 autoFocus
                 icon={
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg className="w-5 h-5 transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 }
+                className="group"
               />
               <M3TextField
                 label="Password"
@@ -374,7 +375,7 @@ const AdminPage = () => {
                 required
                 minLength={6}
                 icon={
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg className="w-5 h-5 transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                     <path d="M7 11V7a5 5 0 0110 0v4" />
                   </svg>
@@ -393,9 +394,9 @@ const AdminPage = () => {
               <M3Button
                 type="submit"
                 variant="filled"
-                size="md"
+                size="lg"
                 disabled={authLoading}
-                className="w-full"
+                className="w-full mt-2"
               >
                 {authLoading ? (
                   <span className="flex items-center gap-2.5">
@@ -405,7 +406,7 @@ const AdminPage = () => {
                     </svg>
                     Please wait...
                   </span>
-                ) : 'Sign In'}
+                ) : 'Login'}
               </M3Button>
             </form>
 
