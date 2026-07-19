@@ -146,7 +146,7 @@ const PremiumCarDetail = () => {
         if (!error && data) {
           setCar({
             id: data.id,
-            name: `${data.year} ${data.make} ${data.model}`,
+            name: `${data.make} ${data.model}`,
             price: formatPrice(data.price),
             img: data.image_url,
             images: data.exterior_images || (data.image_url ? [data.image_url] : []),

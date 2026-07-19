@@ -80,7 +80,7 @@ function HomePage() {
         // We will pass the raw data, and we might need to adjust mapping in Inventory
         setSupabaseCars(data.map(car => ({
           id: car.id,
-          name: `${car.year} ${car.make} ${car.model}`,
+          name: `${car.make} ${car.model}`,
           year: car.year,
           price: formatPrice(car.price),
           description: car.description,
